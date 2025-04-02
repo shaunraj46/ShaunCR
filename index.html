@@ -3,16 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shaun Raj | Autonomous Vehicle Engineering Student & AI Solutions Developer</title>
+    <title>Shaun Raj | AI Engineer & Founder | SpicyNuggets</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
             --secondary: #0f172a;
+            --accent: #7e22ce;
             --light: #f8fafc;
             --gray: #64748b;
             --dark: #0f172a;
+            --gradient-bg: linear-gradient(135deg, #1e293b, #0f172a);
+            --gradient-primary: linear-gradient(135deg, #3b82f6, #2563eb);
+            --gradient-accent: linear-gradient(135deg, #7e22ce, #6b21a8);
+            --gradient-feature: linear-gradient(135deg, #1e293b, #0f172a);
         }
         
         * {
@@ -54,7 +59,7 @@
             padding: 0 1.5rem;
         }
         
-        /* Header */
+        /* Header & Hero Section - Keeping Original */
         header {
             height: 100vh;
             background: linear-gradient(135deg, #1e293b, #0f172a);
@@ -140,69 +145,6 @@
             animation: fadeInUp 0.8s 0.4s forwards;
         }
         
-        .btn {
-            display: inline-block;
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            color: white;
-            padding: 0.8rem 1.8rem;
-            border-radius: 6px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            transform: translateY(20px);
-            opacity: 0;
-            animation: fadeInUp 0.8s 0.6s forwards;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
-        }
-        
-        .btn:hover::before {
-            left: 100%;
-        }
-        
-        /* NEXBOT Container */
-        .nexbot-container {
-            position: absolute;
-            right: 5%;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 500px;
-            height: 600px;
-            z-index: 1;
-        }
-        
-        spline-viewer {
-            background: transparent !important;
-            width: 100%;
-            height: 100%;
-        }
-        
-        /* Hide Spline attribution */
-        .nexbot-container :is([title="Built with Spline"], [data-testid="watermark"]) {
-            display: none !important;
-            opacity: 0 !important;
-            visibility: hidden !important;
-        }
-        
-        /* CTA Button */
         .cta-btn {
             display: inline-flex;
             align-items: center;
@@ -271,6 +213,30 @@
             transform: scale(1.1);
         }
         
+        /* NEXBOT Container */
+        .nexbot-container {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 500px;
+            height: 600px;
+            z-index: 1;
+        }
+        
+        spline-viewer {
+            background: transparent !important;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Hide Spline attribution */
+        .nexbot-container :is([title="Built with Spline"], [data-testid="watermark"]) {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
+        
         .particles {
             position: absolute;
             top: 0;
@@ -288,9 +254,10 @@
             border-radius: 50%;
         }
         
-        /* About Section */
+        /* New Section Styles */
         section {
             padding: 6rem 0;
+            position: relative;
         }
         
         .section-title {
@@ -302,6 +269,7 @@
         .section-title h2 {
             font-size: 2.5rem;
             display: inline-block;
+            color: var(--dark);
         }
         
         .section-title h2::after {
@@ -313,6 +281,13 @@
             bottom: -10px;
             left: 50%;
             transform: translateX(-50%);
+        }
+
+        /* About Section (Redesigned) */
+        #about {
+            background-color: var(--light);
+            position: relative;
+            overflow: hidden;
         }
         
         .about-content {
@@ -342,115 +317,87 @@
         .about-text h3 {
             font-size: 2rem;
             margin-bottom: 1.5rem;
+            color: var(--dark);
         }
         
         .about-text p {
             margin-bottom: 1.5rem;
             color: var(--gray);
+            font-size: 1.1rem;
         }
         
-        /* Skills */
-        .skills {
-            background-color: var(--light);
-            background-image: url('/api/placeholder/1200/800');
-            background-size: cover;
-            background-position: center;
+        .highlight-box {
+            background: var(--gradient-bg);
+            color: var(--light);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+            border-left: 5px solid var(--primary);
+        }
+        
+        /* Feature Triangle Section */
+        .feature-triangle {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: var(--light);
+            padding: 6rem 0;
             position: relative;
+            overflow: hidden;
         }
         
-        .skills::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(5px);
+        .triangle-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            position: relative;
+            padding: 2rem 0;
         }
         
-        .skills .container {
+        .triangle-item {
+            text-align: center;
+            padding: 2rem;
             position: relative;
             z-index: 1;
         }
         
-        .skills-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-        
-        .skill-card {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid rgba(37, 99, 235, 0.1);
-            backdrop-filter: blur(10px);
-        }
-        
-        .skill-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(37, 99, 235, 0.2);
-        }
-        
-        .skill-card i {
+        .triangle-item i {
             font-size: 2.5rem;
             color: var(--primary);
-            margin-bottom: 1.5rem;
-        }
-        
-        .skill-card h3 {
-            font-size: 1.5rem;
             margin-bottom: 1rem;
         }
         
-        .skill-card ul {
-            list-style: none;
+        .triangle-item h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
         }
         
-        .skill-card ul li {
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
+        .triangle-item p {
+            color: var(--gray);
+            max-width: 80%;
+            margin: 0 auto;
         }
         
-        .skill-card ul li::before {
-            content: "⚡";
-            margin-right: 0.5rem;
-            color: var(--primary);
-        }
-        
-        /* Projects */
-        #projects {
-            background-image: url('/api/placeholder/1200/800');
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-        
-        #projects::before {
-            content: '';
+        .triangle-bg {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(5px);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: auto;
+            opacity: 0.05;
+            z-index: 0;
         }
         
-        #projects .container {
+        /* Projects Section */
+        .projects-section {
+            background-color: var(--light);
             position: relative;
-            z-index: 1;
         }
         
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
+            gap: 2.5rem;
         }
         
         .project-card {
@@ -460,43 +407,45 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
-            transform-style: preserve-3d;
-            perspective: 1000px;
             border: 1px solid rgba(37, 99, 235, 0.1);
         }
         
         .project-card:hover {
-            transform: translateY(-10px) rotateX(5deg);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
             border: 1px solid rgba(37, 99, 235, 0.2);
         }
         
         .project-img {
             width: 100%;
             height: 200px;
-            background-color: #dbeafe;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             overflow: hidden;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        .project-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        
-        .project-card:hover .project-img img {
-            transform: scale(1.05);
+        .project-img i {
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.8);
         }
         
         .project-info {
-            padding: 1.5rem;
+            padding: 1.8rem;
         }
         
         .project-info h3 {
             font-size: 1.5rem;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .project-info h3 i {
+            margin-right: 0.8rem;
+            color: var(--primary);
         }
         
         .project-info p {
@@ -504,9 +453,38 @@
             margin-bottom: 1.5rem;
         }
         
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tech-tag {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .project-stat {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+            color: var(--gray);
+        }
+        
+        .project-stat i {
+            color: var(--primary);
+        }
+        
         .project-links {
             display: flex;
             gap: 1rem;
+            margin-top: 1.5rem;
         }
         
         .project-links a {
@@ -516,234 +494,356 @@
             font-weight: 500;
         }
         
-        /* Experience */
-        .experience {
-            background-image: url('/api/placeholder/1200/800');
-            background-size: cover;
-            background-position: center;
+        /* SpicyNuggets Section */
+        .startup-section {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: var(--light);
             position: relative;
             overflow: hidden;
         }
         
-        .experience::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background-color: rgba(240, 249, 255, 0.85);
-            backdrop-filter: blur(5px);
-            z-index: 0;
-        }
-        
-        .experience .container {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .timeline {
-            position: relative;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .timeline::after {
-            content: '';
-            position: absolute;
-            width: 2px;
-            background-color: var(--primary);
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            margin-left: -1px;
-        }
-        
-        .timeline-item {
-            position: relative;
-            width: 50%;
-            padding: 10px 40px;
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.8s ease;
-        }
-        
-        .timeline-item.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .timeline-item:nth-child(odd) {
-            left: 0;
-        }
-        
-        .timeline-item:nth-child(even) {
-            left: 50%;
-        }
-        
-        .timeline-content {
-            position: relative;
-            padding: 1.5rem;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(37, 99, 235, 0.1);
-        }
-        
-        .timeline-content::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: white;
-            border: 4px solid var(--primary);
-            border-radius: 50%;
-            top: 15px;
-            z-index: 1;
-        }
-        
-        .timeline-item:nth-child(odd) .timeline-content::after {
-            right: -52px;
-        }
-        
-        .timeline-item:nth-child(even) .timeline-content::after {
-            left: -52px;
-        }
-        
-        .timeline-date {
-            color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        
-        .timeline-title {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .timeline-location {
-            color: var(--gray);
-            font-style: italic;
-            margin-bottom: 1rem;
-        }
-        
-        /* Education */
-        #education {
-            background-image: url('/api/placeholder/1200/800');
-            background-size: cover;
-            background-position: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        #education::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(239, 246, 255, 0.85);
-            backdrop-filter: blur(5px);
-            z-index: 0;
-        }
-        
-        #education .container {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .education-grid {
+        .startup-content {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .startup-info h3 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+        }
+        
+        .startup-info p {
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+        }
+        
+        .startup-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin: 2.5rem 0;
+        }
+        
+        .stat-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-card h4 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-card p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+        }
+        
+        .awards-list {
+            margin: 2rem 0;
+        }
+        
+        .award-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+        
+        .award-item i {
+            color: #fcd34d;
+            font-size: 1.5rem;
+        }
+        
+        /* Skills Section */
+        .skills-section {
+            background-color: var(--light);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
         }
         
-        .education-card {
-            background-color: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
+        .skill-category {
+            background-color: white;
             border-radius: 10px;
+            padding: 2rem;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(37, 99, 235, 0.1);
         }
         
-        .education-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.15);
-            background-color: rgba(255, 255, 255, 0.9);
+        .skill-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
             border: 1px solid rgba(37, 99, 235, 0.2);
         }
         
-        .education-card h3 {
+        .skill-category h3 {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
             font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+        
+        .skill-category h3 i {
+            color: var(--primary);
+        }
+        
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+        
+        .skill-item {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .skill-item:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Formula Student Section */
+        .formula-section {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: var(--light);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .formula-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .formula-info h3 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+        }
+        
+        .formula-info p {
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+        }
+        
+        .formula-highlights {
+            margin: 2.5rem 0;
+        }
+        
+        .highlight-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.8rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        
+        .highlight-item:hover {
+            transform: translateY(-5px);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .highlight-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 3.5rem;
+            height: 3.5rem;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+        
+        .highlight-icon i {
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .highlight-text h4 {
+            font-size: 1.3rem;
             margin-bottom: 0.5rem;
         }
         
-        .education-card h4 {
-            color: var(--primary);
-            margin-bottom: 1rem;
+        .highlight-text p {
+            margin-bottom: 0;
+            font-size: 1rem;
         }
-        
-        .education-card p {
-            color: var(--gray);
-        }
-        
-        /* Contact */
-        .contact {
+
+        /* Leadership Section */
+        .leadership-section {
+            background-color: var(--light);
             position: relative;
         }
         
-        .contact-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--secondary);
-            clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 100%);
-            z-index: -1;
+        .leadership-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+        
+        .leadership-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(37, 99, 235, 0.1);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .leadership-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+        }
+        
+        .leadership-icon {
+            width: 4rem;
+            height: 4rem;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+        }
+        
+        .leadership-icon i {
+            font-size: 1.8rem;
+            color: white;
+        }
+        
+        .leadership-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .leadership-card p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+        
+        .leadership-card .term {
+            color: var(--primary);
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: var(--light);
+            position: relative;
+            overflow: hidden;
         }
         
         .contact-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 4rem;
-            color: var(--light);
+            align-items: center;
         }
         
         .contact-info h3 {
-            font-size: 2rem;
-            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
         }
         
         .contact-info p {
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
         }
         
         .contact-links {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 1.5rem;
+            margin: 2.5rem 0;
         }
         
         .contact-link {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.5rem;
             color: var(--light);
-            transition: transform 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 1.2rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
         }
         
         .contact-link:hover {
             transform: translateX(10px);
-            color: var(--primary);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        .contact-link i {
-            font-size: 1.5rem;
+        .contact-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+        
+        .contact-icon i {
+            font-size: 1.2rem;
+            color: white;
         }
         
         /* Footer */
@@ -779,6 +879,83 @@
             transform: translateY(-5px);
         }
         
+        /* Circular Feature Diagram Section */
+        .feature-circle {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: var(--light);
+            padding: 6rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .circle-layout {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin: 3rem auto;
+            max-width: 800px;
+            position: relative;
+        }
+        
+        .circle-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            box-shadow: 0 0 30px rgba(37, 99, 235, 0.5);
+        }
+        
+        .circle-center i {
+            font-size: 3rem;
+            color: white;
+        }
+        
+        .circle-item {
+            background-color: rgba(255, 255, 255, 0.03);
+            padding: 2rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .circle-item:hover {
+            transform: translateY(-5px);
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .circle-item i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .circle-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .circle-item p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .circle-connector {
+            position: absolute;
+            background-color: rgba(37, 99, 235, 0.3);
+            z-index: 0;
+        }
+        
         /* Animations */
         @keyframes fadeInUp {
             from {
@@ -788,6 +965,18 @@
             to {
                 opacity: 1;
                 transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 20px rgba(37, 99, 235, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
             }
         }
         
@@ -801,6 +990,10 @@
                 width: 450px;
                 height: 550px;
                 right: 5%;
+            }
+            
+            .circle-layout {
+                grid-template-columns: 1fr;
             }
         }
         
@@ -840,27 +1033,13 @@
                 bottom: -250px;
             }
             
-            .timeline::after {
-                left: 31px;
+            .circle-center {
+                width: 120px;
+                height: 120px;
             }
             
-            .timeline-item {
-                width: 100%;
-                padding-left: 70px;
-                padding-right: 25px;
-            }
-            
-            .timeline-item:nth-child(even) {
-                left: 0;
-            }
-            
-            .timeline-item:nth-child(odd) .timeline-content::after,
-            .timeline-item:nth-child(even) .timeline-content::after {
-                left: -43px;
-            }
-            
-            .timeline-content {
-                padding: 1rem;
+            .circle-center i {
+                font-size: 2.5rem;
             }
         }
         
@@ -889,17 +1068,18 @@
                 <div class="logo">SR</div>
                 <div class="nav-links">
                     <a href="#about">About</a>
-                    <a href="#skills">Skills</a>
+                    <a href="#startup">SpicyNuggets</a>
                     <a href="#projects">Projects</a>
-                    <a href="#experience">Experience</a>
-                    <a href="#education">Education</a>
+                    <a href="#skills">Skills</a>
+                    <a href="#formula">Formula Student</a>
+                    <a href="#leadership">Leadership</a>
                     <a href="#contact">Contact</a>
                 </div>
             </nav>
             
             <div class="hero">
                 <h1>Shaun Clarence Raj</h1>
-                <h2>Autonomous Vehicle Engineering Student & AI Solutions Developer</h2>
+                <h2>AI Engineer & Founder of SpicyNuggets</h2>
                 <p>Innovating sustainable AI solutions with a focus on efficiency, accuracy, and real-world impact. Passionate about combining cutting-edge technology with resource-efficient implementation.</p>
                 <a href="#projects" class="cta-btn">
                     <span class="cta-text">View My Work</span>
@@ -933,10 +1113,15 @@
                 </div>
                 
                 <div class="about-text">
-                    <h3>Innovating with Purpose</h3>
-                    <p>I'm an Autonomous Vehicle Engineering student and Full-Stack Developer passionate about creating sustainable AI solutions that make a real difference. My work focuses on developing intelligent systems that not only solve complex problems but do so with optimal resource efficiency.</p>
-                    <p>Through SpicyNuggets, I've led the development of groundbreaking AI projects like OWL.AI and HalloDoc, demonstrating that high-performance AI can be achieved while significantly reducing energy consumption.</p>
-                    <p>My expertise spans the complete development lifecycle, from concept to deployment, with a particular focus on combining large language models with machine learning techniques to create systems that are both powerful and environmentally responsible.</p>
+                    <h3>AI Engineer & Innovation Leader</h3>
+                    <p>I'm an Autonomous Vehicle Engineering student at Technische Hochschule Ingolstadt and the founder of SpicyNuggets, specializing in efficient AI systems that bridge cutting-edge research with practical business applications.</p>
+                    
+                    <div class="highlight-box">
+                        <p>My expertise lies in developing intelligent systems that solve complex problems with optimal resource efficiency, demonstrating that high-performance AI can be achieved while significantly reducing environmental impact.</p>
+                    </div>
+                    
+                    <p>With a background spanning the complete development lifecycle from conceptualization to deployment, I focus on combining large language models with advanced machine learning techniques to create systems that are both powerful and environmentally responsible.</p>
+                    
                     <a href="#contact" class="cta-btn">
                         <span class="cta-text">Let's Connect</span>
                         <span class="cta-icon"><i class="fas fa-arrow-right"></i></span>
@@ -945,64 +1130,88 @@
             </div>
         </div>
     </section>
-    
-    <!-- Skills Section -->
-    <section id="skills" class="skills">
+
+    <!-- Triangle Feature Section (SpicyNuggets Core Values) -->
+    <section class="feature-triangle" id="core-values">
         <div class="container">
             <div class="section-title">
-                <h2>My Skills</h2>
+                <h2>Core Values</h2>
             </div>
             
-            <div class="skills-container">
-                <div class="skill-card">
-                    <i class="fas fa-robot"></i>
-                    <h3>AI Development</h3>
-                    <ul>
-                        <li>Large Language Models (LLMs)</li>
-                        <li>Machine Learning Techniques</li>
-                        <li>Retrieval-Augmented Generation</li>
-                        <li>Sustainable AI Implementation</li>
-                    </ul>
+            <div class="triangle-layout">
+                <div class="triangle-item">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Innovation</h3>
+                    <p>Pioneering adaptive learning algorithms that evolve with minimal human supervision.</p>
                 </div>
                 
-                <div class="skill-card">
-                    <i class="fas fa-code"></i>
-                    <h3>Programming</h3>
-                    <ul>
-                        <li>Python</li>
-                        <li>JavaScript</li>
-                        <li>SQL</li>
-                        <li>C++</li>
-                    </ul>
+                <div class="triangle-item">
+                    <i class="fas fa-users"></i>
+                    <h3>Market Impact</h3>
+                    <p>Transforming how businesses implement AI through accessible, powerful tools.</p>
                 </div>
                 
-                <div class="skill-card">
-                    <i class="fas fa-laptop-code"></i>
-                    <h3>Web Development</h3>
-                    <ul>
-                        <li>React.js</li>
-                        <li>Node.js & Express.js</li>
-                        <li>HTML5 & CSS3</li>
-                        <li>Frontend Frameworks</li>
-                    </ul>
+                <div class="triangle-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Integrity</h3>
+                    <p>Building transparent, ethical AI systems with rigorously validated outputs.</p>
                 </div>
-                
-                <div class="skill-card">
-                    <i class="fas fa-server"></i>
-                    <h3>Back-End & DevOps</h3>
-                    <ul>
-                        <li>Flask & Django</li>
-                        <li>MongoDB & Databases</li>
-                        <li>CI/CD Pipelines</li>
-                        <li>Cloud Deployment (Heroku)</li>
-                    </ul>
+            </div>
+            
+            <!-- Triangle background shape -->
+            <svg class="triangle-bg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50,10 L90,80 L10,80 Z" fill="white"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- SpicyNuggets Startup Section -->
+    <section id="startup" class="startup-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>SpicyNuggets</h2>
+            </div>
+            
+            <div class="startup-content">
+                <div class="startup-info">
+                    <h3>Bridging AI Research & Business Application</h3>
+                    <p>Founded during the 5-Euro Business competition, SpicyNuggets specializes in developing intelligent systems that make cutting-edge AI research accessible and practical for organizations of all sizes.</p>
+                    
+                    <div class="startup-stats">
+                        <div class="stat-card">
+                            <h4>59.6%</h4>
+                            <p>Energy Reduction</p>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <h4>96%</h4>
+                            <p>Accuracy Rate</p>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <h4>3</h4>
+                            <p>Major AI Products</p>
+                        </div>
+                    </div>
+                    
+                    <p>SpicyNuggets' flagship products include OWL.AI, HalloDoc, and Ranked - all developed with a focus on sustainability, efficiency, and real-world application.</p>
+                    
+                    <div class="awards-list">
+                        <div class="award-item">
+                            <i class="fas fa-award"></i>
+                            <div>
+                                <h4>Sustainability Award</h4>
+                                <p>Recognized for energy-efficient AI systems in the 5-Euro Business competition</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-    
+
     <!-- Projects Section -->
-    <section id="projects">
+    <section id="projects" class="projects-section">
         <div class="container">
             <div class="section-title">
                 <h2>Featured Projects</h2>
@@ -1011,12 +1220,30 @@
             <div class="projects-grid">
                 <div class="project-card">
                     <div class="project-img">
-                        <!-- Placeholder for project image -->
-                        <img src="/api/placeholder/400/200" alt="OWL.AI Project">
+                        <i class="fas fa-robot"></i>
                     </div>
                     <div class="project-info">
-                        <h3>OWL.AI</h3>
-                        <p>A sustainable AI chatbot that dynamically selects from multiple LLMs using machine learning models, achieving 96% accuracy while reducing energy consumption by 59.6%. Deployed via Flask API on Heroku for real-time, resource-efficient operation.</p>
+                        <h3><i class="fas fa-robot"></i> OWL.AI</h3>
+                        <p>A multi-LLM chatbot that intelligently classifies prompts by complexity and routes them to the appropriate model, achieving high accuracy while significantly reducing energy consumption.</p>
+                        
+                        <div class="tech-tags">
+                            <span class="tech-tag">Node.js</span>
+                            <span class="tech-tag">Express</span>
+                            <span class="tech-tag">GPT-4</span>
+                            <span class="tech-tag">Claude</span>
+                            <span class="tech-tag">LLaMA</span>
+                        </div>
+                        
+                        <div class="project-stat">
+                            <i class="fas fa-bolt"></i>
+                            <span>59.6% reduced energy usage</span>
+                        </div>
+                        
+                        <div class="project-stat">
+                            <i class="fas fa-check-circle"></i>
+                            <span>96% classification accuracy</span>
+                        </div>
+                        
                         <div class="project-links">
                             <a href="https://owl-ai.de" target="_blank"><i class="fas fa-external-link-alt"></i> View Project</a>
                         </div>
@@ -1025,12 +1252,29 @@
                 
                 <div class="project-card">
                     <div class="project-img">
-                        <!-- Placeholder for project image -->
-                        <img src="/api/placeholder/400/200" alt="HalloDoc Project">
+                        <i class="fas fa-calendar-check"></i>
                     </div>
                     <div class="project-info">
-                        <h3>HalloDoc</h3>
-                        <p>An AI-powered doctor/clinic patient scheduling management system that streamlines healthcare operations through intelligent automation. Features include smart appointment scheduling, patient data analysis, and resource optimization.</p>
+                        <h3><i class="fas fa-calendar-check"></i> HalloDoc</h3>
+                        <p>A WhatsApp-based AI assistant that automates doctor appointment booking with natural language processing, integrating seamlessly with Google Calendar for scheduling and management.</p>
+                        
+                        <div class="tech-tags">
+                            <span class="tech-tag">Twilio</span>
+                            <span class="tech-tag">Google Calendar API</span>
+                            <span class="tech-tag">LLMs</span>
+                            <span class="tech-tag">Node.js</span>
+                        </div>
+                        
+                        <div class="project-stat">
+                            <i class="fas fa-clock"></i>
+                            <span>85% reduction in booking time</span>
+                        </div>
+                        
+                        <div class="project-stat">
+                            <i class="fas fa-user-check"></i>
+                            <span>Supports multiple languages</span>
+                        </div>
+                        
                         <div class="project-links">
                             <a href="https://hallodoc.shaunraj.com" target="_blank"><i class="fas fa-external-link-alt"></i> View Project</a>
                         </div>
@@ -1039,108 +1283,247 @@
                 
                 <div class="project-card">
                     <div class="project-img">
-                        <!-- Placeholder for project image -->
-                        <img src="/api/placeholder/400/200" alt="Multi-LLM Chatbot Architecture">
+                        <i class="fas fa-chart-line"></i>
                     </div>
                     <div class="project-info">
-                        <h3>Multi-LLM Architecture</h3>
-                        <p>Developed a sophisticated system for classifying prompts and dynamically selecting appropriate LLMs to optimize performance and scalability in real-time environments. This architecture forms the foundation for several AI implementations.</p>
+                        <h3><i class="fas fa-chart-line"></i> Ranked</h3>
+                        <p>An AI-powered lead scoring tool that integrates with CRM workflows to automatically prioritize and qualify incoming leads using advanced language models and predictive analytics.</p>
+                        
+                        <div class="tech-tags">
+                            <span class="tech-tag">CRM Integration</span>
+                            <span class="tech-tag">LLMs</span>
+                            <span class="tech-tag">ReactJS</span>
+                            <span class="tech-tag">Predictive Analytics</span>
+                        </div>
+                        
+                        <div class="project-stat">
+                            <i class="fas fa-percentage"></i>
+                            <span>32% increase in conversion rate</span>
+                        </div>
+                        
+                        <div class="project-stat">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>70% faster lead qualification</span>
+                        </div>
+                        
                         <div class="project-links">
-                            <a href="#"><i class="fas fa-external-link-alt"></i> Technical Documentation</a>
+                            <a href="#" target="_blank"><i class="fas fa-external-link-alt"></i> View Project</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    
-    <!-- Experience Section -->
-    <section id="experience" class="experience">
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills-section">
         <div class="container">
             <div class="section-title">
-                <h2>Experience</h2>
+                <h2>Technical Skills</h2>
             </div>
             
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">October 2024 - Present</div>
-                        <h3 class="timeline-title">Founder</h3>
-                        <p class="timeline-location">OWL.AI - 5-Euro-Business-Initiative, Ingolstadt, Germany</p>
-                        <p>Led the development of innovative AI solutions combining LLMs with machine learning models to achieve high accuracy and sustainability. Implemented full-stack deployment with Flask API and Heroku for cost-efficient scalability.</p>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3><i class="fas fa-code"></i> Programming</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">Python</span>
+                        <span class="skill-item">JavaScript</span>
+                        <span class="skill-item">C++</span>
+                        <span class="skill-item">SQL</span>
+                        <span class="skill-item">TypeScript</span>
                     </div>
                 </div>
                 
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">June 2022 - August 2022</div>
-                        <h3 class="timeline-title">EHS Intern</h3>
-                        <p class="timeline-location">Mattel, Perai, Malaysia</p>
-                        <p>Implemented sustainable waste management solutions to reduce environmental impact and supported safety and compliance initiatives to improve workplace safety practices.</p>
+                <div class="skill-category">
+                    <h3><i class="fas fa-robot"></i> AI & ML</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">Large Language Models</span>
+                        <span class="skill-item">Prompt Classification</span>
+                        <span class="skill-item">Retrieval-Augmented Generation</span>
+                        <span class="skill-item">Quantum SVM</span>
+                        <span class="skill-item">Sustainability Metrics</span>
                     </div>
                 </div>
                 
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">February 2022 - May 2022</div>
-                        <h3 class="timeline-title">CSR Intern</h3>
-                        <p class="timeline-location">Community Outreach, Lendlease, Kuala Lumpur, Malaysia</p>
-                        <p>Organized and led workshops for children in disadvantaged communities and collaborated with local partners to implement meaningful educational and creative projects.</p>
+                <div class="skill-category">
+                    <h3><i class="fas fa-tools"></i> Tools & Frameworks</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">Node.js</span>
+                        <span class="skill-item">React</span>
+                        <span class="skill-item">Flask</span>
+                        <span class="skill-item">MongoDB</span>
+                        <span class="skill-item">Docker</span>
+                        <span class="skill-item">Express</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h3><i class="fas fa-car"></i> Autonomous Systems</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">ROS2</span>
+                        <span class="skill-item">Foxglove</span>
+                        <span class="skill-item">Live Telemetry</span>
+                        <span class="skill-item">Sensor Fusion</span>
+                        <span class="skill-item">Computer Vision</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    
-    <!-- Education Section -->
-    <section id="education">
+
+    <!-- Formula Student Section -->
+    <section id="formula" class="formula-section">
         <div class="container">
             <div class="section-title">
-                <h2>Education</h2>
+                <h2>Formula Student</h2>
             </div>
             
-            <div class="education-grid">
-                <div class="education-card">
-                    <h3>B.Eng in Autonomous Vehicle Engineering</h3>
-                    <h4>Technische Hochschule Ingolstadt, Germany</h4>
-                    <p>October 2022 - Present</p>
-                </div>
-                
-                <div class="education-card">
-                    <h3>Cambridge Advanced Levels</h3>
-                    <h4>Disted College, Malaysia</h4>
-                    <p>July 2020 - December 2021</p>
+            <div class="formula-content">
+                <div class="formula-info">
+                    <h3>Schanzer Racing Driverless</h3>
+                    <p>As a member of the Driverless department in Schanzer Racing Electric, I focus on developing real-time telemetry systems and data visualization solutions for autonomous racing vehicles.</p>
+                    
+                    <div class="formula-highlights">
+                        <div class="highlight-item">
+                            <div class="highlight-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="highlight-text">
+                                <h4>Live Telemetry Systems</h4>
+                                <p>Developed real-time data streaming from autonomous vehicle sensors to race operations center</p>
+                            </div>
+                        </div>
+                        
+                        <div class="highlight-item">
+                            <div class="highlight-icon">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <div class="highlight-text">
+                                <h4>Foxglove Integration</h4>
+                                <p>Implemented advanced data visualization for sensor data analysis and performance optimization</p>
+                            </div>
+                        </div>
+                        
+                        <div class="highlight-item">
+                            <div class="highlight-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <div class="highlight-text">
+                                <h4>Performance Analytics</h4>
+                                <p>Created custom analytics dashboards to identify optimization opportunities and improve vehicle performance</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-    
+
+    <!-- Leadership Section -->
+    <section id="leadership" class="leadership-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Leadership</h2>
+            </div>
+            
+            <div class="leadership-content">
+                <div class="leadership-card">
+                    <div class="leadership-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Student Representative</h3>
+                    <p>Elected as StuV representative for Faculty E, working to enhance student inclusion, academic communication, and campus life while advocating for student interests in university decision-making.</p>
+                    <span class="term">2023 - Present</span>
+                </div>
+                
+                <div class="leadership-card">
+                    <div class="leadership-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>Founder</h3>
+                    <p>Founded SpicyNuggets during the 5-Euro Business competition, developing the concept from ideation to market-ready products while leading a team of engineers and securing the Sustainability Award.</p>
+                    <span class="term">2022 - Present</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Circle Feature Section (Future Vision) -->
+    <section class="feature-circle" id="vision">
+        <div class="container">
+            <div class="section-title">
+                <h2>Future Vision & Collaboration</h2>
+            </div>
+            
+            <div class="circle-layout">
+                <div class="circle-item">
+                    <i class="fas fa-leaf"></i>
+                    <h3>Sustainable AI</h3>
+                    <p>Developing energy-efficient algorithms that minimize environmental impact.</p>
+                </div>
+                
+                <div class="circle-item">
+                    <i class="fas fa-handshake"></i>
+                    <h3>Ethical Partnerships</h3>
+                    <p>Seeking collaborations with forward-thinking organizations aligned with human-centered values.</p>
+                </div>
+                
+                <div class="circle-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Responsible Innovation</h3>
+                    <p>Prioritizing transparency, fairness, and accountability in all AI systems.</p>
+                </div>
+                
+                <div class="circle-item">
+                    <i class="fas fa-flask"></i>
+                    <h3>Research Frontiers</h3>
+                    <p>Exploring emerging applications in healthcare, climate science, and education.</p>
+                </div>
+                
+                <div class="circle-center">
+                    <i class="fas fa-brain"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="contact-bg"></div>
+    <section id="contact" class="contact-section">
         <div class="container">
             <div class="section-title">
-                <h2>Get In Touch</h2>
+                <h2>Let's Connect</h2>
             </div>
             
             <div class="contact-content">
                 <div class="contact-info">
-                    <h3>Let's Connect</h3>
-                    <p>I'm always interested in new challenges and collaborations. Whether you have a project in mind or just want to discuss emerging technology, feel free to reach out.</p>
+                    <h3>Get In Touch</h3>
+                    <p>I'm always interested in new challenges, collaborations, and opportunities to apply AI in innovative ways. Whether you have a project in mind or want to discuss emerging technology, feel free to reach out.</p>
                     
                     <div class="contact-links">
                         <a href="mailto:shaunraj46@gmail.com" class="contact-link">
-                            <i class="fas fa-envelope"></i>
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
                             <span>shaunraj46@gmail.com</span>
                         </a>
+                        
                         <a href="https://linkedin.com/in/shaun-raj" class="contact-link">
-                            <i class="fab fa-linkedin"></i>
+                            <div class="contact-icon">
+                                <i class="fab fa-linkedin-in"></i>
+                            </div>
                             <span>linkedin.com/in/shaun-raj</span>
+                        </a>
+                        
+                        <a href="https://github.com/shaunraj46" class="contact-link">
+                            <div class="contact-icon">
+                                <i class="fab fa-github"></i>
+                            </div>
+                            <span>github.com/shaunraj46</span>
                         </a>
                     </div>
                     
-                    <a href="#contact" class="cta-btn">
-                        <span class="cta-text">Connect With Me</span>
+                    <a href="mailto:shaunraj46@gmail.com" class="cta-btn">
+                        <span class="cta-text">Start a Conversation</span>
                         <span class="cta-icon"><i class="fas fa-paper-plane"></i></span>
                     </a>
                 </div>
@@ -1184,22 +1567,31 @@
                 
                 particlesContainer.appendChild(particle);
             }
-        });
-        
-        // Intersection Observer for timeline animation
-        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Add scroll reveal animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -100px 0px"
+            };
+            
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
                     }
                 });
-            }, {
-                threshold: 0.1
-            });
+            }, observerOptions);
             
-            document.querySelectorAll('.timeline-item').forEach(item => {
-                observer.observe(item);
+            // Select elements to animate
+            const animatedElements = document.querySelectorAll('.project-card, .skill-category, .highlight-item, .circle-item, .leadership-card');
+            
+            animatedElements.forEach(el => {
+                el.style.opacity = 0;
+                el.style.transform = 'translateY(50px)';
+                el.style.transition = 'all 0.8s ease-out';
+                observer.observe(el);
             });
         });
     </script>
