@@ -1,0 +1,384 @@
+/* 
+ * Responsive CSS File for Shaun Raj's Portfolio
+ * Contains media queries for different screen sizes
+ */
+
+/* For larger desktop screens */
+@media screen and (min-width: 1400px) {
+    .container {
+        max-width: 1320px;
+    }
+    
+    .hero h1 {
+        font-size: 4rem;
+    }
+    
+    .hero h2 {
+        font-size: 2rem;
+    }
+    
+    .hero p {
+        font-size: 1.3rem;
+    }
+    
+    .nexbot-container {
+        width: 550px;
+        height: 650px;
+    }
+    
+    .section-title h2 {
+        font-size: 3rem;
+    }
+}
+
+/* For desktop screens */
+@media screen and (max-width: 1200px) {
+    .hero {
+        max-width: 50%;
+        padding-left: 2rem;
+    }
+    
+    .nexbot-container {
+        width: 450px;
+        height: 550px;
+        right: 3%;
+    }
+    
+    .project-card, .skill-card {
+        padding: 1.5rem;
+    }
+    
+    .project-title, .skill-title {
+        font-size: 1.6rem;
+    }
+}
+
+/* For tablets and smaller desktop screens */
+@media screen and (max-width: 992px) {
+    .hero {
+        max-width: 55%;
+    }
+    
+    .hero h1 {
+        font-size: 3rem;
+    }
+    
+    .hero h2 {
+        font-size: 1.6rem;
+    }
+    
+    .hero p {
+        font-size: 1.1rem;
+    }
+    
+    .nexbot-container {
+        width: 400px;
+        height: 500px;
+        right: 2%;
+    }
+    
+    .section-title h2 {
+        font-size: 2.2rem;
+    }
+    
+    .about-content, 
+    .startup-content, 
+    .formula-content, 
+    .leadership-content {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+    
+    .skill-card {
+        height: auto;
+    }
+    
+    .contact-links {
+        gap: 1.5rem;
+    }
+    
+    .contact-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 2rem;
+    }
+}
+
+/* For tablets and landscape mobile */
+@media screen and (max-width: 768px) {
+    :root {
+        /* Adjust spacing for smaller screens */
+        --border-radius-md: 12px;
+        --border-radius-lg: 16px;
+    }
+    
+    .nav-links {
+        display: none;
+    }
+    
+    .mobile-menu-toggle {
+        display: flex;
+    }
+    
+    .nav-links.active {
+        display: flex;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        gap: 0;
+        background: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 1rem 0;
+        border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
+        box-shadow: var(--shadow-md);
+        z-index: 100;
+    }
+    
+    .nav-links.active a {
+        padding: 1rem 2rem;
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .nav-links.active a:last-child {
+        border-bottom: none;
+    }
+    
+    .hero {
+        max-width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+        text-align: center;
+        align-items: center;
+        padding-bottom: 350px;
+    }
+    
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .nexbot-container {
+        width: 350px;
+        height: 400px;
+        right: 50%;
+        transform: translateX(50%);
+        top: auto;
+        bottom: -250px;
+    }
+    
+    section {
+        padding: 4rem 0;
+    }
+    
+    .section-title {
+        margin-bottom: 3rem;
+    }
+    
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .project-card, .skill-card {
+        margin-bottom: 2rem;
+    }
+    
+    .contact-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+    
+    .cta-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* For mobile phones */
+@media screen and (max-width: 576px) {
+    :root {
+        /* Further adjust spacing for mobile */
+        --border-radius-md: 10px;
+        --border-radius-lg: 12px;
+    }
+    
+    .hero {
+        padding-bottom: 250px;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .hero h2 {
+        font-size: 1.3rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    .nexbot-container {
+        width: 280px;
+        height: 350px;
+        bottom: -180px;
+    }
+    
+    .section-title h2 {
+        font-size: 1.8rem;
+    }
+    
+    .section-title h2::after {
+        width: 60px;
+    }
+    
+    .about-content, 
+    .startup-content, 
+    .formula-content, 
+    .leadership-content {
+        gap: 2rem;
+    }
+    
+    .project-title {
+        font-size: 1.5rem;
+    }
+    
+    .project-description, 
+    p {
+        font-size: 1rem;
+    }
+    
+    .achievement-item {
+        flex-direction: column;
+    }
+    
+    .achievement-icon {
+        margin-bottom: 1rem;
+    }
+    
+    .skills-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .social-link {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    
+    .contact-title {
+        font-size: 2rem;
+    }
+    
+    .contact-subtitle {
+        font-size: 1rem;
+    }
+    
+    .cta-text {
+        font-size: 0.9rem;
+    }
+    
+    .cta-icon {
+        width: 3rem;
+        height: 3rem;
+    }
+}
+
+/* For very small mobile screens */
+@media screen and (max-width: 375px) {
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+    
+    .hero h2 {
+        font-size: 1.1rem;
+    }
+    
+    .nexbot-container {
+        width: 250px;
+        height: 300px;
+        bottom: -150px;
+    }
+    
+    section {
+        padding: 3rem 0;
+    }
+    
+    .section-title h2 {
+        font-size: 1.6rem;
+    }
+    
+    .skill-title, .project-title {
+        font-size: 1.3rem;
+    }
+    
+    .contact-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.8rem;
+    }
+}
+
+/* Print styles for better PDF generation */
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+    
+    header, footer, .nexbot-container, .contact-section {
+        display: none;
+    }
+    
+    section {
+        page-break-inside: avoid;
+        background: white;
+        box-shadow: none;
+        margin: 1cm 0;
+        padding: 1cm 0;
+    }
+    
+    .section-title h2 {
+        color: black;
+    }
+    
+    .section-title h2::after {
+        background: black;
+    }
+    
+    p, li, .project-description, .achievement-text {
+        color: black;
+    }
+    
+    .skill-card, .project-card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        page-break-inside: avoid;
+    }
+    
+    img {
+        max-width: 100% !important;
+    }
+    
+    a {
+        color: black;
+        text-decoration: underline;
+    }
+    
+    .tech-tag {
+        background: #eee;
+        color: black;
+    }
+}
+
+/* Dark mode preference detection */
+@media (prefers-color-scheme: light) {
+    :root {
+        --shadow-sm: 0 5px 10px rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+}

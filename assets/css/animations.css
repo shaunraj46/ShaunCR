@@ -1,0 +1,370 @@
+/* 
+ * Animations CSS File for Shaun Raj's Portfolio
+ * Defines all animation keyframes and effects
+ */
+
+/* Float animation */
+@keyframes float {
+    0% {
+        transform: translateY(0) translateX(0);
+    }
+    50% {
+        transform: translateY(100px) translateX(-100px);
+    }
+    100% {
+        transform: translateY(50px) translateX(-200px);
+    }
+}
+
+/* Floating sun animation */
+@keyframes floating {
+    0% {
+        transform: translateY(0) translateX(0) scale(1);
+    }
+    50% {
+        transform: translateY(100px) translateX(-100px) scale(1.1);
+    }
+    100% {
+        transform: translateY(50px) translateX(-150px) scale(0.95);
+    }
+}
+
+/* Fade in up animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Rotation animation */
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Shimmer effect for elements */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Gradient border animation */
+@keyframes gradientBorder {
+    0% {
+        border-image-source: linear-gradient(45deg, var(--primary), var(--accent));
+    }
+    50% {
+        border-image-source: linear-gradient(45deg, var(--accent), var(--primary));
+    }
+    100% {
+        border-image-source: linear-gradient(45deg, var(--primary), var(--accent));
+    }
+}
+
+/* Pulse animation */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Background gradient shift */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Spotlight effect */
+@keyframes spotlight {
+    0% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(1.2);
+    }
+    100% {
+        filter: brightness(1);
+    }
+}
+
+/* Typing cursor animation */
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+/* 3D rotation effect */
+@keyframes rotate3d {
+    0% {
+        transform: perspective(1000px) rotateY(0deg);
+    }
+    50% {
+        transform: perspective(1000px) rotateY(15deg);
+    }
+    100% {
+        transform: perspective(1000px) rotateY(0deg);
+    }
+}
+
+/* Floating animation for skill cards */
+@keyframes floatCard {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* AOS (Animate On Scroll) Animations */
+[data-aos="custom-fade-up"] {
+    opacity: 0;
+    transform: translateY(50px);
+    transition-property: transform, opacity;
+}
+
+[data-aos="custom-fade-up"].aos-animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+[data-aos="custom-fade-right"] {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition-property: transform, opacity;
+}
+
+[data-aos="custom-fade-right"].aos-animate {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+[data-aos="custom-fade-left"] {
+    opacity: 0;
+    transform: translateX(50px);
+    transition-property: transform, opacity;
+}
+
+[data-aos="custom-fade-left"].aos-animate {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+[data-aos="custom-zoom-in"] {
+    opacity: 0;
+    transform: scale(0.8);
+    transition-property: transform, opacity;
+}
+
+[data-aos="custom-zoom-in"].aos-animate {
+    opacity: 1;
+    transform: scale(1);
+}
+
+[data-aos="custom-flip"] {
+    opacity: 0;
+    transform: perspective(2500px) rotateY(90deg);
+    transition-property: transform, opacity;
+}
+
+[data-aos="custom-flip"].aos-animate {
+    opacity: 1;
+    transform: perspective(2500px) rotateY(0deg);
+}
+
+/* Class-based animations */
+.animate-shimmer {
+    background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0.0), 
+        rgba(255, 255, 255, 0.2), 
+        rgba(255, 255, 255, 0.0));
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite ease-in-out;
+}
+
+.animate-float {
+    animation: floatCard 5s infinite ease-in-out;
+}
+
+.animate-spotlight {
+    animation: spotlight 3s infinite ease-in-out;
+}
+
+.animate-rotate3d {
+    animation: rotate3d 7s infinite ease-in-out;
+}
+
+/* 3D hover effect for cards */
+.card-3d {
+    transition: transform 0.5s ease;
+    transform-style: preserve-3d;
+}
+
+.card-3d:hover {
+    transform: perspective(1000px) rotateX(5deg) rotateY(5deg);
+}
+
+/* Gradient text effect */
+.gradient-text {
+    background: linear-gradient(90deg, var(--primary-light), var(--accent));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradientShift 5s ease infinite;
+}
+
+/* Button hover effects */
+.btn-glow:hover {
+    box-shadow: 0 0 15px var(--primary);
+}
+
+/* Glitch text effect */
+.glitch {
+    position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch::before {
+    left: 2px;
+    text-shadow: -1px 0 var(--primary);
+    background: rgba(0, 0, 0, 0.2);
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+    left: -2px;
+    text-shadow: -1px 0 var(--accent);
+    background: rgba(0, 0, 0, 0.2);
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+    0% {
+        clip: rect(4px, 9999px, 66px, 0);
+    }
+    10% {
+        clip: rect(87px, 9999px, 82px, 0);
+    }
+    20% {
+        clip: rect(33px, 9999px, 27px, 0);
+    }
+    30% {
+        clip: rect(92px, 9999px, 9px, 0);
+    }
+    40% {
+        clip: rect(26px, 9999px, 14px, 0);
+    }
+    50% {
+        clip: rect(46px, 9999px, 65px, 0);
+    }
+    60% {
+        clip: rect(3px, 9999px, 33px, 0);
+    }
+    70% {
+        clip: rect(60px, 9999px, 64px, 0);
+    }
+    80% {
+        clip: rect(95px, 9999px, 39px, 0);
+    }
+    90% {
+        clip: rect(18px, 9999px, 17px, 0);
+    }
+    100% {
+        clip: rect(53px, 9999px, 81px, 0);
+    }
+}
+
+@keyframes glitch-anim2 {
+    0% {
+        clip: rect(65px, 9999px, 27px, 0);
+    }
+    10% {
+        clip: rect(93px, 9999px, 67px, 0);
+    }
+    20% {
+        clip: rect(9px, 9999px, 36px, 0);
+    }
+    30% {
+        clip: rect(96px, 9999px, 12px, 0);
+    }
+    40% {
+        clip: rect(95px, 9999px, 1px, 0);
+    }
+    50% {
+        clip: rect(54px, 9999px, 98px, 0);
+    }
+    60% {
+        clip: rect(58px, 9999px, 57px, 0);
+    }
+    70% {
+        clip: rect(19px, 9999px, 74px, 0);
+    }
+    80% {
+        clip: rect(81px, 9999px, 19px, 0);
+    }
+    90% {
+        clip: rect(8px, 9999px, 65px, 0);
+    }
+    100% {
+        clip: rect(30px, 9999px, 92px, 0);
+    }
+}
+
+/* Tilt animation for project cards */
+.tilt-effect {
+    transition: transform 0.3s ease;
+    transform-style: preserve-3d;
+}
+
+.tilt-effect:hover {
+    transform: perspective(1000px) rotateX(5deg) rotateY(5deg) scale(1.02);
+}
