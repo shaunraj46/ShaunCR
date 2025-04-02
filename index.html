@@ -111,6 +111,7 @@
             height: calc(100vh - 80px);
             position: relative;
             z-index: 1;
+            max-width: 60%;
         }
         
         .hero h1 {
@@ -175,6 +176,23 @@
         
         .btn:hover::before {
             left: 100%;
+        }
+        
+        /* NEXBOT Container */
+        .nexbot-container {
+            position: absolute;
+            right: 10%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 300px;
+            height: 350px;
+            z-index: 1;
+        }
+        
+        spline-viewer {
+            background: transparent !important;
+            width: 100%;
+            height: 100%;
         }
         
         /* CTA Button */
@@ -261,128 +279,6 @@
             height: 6px;
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-        }
-        
-        /* Robotic Arm Animation */
-        .robot-arm-container {
-            position: absolute;
-            right: 10%;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 240px;
-            height: 240px;
-            perspective: 1000px;
-            z-index: 2;
-        }
-        
-        .robot-arm {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .robot-base {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 25px;
-            background: linear-gradient(90deg, #1e40af, #2563eb);
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        
-        .robot-column {
-            position: absolute;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 25px;
-            height: 120px;
-            background: linear-gradient(0deg, #1e40af, #3b82f6);
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        .robot-arm1 {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform-origin: 0 50%;
-            transform: translateX(-50%) rotate(-30deg);
-            width: 100px;
-            height: 20px;
-            background: linear-gradient(90deg, #3b82f6, #60a5fa);
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            animation: armMove1 4s infinite alternate ease-in-out;
-        }
-        
-        .robot-arm2 {
-            position: absolute;
-            top: 0;
-            right: 0;
-            transform-origin: 0 50%;
-            transform: rotate(45deg);
-            width: 80px;
-            height: 15px;
-            background: linear-gradient(90deg, #60a5fa, #93c5fd);
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            animation: armMove2 3s infinite alternate ease-in-out;
-        }
-        
-        .robot-claw {
-            position: absolute;
-            top: 0;
-            right: 0;
-            transform-origin: 0 50%;
-            width: 30px;
-            height: 30px;
-            animation: clawRotate 2s infinite alternate ease-in-out;
-        }
-        
-        .claw-part {
-            position: absolute;
-            width: 10px;
-            height: 25px;
-            background: #bfdbfe;
-            border-radius: 5px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-        }
-        
-        .claw-left {
-            transform-origin: 50% 0;
-            transform: rotate(-20deg);
-            animation: clawOpen 1.5s infinite alternate ease-in-out;
-        }
-        
-        .claw-right {
-            transform-origin: 50% 0;
-            transform: rotate(20deg);
-            left: 20px;
-            animation: clawOpen 1.5s infinite alternate-reverse ease-in-out;
-        }
-        
-        @keyframes armMove1 {
-            0% { transform: translateX(-50%) rotate(-20deg); }
-            100% { transform: translateX(-50%) rotate(-40deg); }
-        }
-        
-        @keyframes armMove2 {
-            0% { transform: rotate(35deg); }
-            100% { transform: rotate(55deg); }
-        }
-        
-        @keyframes clawRotate {
-            0% { transform: rotate(-10deg); }
-            100% { transform: rotate(10deg); }
-        }
-        
-        @keyframes clawOpen {
-            0% { transform: rotate(-15deg); }
-            100% { transform: rotate(-25deg); }
         }
         
         /* About Section */
@@ -889,7 +785,36 @@
         }
         
         /* Media Queries */
+        @media screen and (max-width: 1200px) {
+            .hero {
+                max-width: 50%;
+            }
+            
+            .nexbot-container {
+                width: 250px;
+                height: 300px;
+                right: 8%;
+            }
+        }
+        
+        @media screen and (max-width: 992px) {
+            .hero {
+                max-width: 60%;
+            }
+            
+            .nexbot-container {
+                width: 220px;
+                height: 270px;
+                right: 5%;
+            }
+        }
+        
         @media screen and (max-width: 768px) {
+            .hero {
+                max-width: 100%;
+                padding-right: 100px;
+            }
+            
             .hero h1 {
                 font-size: 2.5rem;
             }
@@ -898,10 +823,11 @@
                 font-size: 1.5rem;
             }
             
-            .robot-arm-container {
+            .nexbot-container {
                 width: 180px;
-                height: 180px;
-                right: 5%;
+                height: 220px;
+                right: 0;
+                opacity: 0.8;
             }
             
             .timeline::after {
@@ -925,6 +851,26 @@
             
             .timeline-content {
                 padding: 1rem;
+            }
+        }
+        
+        @media screen and (max-width: 576px) {
+            .hero {
+                padding-right: 0;
+            }
+            
+            .nexbot-container {
+                width: 150px;
+                height: 180px;
+                top: auto;
+                bottom: 5%;
+                right: 5%;
+                transform: none;
+                opacity: 0.7;
+            }
+            
+            .nav-links {
+                gap: 1rem;
             }
         }
     </style>
@@ -955,20 +901,10 @@
                 </a>
             </div>
             
-            <!-- Robotic Arm Animation -->
-            <div class="robot-arm-container">
-                <div class="robot-arm">
-                    <div class="robot-base"></div>
-                    <div class="robot-column"></div>
-                    <div class="robot-arm1">
-                        <div class="robot-arm2">
-                            <div class="robot-claw">
-                                <div class="claw-part claw-left"></div>
-                                <div class="claw-part claw-right"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <!-- NEXBOT Integration -->
+            <div class="nexbot-container">
+                <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
+                <spline-viewer url="https://prod.spline.design/c8G79eCmRjZV6u1B/scene.splinecode"></spline-viewer>
             </div>
             
             <div class="particles" id="particles"></div>
