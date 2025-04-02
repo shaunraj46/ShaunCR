@@ -1,4 +1,14 @@
-<!DOCTYPE html>
+/* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -779,16 +789,39 @@
             transform: translateY(-5px);
         }
         
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Mobile styles and animations */
+        .mobile-device spline-viewer {
+            animation: gentle-float 3s infinite alternate ease-in-out;
+        }
+        
+        @keyframes gentle-float {
+            0% { transform: translateY(0) rotateY(0deg); }
+            100% { transform: translateY(-15px) rotateY(10deg); }
+        }
+        
+        /* Additional mobile interaction hint */
+        .mobile-interaction-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(15, 23, 42, 0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            max-width: 280px;
+        }
+        
+        .mobile-device:hover + .mobile-interaction-hint {
+            opacity: 1;
         }
         
         /* Media Queries */
@@ -911,6 +944,9 @@
             <div class="nexbot-container">
                 <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
                 <spline-viewer url="https://prod.spline.design/c8G79eCmRjZV6u1B/scene.splinecode"></spline-viewer>
+            </div>
+            <div class="mobile-interaction-hint">
+                Touch and drag to interact with NEXBOT
             </div>
             
             <div class="particles" id="particles"></div>
@@ -1160,6 +1196,7 @@
         </div>
     </footer>
     
+    <!-- JavaScript for mobile device handling -->
     <script>
         // Create particles
         document.addEventListener('DOMContentLoaded', function() {
@@ -1183,6 +1220,57 @@
                 particle.style.animation = `float ${Math.random() * 10 + 5}s linear infinite`;
                 
                 particlesContainer.appendChild(particle);
+            }
+            
+            // Check if it's a mobile device
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (isMobile) {
+                // For mobile devices, handle touch-based interaction with the Spline viewer
+                document.addEventListener('touchmove', handleTouchMove, { passive: false });
+                document.addEventListener('touchstart', handleTouchStart, { passive: false });
+                
+                // Add mobile device class to container for styling
+                const nexbotContainer = document.querySelector('.nexbot-container');
+                if (nexbotContainer) {
+                    nexbotContainer.classList.add('mobile-device');
+                }
+            }
+            
+            // Handle touch movement to simulate mouse position for Spline
+            function handleTouchMove(e) {
+                if (e.touches && e.touches[0]) {
+                    // Create a custom event that Spline viewer might use
+                    const touchX = e.touches[0].clientX;
+                    const touchY = e.touches[0].clientY;
+                    
+                    // Dispatch a mousemove event at the touch position
+                    const mouseEvent = new MouseEvent('mousemove', {
+                        clientX: touchX,
+                        clientY: touchY,
+                        bubbles: true,
+                        cancelable: true
+                    });
+                    
+                    document.dispatchEvent(mouseEvent);
+                }
+            }
+            
+            function handleTouchStart(e) {
+                if (e.touches && e.touches[0]) {
+                    // Dispatch a mousedown event at the touch position
+                    const touchX = e.touches[0].clientX;
+                    const touchY = e.touches[0].clientY;
+                    
+                    const mouseEvent = new MouseEvent('mousedown', {
+                        clientX: touchX,
+                        clientY: touchY,
+                        bubbles: true,
+                        cancelable: true
+                    });
+                    
+                    document.dispatchEvent(mouseEvent);
+                }
             }
         });
         
