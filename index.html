@@ -3,185 +3,1205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shaun Raj | Portfolio</title>
+    <title>Shaun Raj | Autonomous Vehicle Engineering Student & AI Solutions Developer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #0f172a;
-            color: #f8fafc;
-            height: 100%;
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --dark: #0f172a;
         }
         
-        #header {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            align-items: center;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        a {
+            text-decoration: none;
+            color: var(--primary);
+            transition: color 0.3s ease;
+        }
+        
+        a:hover {
+            color: var(--primary-dark);
         }
         
         .container {
-            width: 90%;
+            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            align-items: center;
+            padding: 0 1.5rem;
+        }
+        
+        /* Header */
+        header {
+            height: 100vh;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: var(--light);
+            position: relative;
+            overflow: hidden;
         }
         
         nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--light);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            font-weight: 500;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            height: calc(100vh - 80px);
+            position: relative;
+            z-index: 1;
+            max-width: 60%;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.8s forwards;
+        }
+        
+        .hero h2 {
+            font-size: 1.8rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.8s 0.2s forwards;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 2rem;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.8s 0.4s forwards;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 6px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.8s 0.6s forwards;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        /* NEXBOT Container */
+        .nexbot-container {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 500px;
+            height: 600px;
+            z-index: 1;
+        }
+        
+        spline-viewer {
+            background: transparent !important;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Hide Spline attribution */
+        .nexbot-container :is([title="Built with Spline"], [data-testid="watermark"]) {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
+        
+        /* CTA Button */
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(45deg, #2563eb, #4f46e5);
+            color: white;
+            padding: 0 0 0 1.5rem;
+            border-radius: 3rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+            transition: all 0.4s ease;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.8s 0.6s forwards;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            text-transform: uppercase;
+        }
+        
+        .cta-text {
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            width: 3.5rem;
+            height: 3.5rem;
+            margin-left: 1.5rem;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-btn::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
+            height: 100%;
+            background: linear-gradient(45deg, #1d4ed8, #4338ca);
+            z-index: 1;
+            transition: opacity 0.5s ease;
+            opacity: 0;
         }
         
-        .logo { font-size: 24px; font-weight: bold; }
-        
-        .nav-links {
-            display: flex;
-            gap: 20px;
+        .cta-btn:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.5);
         }
         
-        .nav-links a {
-            color: #f8fafc;
-            text-decoration: none;
+        .cta-btn:hover::before {
+            opacity: 1;
         }
         
-        .hero-content { max-width: 50%; }
-        
-        h1 { font-size: 48px; margin-bottom: 10px; }
-        h2 { font-size: 24px; color: #94a3b8; margin-bottom: 20px; }
-        
-        .cta-button {
-            display: inline-block;
-            background-color: #2563eb;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: bold;
+        .cta-btn:hover .cta-icon {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: scale(1.1);
         }
         
-        .nexbot-container {
-            flex: 1;
-            height: 500px;
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        /* About Section */
+        section {
+            padding: 6rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
             position: relative;
         }
         
-        .fallback-img {
-            display: none;
-            width: 300px;
-            height: auto;
+        .section-title h2 {
+            font-size: 2.5rem;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .about-image {
+            position: relative;
+            perspective: 1000px;
+        }
+        
+        .profile-img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+            transform: rotateY(10deg);
+            transition: transform 0.5s ease;
+        }
+        
+        .about-image:hover .profile-img {
+            transform: rotateY(0);
+        }
+        
+        .about-text h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: var(--gray);
+        }
+        
+        /* Skills */
+        .skills {
+            background-color: var(--light);
+            background-image: url('/api/placeholder/1200/800');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .skills::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+        }
+        
+        .skills .container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .skill-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(37, 99, 235, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+        }
+        
+        .skill-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .skill-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .skill-card ul {
+            list-style: none;
+        }
+        
+        .skill-card ul li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .skill-card ul li::before {
+            content: "⚡";
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+        
+        /* Projects */
+        #projects {
+            background-image: url('/api/placeholder/1200/800');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        #projects::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+        }
+        
+        #projects .container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .project-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            border: 1px solid rgba(37, 99, 235, 0.1);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+        }
+        
+        .project-img {
+            width: 100%;
+            height: 200px;
+            background-color: #dbeafe;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .project-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .project-card:hover .project-img img {
+            transform: scale(1.05);
+        }
+        
+        .project-info {
+            padding: 1.5rem;
+        }
+        
+        .project-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .project-info p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+        
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .project-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+        
+        /* Experience */
+        .experience {
+            background-image: url('/api/placeholder/1200/800');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .experience::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(240, 249, 255, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 0;
+        }
+        
+        .experience .container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 800px;
             margin: 0 auto;
         }
         
-        #webgl-error {
-            display: none;
-            color: #f8fafc;
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background-color: var(--primary);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            width: 50%;
+            padding: 10px 40px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+        
+        .timeline-content {
+            position: relative;
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(37, 99, 235, 0.1);
+        }
+        
+        .timeline-content::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border: 4px solid var(--primary);
+            border-radius: 50%;
+            top: 15px;
+            z-index: 1;
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-content::after {
+            right: -52px;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content::after {
+            left: -52px;
+        }
+        
+        .timeline-date {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-location {
+            color: var(--gray);
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+        
+        /* Education */
+        #education {
+            background-image: url('/api/placeholder/1200/800');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #education::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(239, 246, 255, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 0;
+        }
+        
+        #education .container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .education-card {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+        
+        .education-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.15);
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+        }
+        
+        .education-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .education-card h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .education-card p {
+            color: var(--gray);
+        }
+        
+        /* Contact */
+        .contact {
+            position: relative;
+        }
+        
+        .contact-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--secondary);
+            clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 100%);
+            z-index: -1;
+        }
+        
+        .contact-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 4rem;
+            color: var(--light);
+        }
+        
+        .contact-info h3 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .contact-info p {
+            margin-bottom: 2rem;
+        }
+        
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--light);
+            transition: transform 0.3s ease;
+        }
+        
+        .contact-link:hover {
+            transform: translateX(10px);
+            color: var(--primary);
+        }
+        
+        .contact-link i {
+            font-size: 1.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 2rem 0;
             text-align: center;
-            padding: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--light);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Media Queries */
+        @media screen and (max-width: 1200px) {
+            .hero {
+                max-width: 45%;
+            }
+            
+            .nexbot-container {
+                width: 450px;
+                height: 550px;
+                right: 5%;
+            }
+        }
+        
+        @media screen and (max-width: 992px) {
+            .hero {
+                max-width: 50%;
+            }
+            
+            .nexbot-container {
+                width: 400px;
+                height: 500px;
+                right: 2%;
+            }
+        }
+        
+        @media screen and (max-width: 768px) {
+            .hero {
+                max-width: 100%;
+                padding-right: 0;
+                margin-bottom: 250px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero h2 {
+                font-size: 1.5rem;
+            }
+            
+            .nexbot-container {
+                width: 350px;
+                height: 400px;
+                right: 50%;
+                transform: translateX(50%);
+                top: auto;
+                bottom: -250px;
+            }
+            
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+            
+            .timeline-item:nth-child(odd) .timeline-content::after,
+            .timeline-item:nth-child(even) .timeline-content::after {
+                left: -43px;
+            }
+            
+            .timeline-content {
+                padding: 1rem;
+            }
+        }
+        
+        @media screen and (max-width: 576px) {
+            .hero {
+                margin-bottom: 220px;
+            }
+            
+            .nexbot-container {
+                width: 280px;
+                height: 350px;
+                bottom: -220px;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="header">
-        <nav>
-            <div class="logo">SR</div>
-            <div class="nav-links">
-                <a href="#about">About</a>
-                <a href="#skills">Skills</a>
-                <a href="#projects">Projects</a>
-                <a href="#experience">Experience</a>
-                <a href="#education">Education</a>
-                <a href="#contact">Contact</a>
-            </div>
-        </nav>
-        
+    <!-- Header -->
+    <header id="home">
         <div class="container">
-            <div class="hero-content">
+            <nav>
+                <div class="logo">SR</div>
+                <div class="nav-links">
+                    <a href="#about">About</a>
+                    <a href="#skills">Skills</a>
+                    <a href="#projects">Projects</a>
+                    <a href="#experience">Experience</a>
+                    <a href="#education">Education</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </nav>
+            
+            <div class="hero">
                 <h1>Shaun Clarence Raj</h1>
                 <h2>Autonomous Vehicle Engineering Student & AI Solutions Developer</h2>
-                <p>Innovating sustainable AI solutions with a focus on efficiency, accuracy, and real-world impact.</p>
-                <a href="#projects" class="cta-button">View My Work</a>
+                <p>Innovating sustainable AI solutions with a focus on efficiency, accuracy, and real-world impact. Passionate about combining cutting-edge technology with resource-efficient implementation.</p>
+                <a href="#projects" class="cta-btn">
+                    <span class="cta-text">View My Work</span>
+                    <span class="cta-icon"><i class="fas fa-arrow-right"></i></span>
+                </a>
             </div>
             
+            <!-- NEXBOT Integration -->
             <div class="nexbot-container">
-                <div id="webgl-error">
-                    Unable to load 3D model. Your browser may not support WebGL or hardware acceleration might be disabled.
+                <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
+                <spline-viewer url="https://prod.spline.design/c8G79eCmRjZV6u1B/scene.splinecode"></spline-viewer>
+            </div>
+            
+            <div class="particles" id="particles"></div>
+        </div>
+    </header>
+    
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>About Me</h2>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-image">
+                    <div class="profile-img">
+                        <!-- Placeholder for profile image -->
+                        <img src="/api/placeholder/400/500" alt="Shaun Raj - AI Developer">
+                    </div>
                 </div>
-                <img src="robot-fallback.png" alt="NEXBOT" class="fallback-img">
-                <!-- Spline viewer will be injected here -->
+                
+                <div class="about-text">
+                    <h3>Innovating with Purpose</h3>
+                    <p>I'm an Autonomous Vehicle Engineering student and Full-Stack Developer passionate about creating sustainable AI solutions that make a real difference. My work focuses on developing intelligent systems that not only solve complex problems but do so with optimal resource efficiency.</p>
+                    <p>Through SpicyNuggets, I've led the development of groundbreaking AI projects like OWL.AI and HalloDoc, demonstrating that high-performance AI can be achieved while significantly reducing energy consumption.</p>
+                    <p>My expertise spans the complete development lifecycle, from concept to deployment, with a particular focus on combining large language models with machine learning techniques to create systems that are both powerful and environmentally responsible.</p>
+                    <a href="#contact" class="cta-btn">
+                        <span class="cta-text">Let's Connect</span>
+                        <span class="cta-icon"><i class="fas fa-arrow-right"></i></span>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-
+    </section>
+    
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <div class="section-title">
+                <h2>My Skills</h2>
+            </div>
+            
+            <div class="skills-container">
+                <div class="skill-card">
+                    <i class="fas fa-robot"></i>
+                    <h3>AI Development</h3>
+                    <ul>
+                        <li>Large Language Models (LLMs)</li>
+                        <li>Machine Learning Techniques</li>
+                        <li>Retrieval-Augmented Generation</li>
+                        <li>Sustainable AI Implementation</li>
+                    </ul>
+                </div>
+                
+                <div class="skill-card">
+                    <i class="fas fa-code"></i>
+                    <h3>Programming</h3>
+                    <ul>
+                        <li>Python</li>
+                        <li>JavaScript</li>
+                        <li>SQL</li>
+                        <li>C++</li>
+                    </ul>
+                </div>
+                
+                <div class="skill-card">
+                    <i class="fas fa-laptop-code"></i>
+                    <h3>Web Development</h3>
+                    <ul>
+                        <li>React.js</li>
+                        <li>Node.js & Express.js</li>
+                        <li>HTML5 & CSS3</li>
+                        <li>Frontend Frameworks</li>
+                    </ul>
+                </div>
+                
+                <div class="skill-card">
+                    <i class="fas fa-server"></i>
+                    <h3>Back-End & DevOps</h3>
+                    <ul>
+                        <li>Flask & Django</li>
+                        <li>MongoDB & Databases</li>
+                        <li>CI/CD Pipelines</li>
+                        <li>Cloud Deployment (Heroku)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Projects Section -->
+    <section id="projects">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured Projects</h2>
+            </div>
+            
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-img">
+                        <!-- Placeholder for project image -->
+                        <img src="/api/placeholder/400/200" alt="OWL.AI Project">
+                    </div>
+                    <div class="project-info">
+                        <h3>OWL.AI</h3>
+                        <p>A sustainable AI chatbot that dynamically selects from multiple LLMs using machine learning models, achieving 96% accuracy while reducing energy consumption by 59.6%. Deployed via Flask API on Heroku for real-time, resource-efficient operation.</p>
+                        <div class="project-links">
+                            <a href="https://owl-ai.de" target="_blank"><i class="fas fa-external-link-alt"></i> View Project</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-img">
+                        <!-- Placeholder for project image -->
+                        <img src="/api/placeholder/400/200" alt="HalloDoc Project">
+                    </div>
+                    <div class="project-info">
+                        <h3>HalloDoc</h3>
+                        <p>An AI-powered doctor/clinic patient scheduling management system that streamlines healthcare operations through intelligent automation. Features include smart appointment scheduling, patient data analysis, and resource optimization.</p>
+                        <div class="project-links">
+                            <a href="https://hallodoc.shaunraj.com" target="_blank"><i class="fas fa-external-link-alt"></i> View Project</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-img">
+                        <!-- Placeholder for project image -->
+                        <img src="/api/placeholder/400/200" alt="Multi-LLM Chatbot Architecture">
+                    </div>
+                    <div class="project-info">
+                        <h3>Multi-LLM Architecture</h3>
+                        <p>Developed a sophisticated system for classifying prompts and dynamically selecting appropriate LLMs to optimize performance and scalability in real-time environments. This architecture forms the foundation for several AI implementations.</p>
+                        <div class="project-links">
+                            <a href="#"><i class="fas fa-external-link-alt"></i> Technical Documentation</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Experience Section -->
+    <section id="experience" class="experience">
+        <div class="container">
+            <div class="section-title">
+                <h2>Experience</h2>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">October 2024 - Present</div>
+                        <h3 class="timeline-title">Founder</h3>
+                        <p class="timeline-location">OWL.AI - 5-Euro-Business-Initiative, Ingolstadt, Germany</p>
+                        <p>Led the development of innovative AI solutions combining LLMs with machine learning models to achieve high accuracy and sustainability. Implemented full-stack deployment with Flask API and Heroku for cost-efficient scalability.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">June 2022 - August 2022</div>
+                        <h3 class="timeline-title">EHS Intern</h3>
+                        <p class="timeline-location">Mattel, Perai, Malaysia</p>
+                        <p>Implemented sustainable waste management solutions to reduce environmental impact and supported safety and compliance initiatives to improve workplace safety practices.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">February 2022 - May 2022</div>
+                        <h3 class="timeline-title">CSR Intern</h3>
+                        <p class="timeline-location">Community Outreach, Lendlease, Kuala Lumpur, Malaysia</p>
+                        <p>Organized and led workshops for children in disadvantaged communities and collaborated with local partners to implement meaningful educational and creative projects.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Education Section -->
+    <section id="education">
+        <div class="container">
+            <div class="section-title">
+                <h2>Education</h2>
+            </div>
+            
+            <div class="education-grid">
+                <div class="education-card">
+                    <h3>B.Eng in Autonomous Vehicle Engineering</h3>
+                    <h4>Technische Hochschule Ingolstadt, Germany</h4>
+                    <p>October 2022 - Present</p>
+                </div>
+                
+                <div class="education-card">
+                    <h3>Cambridge Advanced Levels</h3>
+                    <h4>Disted College, Malaysia</h4>
+                    <p>July 2020 - December 2021</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="contact-bg"></div>
+        <div class="container">
+            <div class="section-title">
+                <h2>Get In Touch</h2>
+            </div>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Let's Connect</h3>
+                    <p>I'm always interested in new challenges and collaborations. Whether you have a project in mind or just want to discuss emerging technology, feel free to reach out.</p>
+                    
+                    <div class="contact-links">
+                        <a href="mailto:shaunraj46@gmail.com" class="contact-link">
+                            <i class="fas fa-envelope"></i>
+                            <span>shaunraj46@gmail.com</span>
+                        </a>
+                        <a href="https://linkedin.com/in/shaun-raj" class="contact-link">
+                            <i class="fab fa-linkedin"></i>
+                            <span>linkedin.com/in/shaun-raj</span>
+                        </a>
+                    </div>
+                    
+                    <a href="#contact" class="cta-btn">
+                        <span class="cta-text">Connect With Me</span>
+                        <span class="cta-icon"><i class="fas fa-paper-plane"></i></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="https://github.com/shaunraj46"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com/in/shaun-raj"><i class="fab fa-linkedin-in"></i></a>
+                <a href="mailto:shaunraj46@gmail.com"><i class="fas fa-envelope"></i></a>
+            </div>
+            <p>&copy; 2025 Shaun Clarence Raj. All Rights Reserved.</p>
+        </div>
+    </footer>
+    
     <script>
-        // Function to detect WebGL support
-        function webGLSupported() {
-            try {
-                var canvas = document.createElement('canvas');
-                return !!(window.WebGLRenderingContext && 
-                    (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
-            } catch(e) {
-                return false;
+        // Create particles
+        document.addEventListener('DOMContentLoaded', function() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random position
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                
+                // Random size
+                const size = Math.random() * 10 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                // Random animation
+                particle.style.animation = `float ${Math.random() * 10 + 5}s linear infinite`;
+                
+                particlesContainer.appendChild(particle);
             }
-        }
+        });
         
-        // Check for WebGL support first
-        if (webGLSupported()) {
-            // Load Spline viewer script
-            const script = document.createElement('script');
-            script.type = 'module';
-            script.src = 'https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js';
-            document.head.appendChild(script);
+        // Intersection Observer for timeline animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
             
-            // Create and add Spline viewer
-            script.onload = function() {
-                try {
-                    const viewerContainer = document.querySelector('.nexbot-container');
-                    const viewer = document.createElement('spline-viewer');
-                    viewer.url = 'https://prod.spline.design/c8G79eCmRjZV6u1B/scene.splinecode';
-                    viewer.style.width = '100%';
-                    viewer.style.height = '100%';
-                    viewerContainer.appendChild(viewer);
-                    
-                    // Hide "Built with Spline" text
-                    setTimeout(() => {
-                        const style = document.createElement('style');
-                        style.textContent = `
-                            [title="Built with Spline"], 
-                            [data-testid="watermark"],
-                            .watermark { 
-                                display: none !important; 
-                                opacity: 0 !important; 
-                                visibility: hidden !important;
-                            }
-                        `;
-                        document.head.appendChild(style);
-                    }, 1000);
-                    
-                } catch (error) {
-                    console.error("Error loading Spline viewer:", error);
-                    showFallback();
-                }
-            };
-            
-            // Handle script load error
-            script.onerror = showFallback;
-            
-        } else {
-            showFallback();
-        }
-        
-        function showFallback() {
-            document.getElementById('webgl-error').style.display = 'block';
-            document.querySelector('.fallback-img').style.display = 'block';
-        }
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                observer.observe(item);
+            });
+        });
     </script>
 </body>
 </html>
