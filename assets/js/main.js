@@ -7,13 +7,75 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Portfolio website initialized');
     
-    // Initialize animations, particles, and other features
+    // Initialize mobile-specific functionality
+    initMobileDetection();
     initMobileMenu();
+    
+    // Initialize animations, particles, and other features
     initParticles();
     initScrollEffects();
     initAOS();
     initNavLinks();
+    
+    // Fix for 100vh on mobile browsers
+    setVhProperty();
+    window.addEventListener('resize', setVhProperty);
+    window.addEventListener('orientationchange', setVhProperty);
 });
+
+/**
+ * Detect mobile devices and apply specific optimizations
+ */
+function initMobileDetection() {
+    const isMobile = window.innerWidth < 768 || 
+                    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+        // Add mobile class to body for CSS targeting
+        document.body.classList.add('is-mobile');
+        
+        // Reduce animations for better performance
+        document.body.classList.add('reduce-motion');
+        
+        // Enable passive event listeners for better scrolling
+        const wheelOpt = { passive: true };
+        const wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
+        
+        // Use passive listeners to improve scrolling performance
+        window.addEventListener('touchstart', function(){}, wheelOpt);
+        window.addEventListener('touchmove', function(){}, wheelOpt);
+        window.addEventListener(wheelEvent, function(){}, wheelOpt);
+    }
+    
+    // Handle orientation changes
+    window.addEventListener('orientationchange', handleOrientationChange);
+}
+
+/**
+ * Handle device orientation changes
+ */
+function handleOrientationChange() {
+    // Refresh AOS animations on orientation change
+    if (typeof AOS !== 'undefined') {
+        setTimeout(function() {
+            AOS.refresh();
+        }, 300);
+    }
+    
+    // Fix viewport height issue on orientation change
+    setVhProperty();
+    
+    // Adjust NEXBOT container on orientation change
+    adjustNexbotContainer();
+}
+
+/**
+ * Set viewport height property for mobile browsers
+ */
+function setVhProperty() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
 
 /**
  * Initialize mobile menu toggle functionality
@@ -21,16 +83,22 @@ document.addEventListener('DOMContentLoaded', function() {
 function initMobileMenu() {
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const navLinks = document.querySelector('.nav-links');
+    const body = document.body;
     
     if (mobileMenuToggle && navLinks) {
-        mobileMenuToggle.addEventListener('click', function() {
+        mobileMenuToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
             navLinks.classList.toggle('active');
             this.classList.toggle('active');
+            
+            // Prevent body scrolling when menu is open
+            body.classList.toggle('menu-open');
             
             // Check if menu is active
             const isActive = navLinks.classList.contains('active');
             
-            // Adjust toggle button appearance
+            // Toggle menu icon animation
             const spans = this.querySelectorAll('span');
             if (isActive) {
                 spans[0].style.transform = 'translateY(8px) rotate(45deg)';
@@ -43,11 +111,29 @@ function initMobileMenu() {
             }
         });
         
-        // Close menu when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!event.target.closest('.mobile-menu-toggle') && !event.target.closest('.nav-links') && navLinks.classList.contains('active')) {
+        // Close menu when clicking on a nav link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
                 navLinks.classList.remove('active');
                 mobileMenuToggle.classList.remove('active');
+                body.classList.remove('menu-open');
+                
+                const spans = mobileMenuToggle.querySelectorAll('span');
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.mobile-menu-toggle') && 
+                !event.target.closest('.nav-links') && 
+                navLinks.classList.contains('active')) {
+                
+                navLinks.classList.remove('active');
+                mobileMenuToggle.classList.remove('active');
+                body.classList.remove('menu-open');
                 
                 const spans = mobileMenuToggle.querySelectorAll('span');
                 spans[0].style.transform = 'none';
@@ -55,6 +141,26 @@ function initMobileMenu() {
                 spans[2].style.transform = 'none';
             }
         });
+    }
+}
+
+/**
+ * Adjust the NEXBOT container size based on screen size
+ */
+function adjustNexbotContainer() {
+    const nexbotContainer = document.querySelector('.nexbot-container');
+    
+    if (nexbotContainer) {
+        if (window.innerWidth <= 375) {
+            nexbotContainer.style.width = '250px';
+            nexbotContainer.style.height = '300px';
+        } else if (window.innerWidth <= 576) {
+            nexbotContainer.style.width = '300px';
+            nexbotContainer.style.height = '350px';
+        } else if (window.innerWidth <= 768) {
+            nexbotContainer.style.width = '350px';
+            nexbotContainer.style.height = '400px';
+        }
     }
 }
 
@@ -75,9 +181,12 @@ function initNavLinks() {
                 // Close mobile menu if open
                 const navLinks = document.querySelector('.nav-links');
                 const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+                const body = document.body;
                 
                 if (navLinks && navLinks.classList.contains('active')) {
                     navLinks.classList.remove('active');
+                    body.classList.remove('menu-open');
+                    
                     if (mobileMenuToggle) {
                         mobileMenuToggle.classList.remove('active');
                         
@@ -88,9 +197,13 @@ function initNavLinks() {
                     }
                 }
                 
-                // Smooth scroll to target
+                // Smooth scroll to target with offset for header
+                const headerOffset = window.innerWidth < 768 ? 70 : 100;
+                const elementPosition = targetElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                
                 window.scrollTo({
-                    top: targetElement.offsetTop - 100, // 100px offset to account for fixed header
+                    top: offsetPosition,
                     behavior: 'smooth'
                 });
             }
@@ -104,20 +217,22 @@ function initNavLinks() {
 function initAOS() {
     // Check if AOS is available
     if (typeof AOS !== 'undefined') {
-        // Disable animations on mobile for better performance
-        if (window.innerWidth < 768) {
-            AOS.init({
-                disable: true
-            });
-            return;
-        }
+        // Get device type
+        const isMobile = window.innerWidth < 768;
+        const isTablet = window.innerWidth >= 768 && window.innerWidth < 992;
         
+        // Configure AOS based on device type
         AOS.init({
-            duration: 800,
-            easing: 'ease-out',
-            once: window.innerWidth < 992, // Set to once on tablets for better performance
-            mirror: window.innerWidth >= 992,
-            offset: 100
+            // Disable on mobile for better performance
+            disable: isMobile,
+            // Shorter durations on tablets
+            duration: isTablet ? 600 : 800,
+            // Only animate once on mobile and tablets
+            once: isMobile || isTablet,
+            // No mirror effect on mobile or tablet
+            mirror: !isMobile && !isTablet,
+            // Smaller offset on mobile
+            offset: isMobile ? 50 : 100
         });
     }
 }
@@ -235,4 +350,36 @@ window.addEventListener('resize', function() {
     if (typeof AOS !== 'undefined') {
         AOS.refresh();
     }
+    
+    // Update viewport height on resize
+    setVhProperty();
+    
+    // Adjust NEXBOT container on resize
+    adjustNexbotContainer();
+});
+
+// Mark body as loaded when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    document.body.classList.add('loaded');
+});
+
+// Initialize on load
+window.addEventListener('load', function() {
+    // Remove page loader if exists
+    const loader = document.querySelector('.page-loader');
+    if (loader) {
+        loader.classList.add('loader-hidden');
+        
+        loader.addEventListener('transitionend', function() {
+            loader.remove();
+        });
+    }
+    
+    // Add performance class to body to control CSS animations
+    if (window.innerWidth < 768 || navigator.hardwareConcurrency <= 4) {
+        document.body.classList.add('reduce-motion');
+    }
+    
+    // Adjust NEXBOT container on load
+    adjustNexbotContainer();
 });
