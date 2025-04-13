@@ -2,58 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Enhanced viewport meta tag for better mobile rendering -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
+    <!-- Fixed viewport meta tag for proper mobile rendering -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <meta name="theme-color" content="#1e1b4b">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
     <title>Shaun Raj | Engineering Student & Founder</title>
     <meta name="description" content="Shaun Clarence Raj - Engineering Student & Founder of SpicyNuggets, creating intelligent, sustainable AI systems">
     <meta name="keywords" content="Engineering Student, SpicyNuggets, Machine Learning, AI Systems, Portfolio">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/images/favicon.png">
-    
-    <!-- Font Awesome with display swap for better loading -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-    
-    <!-- Preconnect to external domains -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com">
-    <link rel="preconnect" href="https://prod.spline.design">
-    
-    <!-- Google Fonts with display swap for better loading -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/animations.css">
-    <link rel="stylesheet" href="assets/css/responsive.css">
-    
-    <!-- Critical render path optimization -->
+    <!-- Critical CSS for faster loading -->
     <style>
+        /* Critical styles to avoid FOUC (Flash of Unstyled Content) */
         :root {
             --vh: 1vh;
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #818cf8;
+            --secondary: #0f172a;
+            --secondary-dark: #0c1322;
+            --purple-dark: #1e1b4b;
         }
         
-        /* Fix for 100vh on mobile browsers */
-        .full-height {
-            height: 100vh; /* Fallback */
-            height: calc(var(--vh, 1vh) * 100);
-        }
-        
-        /* Hide body until fully loaded */
         body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1e1b4b, #0f172a);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #fff;
             opacity: 0;
             transition: opacity 0.3s ease;
+            overflow-x: hidden;
         }
         
         body.loaded {
             opacity: 1;
         }
         
-        /* Loader styles */
         .page-loader {
             position: fixed;
             top: 0;
@@ -65,36 +49,106 @@
             align-items: center;
             justify-content: center;
             z-index: 9999;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
+            transition: opacity 0.5s ease;
         }
         
         .loader-hidden {
             opacity: 0;
-            visibility: hidden;
+            pointer-events: none;
         }
         
         .spinner {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border: 3px solid rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            border-top-color: var(--primary);
+            border-top-color: #4f46e5;
             animation: spin 1s ease-in-out infinite;
         }
         
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        
+        /* Mobile-specific critical CSS */
+        @media (max-width: 768px) {
+            /* Nav styles */
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-toggle {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: 24px;
+                width: 30px;
+                cursor: pointer;
+                z-index: 1000;
+            }
+            
+            .mobile-menu-toggle span {
+                display: block;
+                height: 2px;
+                width: 100%;
+                background-color: #fff;
+                border-radius: 2px;
+                transition: all 0.3s ease;
+            }
+            
+            /* Hero section */
+            .hero {
+                margin-bottom: 350px;
+                text-align: center;
+                max-width: 100%;
+                width: 100%;
+                padding: 2rem 1rem;
+            }
+            
+            /* NEXBOT container */
+            .nexbot-container {
+                position: absolute;
+                bottom: -380px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 280px;
+                height: 350px;
+            }
+            
+            header {
+                min-height: 100vh;
+                padding-bottom: 450px;
+            }
+        }
     </style>
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://prod.spline.design">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    
+    <!-- Fonts and Icons (with media="print" for non-blocking loading) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    
+    <!-- CSS files (load in correct order) -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
 </head>
 <body>
-    <!-- Page loader -->
+    <!-- Page Loader -->
     <div class="page-loader">
         <div class="spinner"></div>
     </div>
 
     <!-- Header -->
-    <header id="home" class="full-height">
+    <header id="home">
         <div class="moving-sun"></div>
         <div class="container">
             <nav>
@@ -475,6 +529,7 @@
         </div>
     </footer>
     
+    <!-- Scripts -->
     <!-- AOS Animation Library -->
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     
@@ -483,9 +538,9 @@
     <script src="assets/js/animations.js"></script>
     <script src="assets/js/main.js"></script>
     
-    <!-- Fix for mobile viewport height calculation -->
+    <!-- Critical fix for viewport height in mobile browsers -->
     <script>
-        // Set viewport height property for mobile browsers
+        // Fix for 100vh on mobile browsers (especially iOS Safari)
         function setVhProperty() {
             const vh = window.innerHeight * 0.01;
             document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -496,21 +551,42 @@
         
         // Update on resize and orientation change
         window.addEventListener('resize', setVhProperty);
-        window.addEventListener('orientationchange', setVhProperty);
-        
-        // Mark body as loaded when DOM is ready
-        window.addEventListener('load', function() {
-            document.body.classList.add('loaded');
-            
-            // Remove loader after page loads
-            const loader = document.querySelector('.page-loader');
-            if (loader) {
-                loader.classList.add('loader-hidden');
-                setTimeout(function() {
-                    loader.remove();
-                }, 500);
-            }
+        window.addEventListener('orientationchange', function() {
+            // Small delay to ensure orientation change is complete
+            setTimeout(setVhProperty, 100);
         });
+        
+        // Fix for immediate mobile rendering
+        function fixMobileLayout() {
+            if (window.innerWidth < 768) {
+                // Adjust NEXBOT container
+                const nexbotContainer = document.querySelector('.nexbot-container');
+                if (nexbotContainer) {
+                    nexbotContainer.style.position = 'absolute';
+                    nexbotContainer.style.bottom = '-380px';
+                    nexbotContainer.style.left = '50%';
+                    nexbotContainer.style.transform = 'translateX(-50%)';
+                    nexbotContainer.style.width = window.innerWidth <= 375 ? '240px' : '280px';
+                    nexbotContainer.style.height = window.innerWidth <= 375 ? '300px' : '350px';
+                }
+                
+                // Fix hero section
+                const hero = document.querySelector('.hero');
+                if (hero) {
+                    hero.style.marginBottom = window.innerWidth <= 375 ? '300px' : '350px';
+                }
+            }
+        }
+        
+        // Run on load and after a delay
+        window.addEventListener('load', function() {
+            fixMobileLayout();
+            setTimeout(fixMobileLayout, 500);
+            document.body.classList.add('loaded');
+        });
+        
+        // Apply fix immediately as well
+        fixMobileLayout();
     </script>
 </body>
 </html>

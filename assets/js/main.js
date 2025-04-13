@@ -7,80 +7,148 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Portfolio website initialized');
     
-    // Initialize mobile-specific functionality
-    initMobileDetection();
-    initMobileMenu();
+    // Initialize mobile-specific functionality first
+    setupMobileDetection();
+    setupMobileMenu();
+    fixViewportHeight();
     
     // Initialize animations, particles, and other features
     initParticles();
     initScrollEffects();
     initAOS();
     initNavLinks();
-    
-    // Fix for 100vh on mobile browsers
-    setVhProperty();
-    window.addEventListener('resize', setVhProperty);
-    window.addEventListener('orientationchange', setVhProperty);
 });
 
 /**
- * Detect mobile devices and apply specific optimizations
+ * Check if the current device is mobile
  */
-function initMobileDetection() {
-    const isMobile = window.innerWidth < 768 || 
-                    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
-    if (isMobile) {
+function isMobileDevice() {
+    return window.innerWidth < 768 || 
+           /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+/**
+ * Set up mobile-specific adjustments
+ */
+function setupMobileDetection() {
+    if (isMobileDevice()) {
         // Add mobile class to body for CSS targeting
-        document.body.classList.add('is-mobile');
+        document.body.classList.add('mobile-device');
         
-        // Reduce animations for better performance
+        // Reduce animations for mobile performance
         document.body.classList.add('reduce-motion');
+        
+        // Fix positioning for mobile
+        adjustMobileLayout();
         
         // Enable passive event listeners for better scrolling
         const wheelOpt = { passive: true };
         const wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
         
-        // Use passive listeners to improve scrolling performance
         window.addEventListener('touchstart', function(){}, wheelOpt);
         window.addEventListener('touchmove', function(){}, wheelOpt);
         window.addEventListener(wheelEvent, function(){}, wheelOpt);
     }
     
-    // Handle orientation changes
-    window.addEventListener('orientationchange', handleOrientationChange);
-}
-
-/**
- * Handle device orientation changes
- */
-function handleOrientationChange() {
-    // Refresh AOS animations on orientation change
-    if (typeof AOS !== 'undefined') {
+    // Handle window resize events
+    window.addEventListener('resize', function() {
+        fixViewportHeight();
+        adjustMobileLayout();
+    });
+    
+    // Handle orientation change
+    window.addEventListener('orientationchange', function() {
+        fixViewportHeight();
+        adjustMobileLayout();
+        
+        // Small delay to ensure orientation change is complete
         setTimeout(function() {
-            AOS.refresh();
+            fixViewportHeight();
+            adjustMobileLayout();
         }, 300);
-    }
-    
-    // Fix viewport height issue on orientation change
-    setVhProperty();
-    
-    // Adjust NEXBOT container on orientation change
-    adjustNexbotContainer();
+    });
 }
 
 /**
- * Set viewport height property for mobile browsers
+ * Fix viewport height issues on mobile
  */
-function setVhProperty() {
+function fixViewportHeight() {
+    // Fix for mobile browsers (especially iOS Safari)
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
+    
+    // Force header height
+    const header = document.querySelector('header');
+    if (header) {
+        if (isMobileDevice()) {
+            header.style.height = `${window.innerHeight}px`;
+        } else {
+            header.style.height = '100vh';
+        }
+    }
+}
+
+/**
+ * Adjust layout specifically for mobile
+ */
+function adjustMobileLayout() {
+    if (isMobileDevice()) {
+        // Adjust NEXBOT container
+        const nexbotContainer = document.querySelector('.nexbot-container');
+        if (nexbotContainer) {
+            if (window.innerWidth <= 375) {
+                nexbotContainer.style.width = '240px';
+                nexbotContainer.style.height = '300px';
+                nexbotContainer.style.bottom = '-330px';
+            } else {
+                nexbotContainer.style.width = '280px';
+                nexbotContainer.style.height = '350px';
+                nexbotContainer.style.bottom = '-380px';
+            }
+            
+            // Ensure absolute positioning
+            nexbotContainer.style.position = 'absolute';
+            nexbotContainer.style.left = '50%';
+            nexbotContainer.style.transform = 'translateX(-50%)';
+            nexbotContainer.style.top = 'auto';
+            nexbotContainer.style.zIndex = '1';
+        }
+        
+        // Adjust hero section
+        const hero = document.querySelector('.hero');
+        if (hero) {
+            hero.style.maxWidth = '100%';
+            hero.style.width = '100%';
+            hero.style.textAlign = 'center';
+            hero.style.zIndex = '2';
+            
+            if (window.innerWidth <= 375) {
+                hero.style.marginBottom = '300px';
+            } else {
+                hero.style.marginBottom = '350px';
+            }
+        }
+        
+        // Center align text on mobile
+        const heroHeadings = document.querySelectorAll('.hero h1, .hero h2, .hero p');
+        heroHeadings.forEach(element => {
+            element.style.textAlign = 'center';
+            element.style.width = '100%';
+        });
+        
+        // Make buttons full width
+        const ctaButtons = document.querySelectorAll('.cta-btn');
+        ctaButtons.forEach(button => {
+            button.style.width = '100%';
+            button.style.justifyContent = 'center';
+        });
+    }
 }
 
 /**
  * Initialize mobile menu toggle functionality
  */
-function initMobileMenu() {
+function setupMobileMenu() {
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const navLinks = document.querySelector('.nav-links');
     const body = document.body;
@@ -101,27 +169,31 @@ function initMobileMenu() {
             // Toggle menu icon animation
             const spans = this.querySelectorAll('span');
             if (isActive) {
+                // X shape for close
                 spans[0].style.transform = 'translateY(8px) rotate(45deg)';
                 spans[1].style.opacity = '0';
                 spans[2].style.transform = 'translateY(-8px) rotate(-45deg)';
             } else {
-                spans[0].style.transform = 'none';
+                // Bars for open
+                spans[0].style.transform = 'translateY(0) rotate(0)';
                 spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
+                spans[2].style.transform = 'translateY(0) rotate(0)';
             }
         });
         
         // Close menu when clicking on a nav link
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', function() {
+                // Close mobile menu
                 navLinks.classList.remove('active');
                 mobileMenuToggle.classList.remove('active');
                 body.classList.remove('menu-open');
                 
+                // Reset toggle icon
                 const spans = mobileMenuToggle.querySelectorAll('span');
-                spans[0].style.transform = 'none';
+                spans[0].style.transform = 'translateY(0) rotate(0)';
                 spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
+                spans[2].style.transform = 'translateY(0) rotate(0)';
             });
         });
         
@@ -136,31 +208,11 @@ function initMobileMenu() {
                 body.classList.remove('menu-open');
                 
                 const spans = mobileMenuToggle.querySelectorAll('span');
-                spans[0].style.transform = 'none';
+                spans[0].style.transform = 'translateY(0) rotate(0)';
                 spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
+                spans[2].style.transform = 'translateY(0) rotate(0)';
             }
         });
-    }
-}
-
-/**
- * Adjust the NEXBOT container size based on screen size
- */
-function adjustNexbotContainer() {
-    const nexbotContainer = document.querySelector('.nexbot-container');
-    
-    if (nexbotContainer) {
-        if (window.innerWidth <= 375) {
-            nexbotContainer.style.width = '250px';
-            nexbotContainer.style.height = '300px';
-        } else if (window.innerWidth <= 576) {
-            nexbotContainer.style.width = '300px';
-            nexbotContainer.style.height = '350px';
-        } else if (window.innerWidth <= 768) {
-            nexbotContainer.style.width = '350px';
-            nexbotContainer.style.height = '400px';
-        }
     }
 }
 
@@ -191,17 +243,18 @@ function initNavLinks() {
                         mobileMenuToggle.classList.remove('active');
                         
                         const spans = mobileMenuToggle.querySelectorAll('span');
-                        spans[0].style.transform = 'none';
+                        spans[0].style.transform = 'translateY(0) rotate(0)';
                         spans[1].style.opacity = '1';
-                        spans[2].style.transform = 'none';
+                        spans[2].style.transform = 'translateY(0) rotate(0)';
                     }
                 }
                 
-                // Smooth scroll to target with offset for header
-                const headerOffset = window.innerWidth < 768 ? 70 : 100;
+                // Calculate proper offset based on device
+                const headerOffset = isMobileDevice() ? 60 : 100;
                 const elementPosition = targetElement.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
                 
+                // Smooth scroll to target
                 window.scrollTo({
                     top: offsetPosition,
                     behavior: 'smooth'
@@ -218,7 +271,7 @@ function initAOS() {
     // Check if AOS is available
     if (typeof AOS !== 'undefined') {
         // Get device type
-        const isMobile = window.innerWidth < 768;
+        const isMobile = isMobileDevice();
         const isTablet = window.innerWidth >= 768 && window.innerWidth < 992;
         
         // Configure AOS based on device type
@@ -242,14 +295,14 @@ function initAOS() {
  */
 function initScrollEffects() {
     // Skip heavy scroll effects on mobile
-    const isMobile = window.innerWidth < 768;
+    const isMobile = isMobileDevice();
     
     window.addEventListener('scroll', function() {
         const scrollPosition = window.scrollY;
-        const maxScroll = document.body.scrollHeight - window.innerHeight;
-        const scrollPercentage = scrollPosition / maxScroll;
         
         // Store scroll percentage as CSS variable for use in animations
+        const maxScroll = document.body.scrollHeight - window.innerHeight;
+        const scrollPercentage = scrollPosition / maxScroll;
         document.body.style.setProperty('--scroll-percentage', scrollPercentage);
         
         // Parallax effect on moving sun - skip on mobile
@@ -275,10 +328,10 @@ function highlightActiveSection() {
     let current = '';
     
     sections.forEach(section => {
-        const sectionTop = section.offsetTop;
+        const sectionTop = section.offsetTop - 150;
         const sectionHeight = section.offsetHeight;
         
-        if (window.scrollY >= sectionTop - 300) {
+        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
             current = section.getAttribute('id');
         }
     });
@@ -292,14 +345,30 @@ function highlightActiveSection() {
 }
 
 /**
+ * Initialize particle system
+ * This function is defined in particles.js
+ * Included here as a reference
+ */
+function initParticles() {
+    // This function is defined in particles.js
+    // We're just referencing it here
+    if (typeof window.initParticles === 'function') {
+        window.initParticles();
+    } else {
+        console.log('Particles initialization function not found');
+    }
+}
+
+/**
  * Add 3D tilt effect to specified elements
+ * Only on desktop devices
  * 
  * @param {string} selector - CSS selector for elements to apply effect to
  * @param {number} intensity - Effect intensity (default: 10)
  */
 function apply3DTiltEffect(selector, intensity = 10) {
     // Skip on mobile
-    if (window.innerWidth <= 768) return;
+    if (isMobileDevice()) return;
     
     const elements = document.querySelectorAll(selector);
     
@@ -324,25 +393,12 @@ function apply3DTiltEffect(selector, intensity = 10) {
     });
 }
 
-/**
- * Apply glitch text effect to element
- * 
- * @param {string} selector - CSS selector for element
- */
-function applyGlitchEffect(selector) {
-    const element = document.querySelector(selector);
-    
-    if (element) {
-        const text = element.textContent;
-        element.setAttribute('data-text', text);
-        element.classList.add('glitch');
-    }
-}
-
 // Apply 3D tilt effect to project cards on desktop
-if (window.innerWidth > 768) {
-    apply3DTiltEffect('.project-card', 5);
-    apply3DTiltEffect('.skill-card', 3);
+if (!isMobileDevice()) {
+    window.addEventListener('load', function() {
+        apply3DTiltEffect('.project-card', 5);
+        apply3DTiltEffect('.skill-card', 3);
+    });
 }
 
 // Handle page resize
@@ -352,34 +408,35 @@ window.addEventListener('resize', function() {
     }
     
     // Update viewport height on resize
-    setVhProperty();
+    fixViewportHeight();
     
-    // Adjust NEXBOT container on resize
-    adjustNexbotContainer();
-});
-
-// Mark body as loaded when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-    document.body.classList.add('loaded');
+    // Adjust layout on resize
+    adjustMobileLayout();
 });
 
 // Initialize on load
 window.addEventListener('load', function() {
+    // Mark body as loaded
+    document.body.classList.add('loaded');
+    
     // Remove page loader if exists
     const loader = document.querySelector('.page-loader');
     if (loader) {
         loader.classList.add('loader-hidden');
         
-        loader.addEventListener('transitionend', function() {
-            loader.remove();
-        });
+        setTimeout(function() {
+            if (loader.parentNode) {
+                loader.parentNode.removeChild(loader);
+            }
+        }, 500);
     }
     
     // Add performance class to body to control CSS animations
-    if (window.innerWidth < 768 || navigator.hardwareConcurrency <= 4) {
+    if (isMobileDevice() || navigator.hardwareConcurrency <= 4) {
         document.body.classList.add('reduce-motion');
     }
     
-    // Adjust NEXBOT container on load
-    adjustNexbotContainer();
+    // Force layout adjustments again after full load
+    adjustMobileLayout();
+    fixViewportHeight();
 });

@@ -1,0 +1,112 @@
+/* 
+ * Emergency Mobile Fix
+ * Add this to a new file called emergency-fix.css and link it in your HTML
+ */
+
+/* Force mobile layout adjustments */
+@media screen and (max-width: 768px) {
+    /* Fix navigation menu */
+    .nav-links {
+      display: none !important; /* Hide horizontal menu initially */
+    }
+    
+    .nav-links.active {
+      display: flex !important;
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: auto !important;
+      flex-direction: column !important;
+      background: rgba(15, 23, 42, 0.95) !important;
+      padding: 5rem 1rem 2rem !important;
+      z-index: 1000 !important;
+    }
+    
+    /* Ensure proper Hero layout */
+    .hero {
+      max-width: 100% !important;
+      padding: 2rem 1rem !important;
+      min-height: auto !important;
+      margin-bottom: 400px !important; /* Make room for 3D model */
+      z-index: 2 !important;
+      text-align: center !important;
+    }
+    
+    /* Fix text sizes */
+    .hero h1 {
+      font-size: 2.2rem !important;
+      text-align: center !important;
+      margin-bottom: 0.5rem !important;
+    }
+    
+    .hero h2 {
+      font-size: 1.4rem !important;
+      text-align: center !important;
+    }
+    
+    .hero p {
+      font-size: 1rem !important;
+      text-align: center !important;
+    }
+    
+    /* Fix NEXBOT positioning */
+    .nexbot-container {
+      position: absolute !important;
+      width: 280px !important;
+      height: 350px !important;
+      top: auto !important;
+      bottom: -400px !important; /* Position below the text */
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      z-index: 1 !important;
+    }
+    
+    /* Ensure the entire header has proper height */
+    header {
+      min-height: calc(100vh - 100px) !important;
+      height: auto !important;
+      padding-bottom: 400px !important; /* Make room for model */
+    }
+    
+    /* Fix container padding */
+    .container {
+      padding: 0 1rem !important;
+    }
+    
+    /* Fix paragraphs */
+    p {
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow: visible !important;
+    }
+    
+    /* Ensure mobile menu toggle is visible */
+    .mobile-menu-toggle {
+      display: flex !important;
+      z-index: 9999 !important;
+    }
+    
+    /* Fix logo positioning */
+    .logo {
+      z-index: 9999 !important;
+      position: relative !important;
+    }
+  }
+  
+  /* Extra adjustment for very small screens */
+  @media screen and (max-width: 375px) {
+    .hero h1 {
+      font-size: 1.8rem !important;
+    }
+    
+    .nexbot-container {
+      width: 240px !important;
+      height: 300px !important;
+      bottom: -350px !important;
+    }
+    
+    .hero {
+      margin-bottom: 350px !important;
+    }
+  }
