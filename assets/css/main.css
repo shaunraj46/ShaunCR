@@ -1073,3 +1073,79 @@ footer {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 50%;
 }
+
+/* Add these rules to your main.css file for additional optimization */
+
+/* Improved scrolling */
+html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Performance optimization class */
+.reduce-motion * {
+    transition-duration: 0.1s !important;
+    animation-duration: 0.1s !important;
+}
+
+body.reduce-motion .moving-sun,
+body.reduce-motion [data-aos],
+body.reduce-motion .animate-float,
+body.reduce-motion .animate-pulse,
+body.reduce-motion .animate-spotlight,
+body.reduce-motion .animate-shimmer,
+body.reduce-motion .animate-rotate3d {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+}
+
+/* Will-change for improved animation performance */
+.hero, .nexbot-container, .cta-btn {
+    will-change: transform;
+}
+
+/* Add a subtle gradient border to the Nexbot container on mobile */
+@media screen and (max-width: 768px) {
+    .nexbot-container {
+        border: 1px solid rgba(79, 70, 229, 0.2);
+        border-radius: var(--border-radius-md);
+        box-shadow: 0 10px 30px rgba(79, 70, 229, 0.2);
+    }
+}
+
+/* Improved mobile menu toggle */
+.mobile-menu-toggle {
+    z-index: 101;
+    padding: 10px;
+    margin: -10px;
+}
+
+/* Make sure background elements stay in view */
+.moving-sun {
+    pointer-events: none;
+}
+
+/* Avoid janky animations while loading */
+.no-js .animated-element {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+/* Fix for scrolling when mobile menu is open */
+body.menu-open {
+    overflow: hidden;
+}
+
+/* Fix for header on mobile devices */
+@media screen and (max-width: 768px) {
+    header {
+        min-height: 100vh;
+        height: auto;
+    }
+}
+
+/* Optimize images */
+img {
+    content-visibility: auto;
+}

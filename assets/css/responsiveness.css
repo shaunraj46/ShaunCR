@@ -104,6 +104,34 @@
     }
 }
 
+/* Nav links active styles - moved outside media query so it works on all screen sizes */
+.nav-links.active {
+    display: flex;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 0;
+    border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
+    box-shadow: var(--shadow-md);
+    z-index: 100;
+}
+
+.nav-links.active a {
+    padding: 1rem 2rem;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nav-links.active a:last-child {
+    border-bottom: none;
+}
+
 /* For tablets and landscape mobile */
 @media screen and (max-width: 768px) {
     :root {
@@ -120,40 +148,14 @@
         display: flex;
     }
     
-    .nav-links.active {
-        display: flex;
-        position: absolute;
-        top: 70px;
-        left: 0;
-        width: 100%;
-        flex-direction: column;
-        gap: 0;
-        background: rgba(15, 23, 42, 0.95);
-        backdrop-filter: blur(10px);
-        padding: 1rem 0;
-        border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
-        box-shadow: var(--shadow-md);
-        z-index: 100;
-    }
-    
-    .nav-links.active a {
-        padding: 1rem 2rem;
-        width: 100%;
-        text-align: center;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    
-    .nav-links.active a:last-child {
-        border-bottom: none;
-    }
-    
     .hero {
         max-width: 100%;
         padding-left: 0;
         padding-right: 0;
         text-align: center;
         align-items: center;
-        padding-bottom: 350px;
+        padding-bottom: 0;
+        margin-bottom: 420px; /* Give room for the 3D model below */
     }
     
     .hero h1 {
@@ -163,10 +165,12 @@
     .nexbot-container {
         width: 350px;
         height: 400px;
-        right: 50%;
-        transform: translateX(50%);
+        position: relative;
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
         top: auto;
-        bottom: -250px;
+        margin: 2rem auto 0;
     }
     
     section {
@@ -206,7 +210,7 @@
     }
     
     .hero {
-        padding-bottom: 250px;
+        margin-bottom: 300px; /* Reduce space for smaller screens */
     }
     
     .hero h1 {
@@ -224,7 +228,6 @@
     .nexbot-container {
         width: 280px;
         height: 350px;
-        bottom: -180px;
     }
     
     .section-title h2 {
@@ -300,7 +303,7 @@
     .nexbot-container {
         width: 250px;
         height: 300px;
-        bottom: -150px;
+        margin-top: 1rem;
     }
     
     section {
@@ -319,6 +322,22 @@
         width: 60px;
         height: 60px;
         font-size: 1.8rem;
+    }
+}
+
+/* Spline fallback for very small devices */
+@media screen and (max-width: 480px) {
+    .nexbot-container {
+        max-width: 90%;
+        box-shadow: 0 5px 20px rgba(79, 70, 229, 0.2);
+        border-radius: var(--border-radius-md);
+        overflow: hidden;
+    }
+    
+    .nexbot-container spline-viewer {
+        transform-origin: center;
+        transform: scale(0.9);
+        will-change: transform;
     }
 }
 

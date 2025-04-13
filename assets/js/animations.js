@@ -22,6 +22,10 @@ document.addEventListener('DOMContentLoaded', function() {
  * Initialize scroll-based animations
  */
 function initScrollAnimations() {
+    // Check device performance capability
+    const isMobile = window.innerWidth < 768;
+    const isLowEndDevice = navigator.hardwareConcurrency <= 4;
+    
     // Elements to animate on scroll
     const animatedElements = document.querySelectorAll('.animate-on-scroll');
     
@@ -55,7 +59,9 @@ function initScrollAnimations() {
     });
     
     // Skill bar animation (for future use)
-    animateSkillBars();
+    if (!isMobile || !isLowEndDevice) {
+        animateSkillBars();
+    }
 }
 
 /**
@@ -95,13 +101,13 @@ function animateSkillBars() {
  * Initialize 3D card tilt effects
  */
 function init3DCardEffects() {
+    // Skip on mobile devices
+    if (window.innerWidth <= 768) return;
+    
     // Project cards
     const projectCards = document.querySelectorAll('.project-card');
     
     projectCards.forEach(card => {
-        // Skip on mobile
-        if (window.innerWidth <= 768) return;
-        
         card.addEventListener('mousemove', e => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -167,6 +173,9 @@ function createGlareElement(parent) {
  * Initialize text animation effects
  */
 function initTextAnimations() {
+    // Skip complex animations on mobile
+    const isMobile = window.innerWidth < 768;
+    
     // Animated typing effect
     const typingElements = document.querySelectorAll('[data-typing]');
     
@@ -198,6 +207,9 @@ function initTextAnimations() {
             }, typingSpeed);
         }, initialDelay);
     });
+    
+    // Skip complex char animations on mobile
+    if (isMobile) return;
     
     // Split text into characters for advanced animations
     const charAnimElements = document.querySelectorAll('[data-char-anim]');
@@ -245,6 +257,9 @@ function initTextAnimations() {
  * Initialize parallax scrolling effects
  */
 function initParallax() {
+    // Skip on mobile
+    if (window.innerWidth <= 768) return;
+    
     // Elements with parallax effect
     const parallaxElements = document.querySelectorAll('[data-parallax]');
     
@@ -356,5 +371,10 @@ window.addEventListener('load', function() {
         loader.addEventListener('transitionend', function() {
             loader.remove();
         });
+    }
+    
+    // Add performance class to body to control CSS animations
+    if (window.innerWidth < 768 || navigator.hardwareConcurrency <= 4) {
+        document.body.classList.add('reduce-motion');
     }
 });

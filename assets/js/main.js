@@ -104,11 +104,19 @@ function initNavLinks() {
 function initAOS() {
     // Check if AOS is available
     if (typeof AOS !== 'undefined') {
+        // Disable animations on mobile for better performance
+        if (window.innerWidth < 768) {
+            AOS.init({
+                disable: true
+            });
+            return;
+        }
+        
         AOS.init({
             duration: 800,
             easing: 'ease-out',
-            once: false,
-            mirror: true,
+            once: window.innerWidth < 992, // Set to once on tablets for better performance
+            mirror: window.innerWidth >= 992,
             offset: 100
         });
     }
@@ -118,6 +126,9 @@ function initAOS() {
  * Initialize scroll effects (parallax, etc.)
  */
 function initScrollEffects() {
+    // Skip heavy scroll effects on mobile
+    const isMobile = window.innerWidth < 768;
+    
     window.addEventListener('scroll', function() {
         const scrollPosition = window.scrollY;
         const maxScroll = document.body.scrollHeight - window.innerHeight;
@@ -126,10 +137,12 @@ function initScrollEffects() {
         // Store scroll percentage as CSS variable for use in animations
         document.body.style.setProperty('--scroll-percentage', scrollPercentage);
         
-        // Parallax effect on moving sun
-        const movingSun = document.querySelector('.moving-sun');
-        if (movingSun) {
-            movingSun.style.transform = `translateY(${scrollPosition * 0.2}px) translateX(${scrollPosition * -0.1}px)`;
+        // Parallax effect on moving sun - skip on mobile
+        if (!isMobile) {
+            const movingSun = document.querySelector('.moving-sun');
+            if (movingSun) {
+                movingSun.style.transform = `translateY(${scrollPosition * 0.2}px) translateX(${scrollPosition * -0.1}px)`;
+            }
         }
         
         // Active section detection for navigation
@@ -170,6 +183,9 @@ function highlightActiveSection() {
  * @param {number} intensity - Effect intensity (default: 10)
  */
 function apply3DTiltEffect(selector, intensity = 10) {
+    // Skip on mobile
+    if (window.innerWidth <= 768) return;
+    
     const elements = document.querySelectorAll(selector);
     
     elements.forEach(element => {

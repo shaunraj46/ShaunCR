@@ -12,6 +12,13 @@ const PARTICLE_CONFIG = {
     connectionDistance: 150
 };
 
+// Mobile particle configuration - much lighter
+const MOBILE_PARTICLE_CONFIG = {
+    count: 10,
+    colors: ['rgba(79, 70, 229, 0.3)', 'rgba(139, 92, 246, 0.3)', 'rgba(255, 255, 255, 0.1)'],
+    sizeRange: [2, 4]
+};
+
 // Particle class definition
 class Particle {
     constructor(container, config) {
@@ -71,6 +78,16 @@ function initParticles() {
     
     // Clear previous particles
     container.innerHTML = '';
+    
+    // Check if device is mobile or low end
+    const isMobile = window.innerWidth <= 768;
+    const isLowEnd = navigator.hardwareConcurrency <= 4 || !window.requestAnimationFrame;
+    
+    // Use static particles for mobile/low end devices, interactive for desktop
+    if (isMobile || isLowEnd) {
+        createStaticParticles(container);
+        return;
+    }
     
     const particles = [];
     
@@ -167,41 +184,27 @@ function initParticles() {
     animate();
 }
 
-// Initialize particles on load
-window.addEventListener('load', function() {
-    // Only initialize particles on desktop to save performance
-    if (window.innerWidth > 768) {
-        initParticles();
-    } else {
-        // For mobile, we'll add a simpler static particle effect
-        createStaticParticles();
-    }
-});
-
 // Create static particles for mobile
-function createStaticParticles() {
-    const container = document.getElementById('particles');
-    if (!container) return;
-    
-    // Clear previous particles
-    container.innerHTML = '';
+function createStaticParticles(container) {
+    // Use mobile config
+    const config = MOBILE_PARTICLE_CONFIG;
     
     // Create fewer static particles for mobile
-    const particleCount = 15;
+    const particleCount = config.count;
     
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.classList.add('particle');
         
         // Random size
-        const size = Math.random() * 4 + 2;
+        const size = Math.random() * (config.sizeRange[1] - config.sizeRange[0]) + config.sizeRange[0];
         
         // Random position
         const x = Math.random() * 100;
         const y = Math.random() * 100;
         
         // Random color
-        const colors = PARTICLE_CONFIG.colors;
+        const colors = config.colors;
         const color = colors[Math.floor(Math.random() * colors.length)];
         
         // Set styles
@@ -212,9 +215,19 @@ function createStaticParticles() {
         particle.style.top = y + '%';
         particle.style.boxShadow = `0 0 ${size}px ${color}`;
         
-        // Add simple floating animation
-        particle.style.animation = `float ${Math.random() * 10 + 10}s infinite ease-in-out`;
+        // Add simple floating animation with different timing for each particle
+        // Use CSS animations for better performance on mobile
+        const duration = Math.random() * 5 + 10;
+        const delay = Math.random() * 5;
+        particle.style.animation = `float ${duration}s infinite ease-in-out`;
+        particle.style.animationDelay = `${delay}s`;
         
         container.appendChild(particle);
     }
 }
+
+// Initialize particles on load
+window.addEventListener('load', function() {
+    // Determine whether to initialize full or mobile particles
+    initParticles();
+});
