@@ -1,38 +1,34 @@
 /* 
  * premium-effects.css
- * Add this file to enhance the premium feel of your website
+ * Enhanced visual effects with fixes for visibility issues
  */
 
-/* Smooth transitions for all elements */
-* {
-
-    /* Fix for Locomotive Scroll content visibility */
-html.has-scroll-smooth {
-    overflow: visible !important;
+/* Fix content visibility issues */
+html, body {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    overflow-y: auto !important;
   }
   
-  body[data-scroll-container] {
-    overflow: visible !important;
-    min-height: 100% !important;
+  body {
     position: relative !important;
     transform: none !important;
   }
   
-  section, header, footer {
-    visibility: visible !important;
+  section, header, footer, div {
     opacity: 1 !important;
+    visibility: visible !important;
   }
   
-  .c-scrollbar {
-    right: 0;
-    z-index: 99999;
-  }
+  /* Smooth transitions for all elements */
+  * {
     transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   }
   
   /* Text reveal animations */
   .text-reveal {
     overflow: hidden;
+    display: inline-block;
   }
   
   .text-reveal span {
@@ -42,7 +38,8 @@ html.has-scroll-smooth {
     transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.8s ease;
   }
   
-  .text-reveal.visible span {
+  .text-reveal.visible span, 
+  .in-view .text-reveal span {
     transform: translateY(0);
     opacity: 1;
   }
@@ -58,7 +55,6 @@ html.has-scroll-smooth {
   .text-reveal span:nth-child(8) { transition-delay: 0.4s; }
   .text-reveal span:nth-child(9) { transition-delay: 0.45s; }
   .text-reveal span:nth-child(10) { transition-delay: 0.5s; }
-  /* Add more for longer texts */
   
   /* Image reveal animations */
   .image-reveal {
@@ -79,7 +75,8 @@ html.has-scroll-smooth {
     z-index: 1;
   }
   
-  .image-reveal.visible::after {
+  .image-reveal.visible::after,
+  .in-view .image-reveal::after {
     transform: translateX(100%);
   }
   
@@ -90,7 +87,8 @@ html.has-scroll-smooth {
     transition-delay: 0.2s;
   }
   
-  .image-reveal.visible img {
+  .image-reveal.visible img,
+  .in-view .image-reveal img {
     transform: scale(1);
     opacity: 1;
   }
@@ -130,17 +128,36 @@ html.has-scroll-smooth {
     transform: translateX(5px);
   }
   
-  /* Smooth section transitions */
-  section {
+  /* Fade-in animations */
+  .fade-in {
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 1s ease, transform 1s ease;
+    transition: opacity 1s ease;
   }
   
-  section.visible {
+  .fade-in.visible,
+  .in-view .fade-in {
+    opacity: 1;
+  }
+  
+  /* Fade-up animations */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  
+  .fade-up.visible,
+  .in-view .fade-up {
     opacity: 1;
     transform: translateY(0);
   }
+  
+  /* Staggered animations for multiple elements */
+  .stagger-1 { transition-delay: 0.1s; }
+  .stagger-2 { transition-delay: 0.2s; }
+  .stagger-3 { transition-delay: 0.3s; }
+  .stagger-4 { transition-delay: 0.4s; }
+  .stagger-5 { transition-delay: 0.5s; }
   
   /* Smooth card hover effects */
   .project-card,
@@ -154,21 +171,6 @@ html.has-scroll-smooth {
     box-shadow: 0 15px 30px rgba(79, 70, 229, 0.3);
   }
   
-  /* Enhanced parallax effect */
-  .parallax {
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .parallax-layer {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    will-change: transform;
-  }
-  
   /* Staggered list animations */
   .stagger-list li {
     opacity: 0;
@@ -176,13 +178,19 @@ html.has-scroll-smooth {
     transition: opacity 0.5s ease, transform 0.5s ease;
   }
   
-  .stagger-list.visible li:nth-child(1) { transition-delay: 0.1s; }
-  .stagger-list.visible li:nth-child(2) { transition-delay: 0.2s; }
-  .stagger-list.visible li:nth-child(3) { transition-delay: 0.3s; }
-  .stagger-list.visible li:nth-child(4) { transition-delay: 0.4s; }
-  .stagger-list.visible li:nth-child(5) { transition-delay: 0.5s; }
+  .stagger-list.visible li:nth-child(1),
+  .in-view .stagger-list li:nth-child(1) { transition-delay: 0.1s; }
+  .stagger-list.visible li:nth-child(2),
+  .in-view .stagger-list li:nth-child(2) { transition-delay: 0.2s; }
+  .stagger-list.visible li:nth-child(3),
+  .in-view .stagger-list li:nth-child(3) { transition-delay: 0.3s; }
+  .stagger-list.visible li:nth-child(4),
+  .in-view .stagger-list li:nth-child(4) { transition-delay: 0.4s; }
+  .stagger-list.visible li:nth-child(5),
+  .in-view .stagger-list li:nth-child(5) { transition-delay: 0.5s; }
   
-  .stagger-list.visible li {
+  .stagger-list.visible li,
+  .in-view .stagger-list li {
     opacity: 1;
     transform: translateY(0);
   }
@@ -199,50 +207,23 @@ html.has-scroll-smooth {
     transition: width 0.1s ease;
   }
   
-  /* Text gradient animation on hover */
-  .text-gradient-hover {
-    background: linear-gradient(90deg, var(--primary-light), var(--accent));
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    transition: all 0.5s ease;
-  }
-  
-  .text-gradient-hover:hover {
-    background-position: right center;
-    letter-spacing: 0.5px;
-  }
-  
-  /* Glass morphism effect for cards on hover */
-  .glassmorphism-hover {
-    transition: all 0.5s ease;
-  }
-  
-  .glassmorphism-hover:hover {
-    backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Cursor effects */
+  /* Custom cursor styles */
   .custom-cursor {
-    pointer-events: none;
     position: fixed;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
     z-index: 9999;
     mix-blend-mode: difference;
-    display: none; /* Hide by default for mobile */
+    transition: transform 0.2s ease, background-color 0.2s ease;
   }
   
-  @media (pointer: fine) {
-    .custom-cursor {
-      display: block; /* Show only on desktop */
-    }
-    
-    body {
-      cursor: none; /* Hide default cursor */
-    }
+  .custom-cursor.hover {
+    transform: translate(-50%, -50%) scale(1.5);
+    background-color: rgba(79, 70, 229, 0.3);
   }
   
   /* Subtle image zoom on hover */
@@ -258,21 +239,53 @@ html.has-scroll-smooth {
     transform: scale(1.05);
   }
   
-  /* Section dividers */
-  .section-divider {
-    position: relative;
-    height: 100px;
-    margin-top: -50px;
-    margin-bottom: -50px;
-    z-index: 1;
-    pointer-events: none;
+  /* Section transitions */
+  section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease, transform 1s ease;
   }
   
-  .section-divider svg {
-    position: absolute;
+  section.in-view,
+  section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Enhanced scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    background-color: var(--secondary-dark);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, var(--primary), var(--accent));
+    border-radius: 5px;
+    border: 2px solid var(--secondary-dark);
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, var(--accent), var(--primary));
+  }
+  
+  /* Page transition effects */
+  .page-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 100px;
-    fill: currentColor;
+    height: 100%;
+    background-color: rgba(79, 70, 229, 0.2);
+    z-index: 9998;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Focus styles for accessibility */
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
   }
   
   /* Subtle floating animations for UI elements */
@@ -280,89 +293,12 @@ html.has-scroll-smooth {
     animation: floating 6s infinite ease-in-out;
   }
   
-  .floating-slow {
-    animation: floating 8s infinite ease-in-out;
-  }
-  
-  .floating-reverse {
-    animation: floating-reverse 6s infinite ease-in-out;
-  }
-  
-  @keyframes floating-reverse {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-15px) rotate(-2deg); }
-  }
-  
-  /* Improved keyframes for more natural movement */
   @keyframes floating {
-    0% { transform: translateY(0) translateX(0) rotate(0deg); }
-    25% { transform: translateY(-5px) translateX(3px) rotate(1deg); }
-    50% { transform: translateY(-10px) translateX(0) rotate(0deg); }
-    75% { transform: translateY(-5px) translateX(-3px) rotate(-1deg); }
-    100% { transform: translateY(0) translateX(0) rotate(0deg); }
-  }
-  
-  /* Enhanced scrollbar */
-  ::-webkit-scrollbar {
-    width: 12px;
-    background-color: var(--secondary-dark);
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: linear-gradient(to bottom, var(--primary), var(--accent));
-    border-radius: 6px;
-    border: 3px solid var(--secondary-dark);
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(to bottom, var(--accent), var(--primary));
-  }
-  
-  /* Page transition overlay */
-  .page-transition-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--secondary-dark);
-    transform: translateY(100%);
-    z-index: 9999;
-    pointer-events: none;
-  }
-  
-  /* Text glitch effect on hover */
-  .text-glitch {
-    position: relative;
-  }
-  
-  .text-glitch:hover::before,
-  .text-glitch:hover::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.8;
-  }
-  
-  .text-glitch:hover::before {
-    left: 2px;
-    text-shadow: -1px 0 var(--primary);
-    animation: glitch-anim 2s infinite linear alternate-reverse;
-  }
-  
-  .text-glitch:hover::after {
-    left: -2px;
-    text-shadow: -1px 0 var(--accent);
-    animation: glitch-anim2 2s infinite linear alternate-reverse;
-  }
-  
-  /* Focus styles for accessibility */
-  :focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: 2px;
+    0% { transform: translateY(0) translateX(0); }
+    25% { transform: translateY(-5px) translateX(3px); }
+    50% { transform: translateY(-10px) translateX(0); }
+    75% { transform: translateY(-5px) translateX(-3px); }
+    100% { transform: translateY(0) translateX(0); }
   }
   
   /* Skip animations when reduced motion is preferred */
@@ -374,5 +310,25 @@ html.has-scroll-smooth {
       animation-iteration-count: 1 !important;
       transition-duration: 0.001s !important;
       scroll-behavior: auto !important;
+    }
+  }
+  
+  /* Mobile and performance optimizations */
+  @media (max-width: 768px) {
+    .custom-cursor {
+      display: none;
+    }
+    
+    /* Simplified animations for mobile */
+    .text-reveal span,
+    .fade-up,
+    .stagger-list li,
+    section {
+      transition-duration: 0.5s;
+    }
+    
+    /* Reduced motion for better performance */
+    .floating {
+      animation: none;
     }
   }
