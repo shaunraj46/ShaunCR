@@ -5,6 +5,28 @@
 
 /* Smooth transitions for all elements */
 * {
+
+    /* Fix for Locomotive Scroll content visibility */
+html.has-scroll-smooth {
+    overflow: visible !important;
+  }
+  
+  body[data-scroll-container] {
+    overflow: visible !important;
+    min-height: 100% !important;
+    position: relative !important;
+    transform: none !important;
+  }
+  
+  section, header, footer {
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  .c-scrollbar {
+    right: 0;
+    z-index: 99999;
+  }
     transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   }
   

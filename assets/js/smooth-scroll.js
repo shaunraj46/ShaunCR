@@ -32,30 +32,18 @@ document.addEventListener('DOMContentLoaded', function() {
       section.setAttribute('data-scroll-section', '');
     });
     
-    // Add basic scroll attribute to elements we want to track
-    document.querySelectorAll('.hero h1, .hero h2, .hero p, .cta-btn, .section-title, .project-card, .skill-card, .contact-link').forEach(element => {
-      element.setAttribute('data-scroll', '');
-      element.setAttribute('data-scroll-speed', '0.1');
-    });
-    
-    // Add reveal class attributes for fade animations
-    document.querySelectorAll('.section-title, .project-card, .skill-card, .contact-link').forEach(element => {
-      element.setAttribute('data-scroll-class', 'reveal');
-    });
-    
-    // Special parallax effects for specific elements
-    document.querySelectorAll('.profile-img, .startup-img, .formula-img, .leadership-img').forEach(element => {
-      element.setAttribute('data-scroll', '');
-      element.setAttribute('data-scroll-speed', '0.2');
-    });
+    // Critical fix: Make sure content is visible before Locomotive initializes
+    document.body.style.overflow = 'visible';
+    document.body.style.minHeight = '100%';
     
     // Initialize Locomotive Scroll
     const scroll = new LocomotiveScroll({
       el: document.querySelector('[data-scroll-container]'),
       smooth: true,
-      smoothMobile: false,  // Disable on mobile for performance
-      multiplier: 0.8,      // Adjust scrolling speed (lower = slower)
-      lerp: 0.05,           // Linear interpolation (lower = smoother)
+      smoothMobile: false,
+      multiplier: 0.8,
+      lerp: 0.05,
+      getDirection: true,
       smartphone: {
         smooth: false
       },
@@ -64,6 +52,21 @@ document.addEventListener('DOMContentLoaded', function() {
         breakpoint: 768
       }
     });
+    
+    // Force update scroll after a delay to ensure content is positioned correctly
+    setTimeout(() => {
+      scroll.update();
+      
+      // Reset any transforms that might hide content
+      document.body.style.transform = 'none';
+      document.body.style.opacity = '1';
+      
+      // Make all sections explicitly visible
+      document.querySelectorAll('section, header, footer').forEach(section => {
+        section.style.opacity = '1';
+        section.style.visibility = 'visible';
+      });
+    }, 300);
     
     // Update scroll on image load and window resize
     window.addEventListener('load', () => {
@@ -74,31 +77,8 @@ document.addEventListener('DOMContentLoaded', function() {
       scroll.update();
     });
     
-    // Handle anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        const target = document.querySelector(targetId);
-        if (target) {
-          // Scroll to target
-          scroll.scrollTo(target);
-          
-          // Close mobile menu if open
-          const mobileMenu = document.querySelector('.nav-links');
-          const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-          
-          if (mobileMenu && mobileMenu.classList.contains('active')) {
-            mobileMenu.classList.remove('active');
-            if (mobileMenuToggle) mobileMenuToggle.classList.remove('active');
-            document.body.classList.remove('menu-open');
-          }
-        }
-      });
-    });
+    // Rest of your function remains the same...
+  }
     
     // Add scroll callbacks for effects
     scroll.on('scroll', (instance) => {
