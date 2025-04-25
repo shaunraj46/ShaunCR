@@ -1,13 +1,81 @@
 /**
  * smooth-scroll.js
- * Enhanced smooth scrolling with fixes for compatibility
+ * Enhanced smooth scrolling with fixes for compatibility and mobile
  */
 
-document.addEventListener('DOMContentLoaded', function() {
+// Detect mobile devices for optimizations
+function isMobile() {
+    return window.innerWidth <= 768 || 
+           /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+  
+  // Fix mobile layout issues
+  function fixMobileLayout() {
+    if (window.innerWidth <= 768) {
+      // Fix NEXBOT container
+      const nexbotContainer = document.querySelector('.nexbot-container');
+      if (nexbotContainer) {
+        nexbotContainer.style.position = 'absolute';
+        nexbotContainer.style.top = 'auto';
+        nexbotContainer.style.right = 'auto';
+        nexbotContainer.style.bottom = window.innerWidth <= 375 ? '-330px' : '-380px';
+        nexbotContainer.style.left = '50%';
+        nexbotContainer.style.transform = 'translateX(-50%)';
+        nexbotContainer.style.width = window.innerWidth <= 375 ? '240px' : '280px';
+        nexbotContainer.style.height = window.innerWidth <= 375 ? '300px' : '350px';
+        nexbotContainer.style.zIndex = '1';
+      }
+      
+      // Fix hero section
+      const hero = document.querySelector('.hero');
+      if (hero) {
+        hero.style.maxWidth = '100%';
+        hero.style.width = '100%';
+        hero.style.textAlign = 'center';
+        hero.style.alignItems = 'center';
+        hero.style.paddingLeft = '0';
+        hero.style.paddingRight = '0';
+        hero.style.marginBottom = window.innerWidth <= 375 ? '300px' : '350px';
+      }
+      
+      // Fix hero headings
+      const heroHeadings = document.querySelectorAll('.hero h1, .hero h2, .hero p');
+      heroHeadings.forEach(el => {
+        el.style.textAlign = 'center';
+        el.style.width = '100%';
+      });
+      
+      // Fix buttons
+      const ctaButtons = document.querySelectorAll('.cta-btn');
+      ctaButtons.forEach(btn => {
+        btn.style.width = '100%';
+        btn.style.justifyContent = 'center';
+      });
+      
+      // Fix header height
+      const header = document.querySelector('header');
+      if (header) {
+        header.style.minHeight = '100vh';
+        header.style.paddingBottom = '450px';
+      }
+    }
+  }
+  
+  document.addEventListener('DOMContentLoaded', function() {
     console.log('Initializing enhanced smooth scroll');
     
-    // Check for Locomotive Scroll but use native smooth scroll instead
-    // This is more reliable and fixes the issues
+    // Apply mobile optimizations
+    if (isMobile()) {
+      document.body.classList.add('mobile-optimized');
+      
+      // Fix mobile layout
+      fixMobileLayout();
+      
+      // Apply mobile scroll optimizations
+      applyMobileScrollOptimizations();
+    }
+    
+    // Initialize enhanced smooth scrolling
     initEnhancedSmoothScroll();
     
     // Add scroll progress indicator
@@ -16,6 +84,42 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize scroll based animations
     initScrollAnimations();
   });
+  
+  /**
+   * Apply optimizations for mobile scrolling
+   */
+  function applyMobileScrollOptimizations() {
+    // Set up low-intensity scroll listener for mobile
+    let lastScrollTop = 0;
+    let ticking = false;
+    
+    window.addEventListener('scroll', function() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
+      if (!ticking) {
+        window.requestAnimationFrame(function() {
+          // Only run if scroll distance is significant
+          if (Math.abs(scrollTop - lastScrollTop) > 30) {
+            // Update progress bar
+            const progressBar = document.querySelector('.scroll-progress');
+            if (progressBar) {
+              const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+              const scrollProgress = (scrollTop / scrollHeight) * 100;
+              progressBar.style.width = scrollProgress + '%';
+            }
+            
+            // Update nav links
+            updateActiveNavLinkOnScroll();
+            
+            lastScrollTop = scrollTop;
+          }
+          ticking = false;
+        });
+        
+        ticking = true;
+      }
+    });
+  }
   
   /**
    * Initialize enhanced smooth scrolling
@@ -46,32 +150,34 @@ document.addEventListener('DOMContentLoaded', function() {
         if (target) {
           e.preventDefault();
           
-          // Create a premium flash effect
-          const flash = document.createElement('div');
-          flash.style.position = 'fixed';
-          flash.style.top = '0';
-          flash.style.left = '0';
-          flash.style.width = '100%';
-          flash.style.height = '100%';
-          flash.style.backgroundColor = 'rgba(79, 70, 229, 0.1)';
-          flash.style.opacity = '0';
-          flash.style.zIndex = '9998';
-          flash.style.pointerEvents = 'none';
-          flash.style.transition = 'opacity 0.3s ease';
-          document.body.appendChild(flash);
-          
-          // Flash effect
-          setTimeout(() => {
-            flash.style.opacity = '0.5';
+          // Create a simpler flash effect for mobile
+          if (!isMobile()) {
+            const flash = document.createElement('div');
+            flash.style.position = 'fixed';
+            flash.style.top = '0';
+            flash.style.left = '0';
+            flash.style.width = '100%';
+            flash.style.height = '100%';
+            flash.style.backgroundColor = 'rgba(79, 70, 229, 0.1)';
+            flash.style.opacity = '0';
+            flash.style.zIndex = '9998';
+            flash.style.pointerEvents = 'none';
+            flash.style.transition = 'opacity 0.3s ease';
+            document.body.appendChild(flash);
+            
+            // Flash effect
             setTimeout(() => {
-              flash.style.opacity = '0';
+              flash.style.opacity = '0.5';
               setTimeout(() => {
-                if (document.body.contains(flash)) {
-                  document.body.removeChild(flash);
-                }
+                flash.style.opacity = '0';
+                setTimeout(() => {
+                  if (document.body.contains(flash)) {
+                    document.body.removeChild(flash);
+                  }
+                }, 300);
               }, 300);
-            }, 300);
-          }, 10);
+            }, 10);
+          }
           
           // Calculate offset position
           const headerOffset = window.innerWidth <= 768 ? 60 : 80;
@@ -102,6 +208,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add scroll event listener for various effects
     window.addEventListener('scroll', function() {
+      // Skip heavy processing on mobile
+      if (isMobile()) return;
+      
       // Update active nav link based on scroll position
       updateActiveNavLinkOnScroll();
       
@@ -128,6 +237,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Update progress bar on scroll
     window.addEventListener('scroll', () => {
+      // Skip on mobile - handled by the optimized scroll
+      if (isMobile()) return;
+      
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
       const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       const scrollProgress = (scrollTop / scrollHeight) * 100;
@@ -207,6 +319,9 @@ document.addEventListener('DOMContentLoaded', function() {
    * Update animations based on scroll position
    */
   function updateScrollAnimations() {
+    // Skip on mobile for performance
+    if (isMobile()) return;
+    
     // Get scroll position
     const scrollTop = window.scrollY;
     const windowHeight = window.innerHeight;
@@ -227,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function() {
    */
   function applyParallaxEffects() {
     // Skip on mobile devices
-    if (window.innerWidth <= 768) return;
+    if (isMobile()) return;
     
     // Get scroll position
     const scrollTop = window.scrollY;
@@ -285,6 +400,13 @@ document.addEventListener('DOMContentLoaded', function() {
     requestAnimationFrame(animation);
   }
   
+  // Apply mobile fixes on window resize and orientation change
+  window.addEventListener('resize', fixMobileLayout);
+  window.addEventListener('orientationchange', function() {
+    // Small delay to ensure orientation change is complete
+    setTimeout(fixMobileLayout, 300);
+  });
+  
   // Force content visibility once page is loaded
   window.addEventListener('load', function() {
     // Ensure all content is visible
@@ -305,4 +427,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Update active nav link on page load
     updateActiveNavLinkOnScroll();
+    
+    // Apply mobile fixes
+    if (isMobile()) {
+      fixMobileLayout();
+    }
   });

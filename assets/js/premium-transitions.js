@@ -3,8 +3,74 @@
  * Enhanced animations and transitions with fixes for performance and visibility
  */
 
-// Wait for DOM to be loaded
-document.addEventListener('DOMContentLoaded', function() {
+// Mobile optimization - detect mobile devices
+function isMobile() {
+    return window.innerWidth <= 768 || 
+           /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+  
+  // Fix mobile layout issues with NEXBOT container and hero section
+  function fixMobileLayout() {
+    if (window.innerWidth <= 768) {
+      // Fix NEXBOT container
+      const nexbotContainer = document.querySelector('.nexbot-container');
+      if (nexbotContainer) {
+        nexbotContainer.style.position = 'absolute';
+        nexbotContainer.style.top = 'auto';
+        nexbotContainer.style.right = 'auto';
+        nexbotContainer.style.bottom = window.innerWidth <= 375 ? '-330px' : '-380px';
+        nexbotContainer.style.left = '50%';
+        nexbotContainer.style.transform = 'translateX(-50%)';
+        nexbotContainer.style.width = window.innerWidth <= 375 ? '240px' : '280px';
+        nexbotContainer.style.height = window.innerWidth <= 375 ? '300px' : '350px';
+        nexbotContainer.style.zIndex = '1';
+      }
+      
+      // Fix hero section
+      const hero = document.querySelector('.hero');
+      if (hero) {
+        hero.style.maxWidth = '100%';
+        hero.style.width = '100%';
+        hero.style.textAlign = 'center';
+        hero.style.alignItems = 'center';
+        hero.style.paddingLeft = '0';
+        hero.style.paddingRight = '0';
+        hero.style.marginBottom = window.innerWidth <= 375 ? '300px' : '350px';
+      }
+      
+      // Fix hero headings
+      const heroHeadings = document.querySelectorAll('.hero h1, .hero h2, .hero p');
+      heroHeadings.forEach(el => {
+        el.style.textAlign = 'center';
+        el.style.width = '100%';
+      });
+      
+      // Fix buttons
+      const ctaButtons = document.querySelectorAll('.cta-btn');
+      ctaButtons.forEach(btn => {
+        btn.style.width = '100%';
+        btn.style.justifyContent = 'center';
+      });
+      
+      // Fix header height
+      const header = document.querySelector('header');
+      if (header) {
+        header.style.minHeight = '100vh';
+        header.style.paddingBottom = '450px';
+      }
+    }
+  }
+  
+  // Wait for DOM to be loaded
+  document.addEventListener('DOMContentLoaded', function() {
+    // Check for mobile and apply optimizations
+    if (isMobile()) {
+      document.body.classList.add('mobile-optimized');
+      
+      // Fix mobile layout
+      fixMobileLayout();
+    }
+    
     // Initialize GSAP animations if available
     if (typeof gsap !== 'undefined') {
       initGsapAnimations();
@@ -13,18 +79,16 @@ document.addEventListener('DOMContentLoaded', function() {
       initStandardAnimations();
     }
     
-    // Initialize custom cursor
+    // Initialize custom cursor (not on mobile)
     initCursorEffects();
     
     // Initialize magnetic elements (desktop only)
-    if (window.innerWidth > 768) {
-      initMagneticElements();
-    }
+    initMagneticElements();
     
     // Initialize page transitions
     initPageTransitions();
     
-    // Initialize parallax effects
+    // Initialize parallax effects (desktop only)
     initParallaxEffects();
     
     // Initialize text splitting for animations
@@ -36,6 +100,19 @@ document.addEventListener('DOMContentLoaded', function() {
    */
   function initGsapAnimations() {
     console.log("Initializing GSAP animations");
+    
+    // Skip complex animations on mobile
+    if (isMobile()) {
+      // Simple animations for mobile
+      gsap.from('.hero h1, .hero h2, .hero p, .hero .cta-btn', {
+        y: 20,
+        opacity: 0,
+        stagger: 0.1,
+        duration: 0.5,
+        ease: "power2.out"
+      });
+      return;
+    }
     
     // Register ScrollTrigger if available
     if (typeof ScrollTrigger !== 'undefined') {
@@ -126,6 +203,16 @@ document.addEventListener('DOMContentLoaded', function() {
   function initStandardAnimations() {
     console.log("Initializing standard animations");
     
+    // Skip complex animations on mobile
+    if (isMobile()) {
+      // Simple fade-in for hero elements
+      document.querySelectorAll('.hero h1, .hero h2, .hero p, .hero .cta-btn').forEach(el => {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+      return;
+    }
+    
     // Make hero elements visible with css transitions
     document.querySelectorAll('.hero h1, .hero h2, .hero p, .hero .cta-btn').forEach((el, index) => {
       setTimeout(() => {
@@ -157,7 +244,7 @@ document.addEventListener('DOMContentLoaded', function() {
    */
   function initCursorEffects() {
     // Skip on mobile devices or if cursor already exists
-    if (window.innerWidth <= 768 || document.querySelector('.custom-cursor')) return;
+    if (isMobile() || document.querySelector('.custom-cursor')) return;
     
     // Create custom cursor element
     const cursor = document.createElement('div');
@@ -220,7 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
    */
   function initMagneticElements() {
     // Skip on mobile devices
-    if (window.innerWidth <= 768) return;
+    if (isMobile()) return;
     
     // Elements that will have magnetic effect
     const magneticElements = document.querySelectorAll('.cta-btn, .social-link, .contact-icon');
@@ -288,6 +375,9 @@ document.addEventListener('DOMContentLoaded', function() {
    * Initialize page transition effects
    */
   function initPageTransitions() {
+    // Skip complex transitions on mobile
+    if (isMobile()) return;
+    
     // Skip if transition element already exists
     if (document.querySelector('.page-transition')) return;
     
@@ -323,7 +413,7 @@ document.addEventListener('DOMContentLoaded', function() {
    */
   function initParallaxEffects() {
     // Skip on mobile devices or low-end devices
-    if (window.innerWidth <= 768 || !window.requestAnimationFrame) return;
+    if (isMobile() || !window.requestAnimationFrame) return;
     
     // Parallax for background elements
     const parallaxElements = document.querySelectorAll('.moving-sun, .profile-img, .startup-img, .formula-img, .leadership-img');
@@ -375,6 +465,9 @@ document.addEventListener('DOMContentLoaded', function() {
    * Split text into individual spans for text reveal animations
    */
   function initTextSplitting() {
+    // Skip on mobile for performance
+    if (isMobile()) return;
+    
     document.querySelectorAll('.text-reveal').forEach(element => {
       // Only process if not already processed
       if (!element.querySelector('span')) {
@@ -391,16 +484,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Update animations on window resize
-  window.addEventListener('resize', function() {
-    // Re-initialize cursor effects based on screen size
-    if (window.innerWidth <= 768) {
-      const cursor = document.querySelector('.custom-cursor');
-      if (cursor) cursor.style.display = 'none';
-    } else {
-      const cursor = document.querySelector('.custom-cursor');
-      if (cursor) cursor.style.display = 'block';
-    }
+  // Apply mobile fixes on window resize and orientation change
+  window.addEventListener('resize', fixMobileLayout);
+  window.addEventListener('orientationchange', function() {
+    // Small delay to ensure orientation change is complete
+    setTimeout(fixMobileLayout, 300);
   });
   
   // Initialize on page load
@@ -418,4 +506,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.hero h1, .hero h2, .hero p, .hero .cta-btn').forEach(el => {
       el.classList.add('visible');
     });
+    
+    // Apply mobile fixes
+    if (isMobile()) {
+      fixMobileLayout();
+    }
   });
