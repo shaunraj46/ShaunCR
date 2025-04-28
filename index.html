@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="theme-color" content="#1e1b4b">
+    <meta name="theme-color" content="#0F172A">
     <title>Shaun Raj | Engineering Student & Founder</title>
     <meta name="description" content="Shaun Clarence Raj - Engineering Student & Founder of SpicyNuggets, creating intelligent, sustainable AI systems">
     
     <!-- Preconnect to external domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="icon" type="image/png" href="assets/images/favicon.png">
     
     <!-- Critical CSS -->
@@ -20,11 +20,12 @@
             --primary: #4f46e5;
             --primary-dark: #4338ca;
             --primary-light: #818cf8;
-            --secondary: #0f172a;
+            --secondary: #0F172A;
             --secondary-dark: #0c1322;
-            --purple-dark: #1e1b4b;
+            --purple-dark: #1E1B4B;
             --purple-light: #6366f1;
             --accent: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #4f46e5, #8b5cf6);
             --text-primary: #f8fafc;
             --text-secondary: #d1d5db;
             
@@ -99,54 +100,24 @@
             to { transform: rotate(360deg); }
         }
         
-        /* NEXBOT container initial styling */
-        .nexbot-container {
+        /* 3D Scene Container initial styling */
+        .scene-container {
             position: absolute;
-            right: 5%;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 500px;
-            height: 600px;
-            z-index: 1;
-        }
-        
-        /* Mobile critical styles */
-        @media (max-width: 768px) {
-            .nexbot-container {
-                position: absolute;
-                width: 280px;
-                height: 350px;
-                top: auto;
-                bottom: -380px;
-                left: 50%;
-                right: auto;
-                transform: translateX(-50%);
-            }
-            
-            .nav-links {
-                display: none;
-            }
-            
-            .mobile-menu-toggle {
-                display: flex;
-            }
-            
-            .hero {
-                max-width: 100%;
-                padding: 2rem 1rem;
-                margin-bottom: 350px;
-                text-align: center;
-            }
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
         }
     </style>
     
-    <!-- Fonts and Icons with optimized loading -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Main CSS -->
     <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/animations.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
 </head>
 <body class="preload">
@@ -158,14 +129,11 @@
     <!-- Progress indicator -->
     <div class="scroll-progress"></div>
     
+    <!-- 3D Scene Container -->
+    <div class="scene-container"></div>
+    
     <!-- Header & Hero -->
     <header id="home">
-        <div class="cosmic-bg">
-            <!-- Optimized background effects -->
-            <div class="moving-sun"></div>
-            <div class="stars-container" aria-hidden="true"></div>
-        </div>
-        
         <div class="container">
             <!-- Navigation -->
             <nav>
@@ -190,19 +158,13 @@
             
             <!-- Hero content -->
             <div class="hero">
-                <h1 class="reveal-text">Shaun Clarence Raj</h1>
-                <h2 class="reveal-text">Engineering Student & Founder</h2>
-                <p class="reveal-text">Bridging cutting-edge AI research with practical business applications. Creating intelligent systems that are efficient, sustainable, and accessible to organizations of all sizes.</p>
+                <h1 class="animated-heading">Shaun Clarence Raj</h1>
+                <h2 class="animated-heading">Engineering Student & Founder</h2>
+                <p class="animated-text">Bridging cutting-edge AI research with practical business applications. Creating intelligent systems that are efficient, sustainable, and accessible to organizations of all sizes.</p>
                 <a href="#projects" class="cta-btn">
                     <span class="cta-text">Explore My Work</span>
                     <span class="cta-icon"><i class="fas fa-arrow-right"></i></span>
                 </a>
-            </div>
-            
-            <!-- 3D Model container with optimization -->
-            <div class="nexbot-container">
-                <!-- Conditional loading for better performance -->
-                <div class="nexbot-placeholder" data-src="https://prod.spline.design/c8G79eCmRjZV6u1B/scene.splinecode"></div>
             </div>
         </div>
     </header>
@@ -537,158 +499,9 @@
         </div>
     </footer>
     
-    <!-- Optimized JavaScript loading -->
-    <script>
-        // Critical initial functions
-        document.addEventListener('DOMContentLoaded', function() {
-            // Fix mobile layout issues immediately
-            if (window.innerWidth <= 768) {
-                document.body.classList.add('mobile');
-                fixMobileLayout();
-            }
-            
-            // Initialize mobile menu
-            initMobileMenu();
-            
-            // Initialize performance monitoring
-            initPerformanceMonitoring();
-            
-            // Load 3D model based on device capability
-            loadNexbotModel();
-        });
-        
-        // Fix mobile layout
-        function fixMobileLayout() {
-            const nexbotContainer = document.querySelector('.nexbot-container');
-            if (nexbotContainer) {
-                nexbotContainer.style.position = 'absolute';
-                nexbotContainer.style.top = 'auto';
-                nexbotContainer.style.bottom = window.innerWidth <= 375 ? '-330px' : '-380px';
-                nexbotContainer.style.left = '50%';
-                nexbotContainer.style.transform = 'translateX(-50%)';
-                nexbotContainer.style.width = window.innerWidth <= 375 ? '240px' : '280px';
-                nexbotContainer.style.height = window.innerWidth <= 375 ? '300px' : '350px';
-            }
-        }
-        
-        // Mobile menu toggle
-        function initMobileMenu() {
-            const menuToggle = document.querySelector('.mobile-menu-toggle');
-            const navLinks = document.querySelector('.nav-links');
-            
-            if (menuToggle && navLinks) {
-                menuToggle.addEventListener('click', function() {
-                    navLinks.classList.toggle('active');
-                    menuToggle.classList.toggle('active');
-                    document.body.classList.toggle('menu-open');
-                });
-                
-                // Close menu when clicking a link
-                navLinks.querySelectorAll('a').forEach(link => {
-                    link.addEventListener('click', function() {
-                        navLinks.classList.remove('active');
-                        menuToggle.classList.remove('active');
-                        document.body.classList.remove('menu-open');
-                    });
-                });
-            }
-        }
-        
-        // Conditional loading of 3D model
-        function loadNexbotModel() {
-            const container = document.querySelector('.nexbot-container');
-            const placeholder = document.querySelector('.nexbot-placeholder');
-            
-            if (!container || !placeholder) return;
-            
-            // Check if device is capable of running 3D
-            const isMobile = window.innerWidth <= 768;
-            const isLowEnd = navigator.hardwareConcurrency <= 4;
-            
-            if (isMobile && isLowEnd) {
-                // Use static image instead on low-end mobile
-                container.innerHTML = '<img src="assets/images/nexbot-static.png" alt="NEXBOT 3D Model" class="nexbot-static">';
-                return;
-            }
-            
-            // Load 3D model for capable devices
-            const modelUrl = placeholder.getAttribute('data-src');
-            import('https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js')
-            .then(() => {
-                const viewer = document.createElement('spline-viewer');
-                viewer.setAttribute('url', modelUrl);
-                container.appendChild(viewer);
-                placeholder.remove();
-            })
-            .catch(err => {
-                console.warn('Failed to load 3D model:', err);
-                // Fallback to static image
-                container.innerHTML = '<img src="assets/images/nexbot-static.png" alt="NEXBOT 3D Model" class="nexbot-static">';
-            });
-        }
-        
-        // Performance monitoring
-        function initPerformanceMonitoring() {
-            // Detect user preference for reduced motion
-            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.body.classList.add('reduce-motion');
-            }
-            
-            // Monitor for layout shifts
-            if ('PerformanceObserver' in window) {
-                try {
-                    const observer = new PerformanceObserver((list) => {
-                        for (const entry of list.getEntries()) {
-                            if (entry.hadRecentInput) continue;
-                            if (entry.value > 0.1) {
-                                console.warn('Layout shift detected:', entry);
-                            }
-                        }
-                    });
-                    observer.observe({type: 'layout-shift', buffered: true});
-                } catch (e) {
-                    console.warn('PerformanceObserver not supported');
-                }
-            }
-        }
-        
-        // On full load
-        window.addEventListener('load', function() {
-            // Remove loader
-            document.querySelector('.page-loader').classList.add('loader-hidden');
-            // Remove preload class to enable transitions
-            document.body.classList.remove('preload');
-            document.body.classList.add('loaded');
-            
-            // Defer non-critical scripts
-            setTimeout(() => {
-                // Load animation scripts
-                const animScript = document.createElement('script');
-                animScript.src = 'assets/js/animations.js';
-                document.body.appendChild(animScript);
-                
-                // Load particle effects
-                if (!document.body.classList.contains('reduce-motion') && window.innerWidth > 768) {
-                    const particlesScript = document.createElement('script');
-                    particlesScript.src = 'assets/js/particles.js';
-                    document.body.appendChild(particlesScript);
-                }
-            }, 1000);
-        });
-        
-        // Handle resize events
-        let resizeTimer;
-        window.addEventListener('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(function() {
-                if (window.innerWidth <= 768) {
-                    document.body.classList.add('mobile');
-                    fixMobileLayout();
-                } else {
-                    document.body.classList.remove('mobile');
-                }
-            }, 250);
-        });
-    </script>
+    <!-- Three.js for 3D effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Main JS -->
+    <script src="assets/js/main.js"></script>
 </body>
 </html>

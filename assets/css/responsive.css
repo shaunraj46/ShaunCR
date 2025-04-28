@@ -1,9 +1,9 @@
 /* 
- * Responsive CSS File for Shaun Raj's Portfolio
- * Mobile-first media queries with performance optimizations
+ * Responsive CSS for Shaun Raj's Portfolio 2.0
+ * Mobile-first approach with clean breakpoints
  */
 
-/* Base mobile styles - these apply to all device sizes by default */
+/* Base mobile styles (default) */
 .mobile-menu-toggle {
   display: flex;
   z-index: 1000;
@@ -14,19 +14,7 @@
   display: none;
 }
 
-/* General container padding for mobile */
-.container {
-  padding: 0 1.5rem;
-}
-
-/* Header and Hero adjustments for mobile */
-header {
-  min-height: 100vh;
-  position: relative;
-  overflow: hidden;
-  padding-bottom: 450px;
-}
-
+/* Hero section mobile styles */
 .hero {
   max-width: 100%;
   width: 100%;
@@ -35,67 +23,40 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  position: relative;
-  z-index: 2;
-  margin-top: 3rem;
-  margin-bottom: 350px;
+  justify-content: center;
+  min-height: 100vh;
+  margin-top: 0;
+  padding-top: 5rem;
   padding-left: 0;
 }
 
-.hero h1 {
-  font-size: 2.5rem;
+.animated-heading {
   text-align: center;
   width: 100%;
-  margin-bottom: 1rem;
+  font-size: 2.5rem !important;
 }
 
-.hero h2 {
-  font-size: 1.5rem;
+.hero h2.animated-heading {
+  font-size: 1.5rem !important;
+}
+
+.animated-text {
   text-align: center;
   width: 100%;
-  margin-bottom: 1.5rem;
-}
-
-.hero p {
   font-size: 1.1rem;
-  text-align: center;
-  width: 100%;
-  margin-bottom: 2rem;
 }
 
-/* NEXBOT container positioning for mobile */
-.nexbot-container {
-  position: absolute;
-  width: 280px;
-  height: 350px;
-  top: auto;
-  bottom: -380px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
+/* Containers and spacing */
+.container {
+  padding: 0 1.5rem;
 }
 
-/* Display static image instead of 3D model on low-end devices */
-.nexbot-static {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* Buttons full width on mobile */
-.cta-btn {
-  width: 100%;
-  justify-content: center;
-  margin-top: 1rem;
-}
-
-/* Section spacing and content for mobile */
 section {
   padding: 4rem 1rem;
   margin: 1.5rem 0;
 }
 
+/* Section titles */
 .section-title {
   margin-bottom: 2.5rem;
 }
@@ -104,11 +65,11 @@ section {
   font-size: 2rem;
 }
 
-/* Project and skill cards */
+/* Projects and skills layout */
 .projects-grid,
 .skills-container {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 1.5rem;
 }
 
@@ -118,7 +79,7 @@ section {
   margin-bottom: 1.5rem;
 }
 
-/* Content sections - stack vertically on mobile */
+/* Content sections */
 .about-content,
 .startup-content,
 .formula-content,
@@ -128,26 +89,21 @@ section {
   gap: 2rem;
 }
 
-/* Achievement items */
-.achievement-item {
-  flex-direction: row;
-  padding: 1rem;
-  margin-bottom: 1rem;
+/* Contact section */
+.contact-content {
+  padding: 2rem 1rem;
 }
 
-.achievement-icon {
-  margin-right: 1rem;
-}
-
-/* Contact links */
 .contact-links {
   flex-direction: column;
   align-items: center;
   gap: 2rem;
 }
 
-.contact-content {
-  padding: 2rem 1rem;
+.contact-icon {
+  width: 60px;
+  height: 60px;
+  font-size: 1.8rem;
 }
 
 /* Footer */
@@ -165,32 +121,52 @@ footer {
   font-size: 1.2rem;
 }
 
-/* Small mobile devices (375px and below) */
+/* CTA buttons */
+.cta-btn {
+  width: 100%;
+  justify-content: center;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  padding: 0 0 0 1rem;
+}
+
+.cta-icon {
+  width: 3rem;
+  height: 3rem;
+  margin-left: 1rem;
+}
+
+/* Glass card effect modification for mobile */
+.glass-card {
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+/* Small mobile devices (up to 375px) */
 @media screen and (max-width: 375px) {
-  .hero h1 {
-      font-size: 2rem;
+  .animated-heading {
+      font-size: 2rem !important;
   }
   
-  .hero h2 {
-      font-size: 1.3rem;
+  .hero h2.animated-heading {
+      font-size: 1.3rem !important;
   }
   
-  .nexbot-container {
-      width: 240px;
-      height: 300px;
-      bottom: -330px;
-  }
-  
-  .hero {
-      margin-bottom: 300px;
+  .animated-text {
+      font-size: 1rem;
   }
   
   .section-title h2 {
       font-size: 1.8rem;
   }
+  
+  .contact-icon {
+      width: 50px;
+      height: 50px;
+  }
 }
 
-/* Medium mobile devices (576px and below) */
+/* Medium mobile devices (up to 576px) */
 @media screen and (max-width: 576px) {
   .section-title h2 {
       font-size: 1.8rem;
@@ -204,15 +180,9 @@ footer {
   .contact-title {
       font-size: 2rem;
   }
-  
-  .contact-icon {
-      width: 60px;
-      height: 60px;
-      font-size: 1.8rem;
-  }
 }
 
-/* Small tablet devices (768px and up) */
+/* Small tablet and large mobile (768px and up) */
 @media screen and (min-width: 768px) {
   /* Navigation */
   .mobile-menu-toggle {
@@ -243,59 +213,32 @@ footer {
       text-align: left;
       align-items: flex-start;
       padding-left: 4rem;
-      margin-bottom: 0;
   }
   
-  .hero h1 {
-      font-size: 3rem;
+  .animated-heading {
       text-align: left;
   }
   
-  .hero h2 {
-      font-size: 1.6rem;
+  .hero h2.animated-heading {
       text-align: left;
   }
   
-  .hero p {
-      font-size: 1.1rem;
+  .animated-text {
       text-align: left;
   }
   
-  /* NEXBOT container */
-  .nexbot-container {
-      width: 400px;
-      height: 500px;
-      position: absolute;
-      top: 50%;
-      right: 5%;
-      bottom: auto;
-      left: auto;
-      transform: translateY(-50%);
-  }
-  
-  /* Fix header */
-  header {
-      padding-bottom: 0;
-  }
-  
-  /* Fix CTA buttons */
+  /* CTA buttons */
   .cta-btn {
       width: auto;
   }
   
-  /* Fix grid layouts */
+  /* Grids for projects and skills */
   .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 2rem;
   }
   
-  /* Section padding */
-  section {
-      padding: 5rem 0;
-  }
-  
-  /* Content layouts */
+  /* Section content layouts */
   .about-content,
   .startup-content,
   .formula-content,
@@ -304,46 +247,37 @@ footer {
       grid-template-columns: repeat(2, 1fr);
       gap: 3rem;
   }
-  
-  .achievement-item {
-      flex-direction: row;
-  }
-  
-  .achievement-icon {
-      margin-bottom: 0;
-      margin-right: 1rem;
-  }
-  
+
   .skills-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 2rem;
   }
   
+  /* Contact section */
   .contact-links {
       flex-direction: row;
       justify-content: center;
       gap: 3rem;
   }
+  
+  /* Section spacing */
+  section {
+      padding: 5rem 0;
+  }
 }
 
 /* Desktop devices (992px and up) */
 @media screen and (min-width: 992px) {
-  .hero h1 {
-      font-size: 3.5rem;
+  .animated-heading {
+      font-size: 3.5rem !important;
   }
   
-  .hero h2 {
-      font-size: 1.8rem;
+  .hero h2.animated-heading {
+      font-size: 1.8rem !important;
   }
   
-  .hero p {
+  .animated-text {
       font-size: 1.2rem;
-  }
-  
-  .nexbot-container {
-      width: 450px;
-      height: 550px;
   }
   
   .section-title h2 {
@@ -354,12 +288,15 @@ footer {
   .startup-content, 
   .formula-content, 
   .leadership-content {
-      grid-template-columns: 1fr 1fr;
       gap: 4rem;
   }
   
-  .skill-card {
-      height: auto;
+  .projects-grid {
+      grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .skills-container {
+      grid-template-columns: repeat(4, 1fr);
   }
 }
 
@@ -370,18 +307,8 @@ footer {
       margin: 0 auto;
   }
   
-  .nexbot-container {
-      width: 500px;
-      height: 600px;
-      right: 5%;
-  }
-  
   .hero {
       max-width: 55%;
-  }
-  
-  .section-title h2 {
-      font-size: 2.8rem;
   }
 }
 
@@ -391,39 +318,51 @@ footer {
       max-width: 1320px;
   }
   
-  .hero h1 {
-      font-size: 4rem;
+  .animated-heading {
+      font-size: 4rem !important;
   }
   
-  .hero h2 {
-      font-size: 2rem;
+  .hero h2.animated-heading {
+      font-size: 2rem !important;
   }
   
-  .hero p {
+  .animated-text {
       font-size: 1.3rem;
-  }
-  
-  .nexbot-container {
-      width: 550px;
-      height: 650px;
   }
 }
 
 /* Fix iOS 100vh issue */
 @supports (-webkit-touch-callout: none) {
-  .full-height {
-      height: -webkit-fill-available;
-  }
-  
-  header, 
+  .full-height, 
+  .hero,
   .nav-links.active {
-      min-height: -webkit-fill-available;
+      height: -webkit-fill-available;
   }
 }
 
-/* Fix for iOS momentum scrolling */
-body {
-  -webkit-overflow-scrolling: touch;
+/* Improve touch targets on mobile */
+@media (max-width: 768px) {
+  .nav-links a,
+  .social-link,
+  .contact-link,
+  .cta-btn {
+      min-height: 44px; /* Minimum recommended touch target size */
+  }
+  
+  /* Improve spacing between touch targets */
+  .social-links {
+      gap: 1.5rem;
+  }
+  
+  /* Fix potential overlapping touch targets */
+  .project-tech {
+      gap: 0.75rem;
+  }
+  
+  .tech-tag {
+      padding: 0.5rem 1rem;
+      margin-bottom: 0.5rem;
+  }
 }
 
 /* Print styles */
@@ -433,7 +372,10 @@ body {
       color: black;
   }
   
-  header, footer, .nexbot-container, .contact-section {
+  .scene-container,
+  .scroll-progress,
+  .contact-section,
+  footer {
       display: none;
   }
   
@@ -457,9 +399,10 @@ body {
       color: black;
   }
   
-  .skill-card, .project-card {
+  .glass-card {
       box-shadow: none;
       border: 1px solid #ddd;
+      background: white;
       page-break-inside: avoid;
   }
   
@@ -473,63 +416,21 @@ body {
   }
 }
 
-/* Fixed position elements for mobile */
-@media (max-width: 768px) {
-  .scroll-progress {
-      height: 3px;
-  }
-  
-  /* Improve touch targets */
-  .nav-links a,
-  .social-link,
-  .contact-link,
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .animated-heading,
+  .animated-text,
   .cta-btn {
-      min-height: 44px; /* Minimum recommended touch target size */
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
   }
   
-  /* Fix potential button text overflow */
-  .cta-btn {
-      font-size: 0.95rem;
-      padding: 0 0 0 1rem;
+  .glass-card:hover {
+      transform: none !important;
   }
   
-  .cta-icon {
-      width: 3rem;
-      height: 3rem;
-      margin-left: 1rem;
-  }
-  
-  /* Fix image sizes on small screens */
-  img {
-      height: auto;
-      max-height: 70vh;
-  }
-  
-  /* Optimize glass card effect for mobile (less intensive) */
-  .glass-card {
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
-  }
-}
-
-/* Improve accessibility for keyboard navigation */
-a:focus-visible,
-button:focus-visible {
-  outline: 2px solid var(--primary-light);
-  outline-offset: 2px;
-}
-
-/* Reduced shadow for better mobile performance */
-@media (max-width: 768px) {
-  .glass-card,
-  .project-card,
-  .skill-card {
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  }
-  
-  .glass-card:hover,
-  .project-card:hover,
-  .skill-card:hover {
-      box-shadow: 0 8px 20px rgba(79, 70, 229, 0.2);
+  html {
+      scroll-behavior: auto !important;
   }
 }

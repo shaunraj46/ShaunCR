@@ -1,7 +1,6 @@
 /**
- * Main JavaScript for Shaun Raj's Portfolio
- * Performance-optimized with prioritized loading
- * Complete version with all optimizations included
+ * Main JavaScript for Shaun Raj's Portfolio 2.0
+ * Implements Three.js background effect, animations and interactions
  */
 
 // Wait for DOM to be loaded before initializing
@@ -9,28 +8,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize core functionality immediately
     initializeCore();
     
-    // Add load event to handle non-critical initializations
+    // Initialize Three.js scene
+    initThreeJsScene();
+    
+    // Add load event to handle post-loading initialization
     window.addEventListener('load', function() {
         // Remove page loader
         hidePageLoader();
         
-        // Initialize animations after everything is loaded
+        // Initialize animations
         initializeAnimations();
         
         // Set body as loaded to enable transitions and animations
         document.body.classList.remove('preload');
         document.body.classList.add('loaded');
-        
-        // Initialize performance monitoring (in development, can be commented out in production)
-        // initializePerformanceMonitoring();
     });
-    
-    // Initialize 3D model with IntersectionObserver for better performance
-    initializeNexbotObserver();
 });
 
 /**
- * Initialize core functionality needed immediately
+ * Initialize core functionality
  */
 function initializeCore() {
     // Check device capability and set appropriate classes
@@ -44,11 +40,6 @@ function initializeCore() {
     
     // Initialize scroll progress indicator
     initializeScrollProgress();
-    
-    // Fix mobile layout issues immediately if on mobile
-    if (window.innerWidth <= 768) {
-        fixMobileLayout();
-    }
     
     // Fix iOS-specific issues
     if (isIOS()) {
@@ -191,40 +182,15 @@ function hidePageLoader() {
  * Initialize animations using IntersectionObserver
  */
 function initializeAnimations() {
-    // Skip complex animations on mobile or reduced motion
-    const shouldReduceMotion = 
-        document.body.classList.contains('reduce-motion') ||
-        document.body.classList.contains('low-end-device');
-    
-    // Initialize background animations
-    initializeBackgroundEffects(shouldReduceMotion);
+    // Skip complex animations if reduced motion is preferred
+    if (document.body.classList.contains('reduce-motion')) return;
     
     // Initialize element visibility animations
     initializeVisibilityAnimations();
     
     // Initialize 3D card effects - only on capable devices
-    if (!shouldReduceMotion && window.innerWidth > 768) {
+    if (!document.body.classList.contains('low-end-device') && window.innerWidth > 768) {
         initialize3DEffects();
-    }
-}
-
-/**
- * Initialize background animation effects
- */
-function initializeBackgroundEffects(reduceMotion) {
-    const movingSun = document.querySelector('.moving-sun');
-    
-    if (movingSun && !reduceMotion) {
-        // For higher-end devices, add parallax effect
-        window.addEventListener('scroll', function() {
-            // Only run on desktop and when not reducing motion
-            if (window.innerWidth <= 768 || reduceMotion) return;
-            
-            requestAnimationFrame(function() {
-                const scrollPosition = window.scrollY;
-                movingSun.style.transform = `translateY(${scrollPosition * 0.1}px) translateX(${scrollPosition * -0.05}px)`;
-            });
-        }, { passive: true });
     }
 }
 
@@ -234,7 +200,7 @@ function initializeBackgroundEffects(reduceMotion) {
 function initializeVisibilityAnimations() {
     // Get elements to observe
     const elementsToAnimate = document.querySelectorAll(
-        '.fade-in, .fade-up, .fade-left, .fade-right, .zoom-in, .image-reveal, .stagger-list'
+        '.image-reveal, .glass-card'
     );
     
     if (elementsToAnimate.length === 0) return;
@@ -245,8 +211,8 @@ function initializeVisibilityAnimations() {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
                 
-                // Optional: Stop observing after animation is triggered
-                // observer.unobserve(entry.target);
+                // Stop observing after animation is triggered
+                observer.unobserve(entry.target);
             }
         });
     }, {
@@ -261,13 +227,16 @@ function initializeVisibilityAnimations() {
 }
 
 /**
- * Initialize 3D effects for cards
+ * Initialize 3D card hover effects
  */
 function initialize3DEffects() {
-    const cards = document.querySelectorAll('.card-3d, .project-card, .skill-card');
+    const cards = document.querySelectorAll('.glass-card');
     
     cards.forEach(card => {
         card.addEventListener('mousemove', function(e) {
+            // Skip on mobile or reduced motion
+            if (window.innerWidth <= 768 || document.body.classList.contains('reduce-motion')) return;
+            
             const rect = card.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
@@ -278,218 +247,141 @@ function initialize3DEffects() {
             const offsetX = ((mouseX - centerX) / (rect.width / 2)) * 5;
             const offsetY = ((mouseY - centerY) / (rect.height / 2)) * 5;
             
-            card.style.transform = `perspective(1000px) rotateY(${offsetX}deg) rotateX(${-offsetY}deg)`;
+            card.style.transform = `perspective(1000px) rotateY(${offsetX}deg) rotateX(${-offsetY}deg) translateY(-5px)`;
         });
         
         card.addEventListener('mouseleave', function() {
-            card.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg)';
+            card.style.transform = 'translateY(-5px)';
+            setTimeout(() => {
+                card.style.transform = '';
+            }, 100);
         });
     });
 }
 
 /**
- * Set up observer to load NEXBOT model only when needed
+ * Initialize Three.js scene with background effect
  */
-function initializeNexbotObserver() {
-    const container = document.querySelector('.nexbot-container');
-    if (!container) return;
-    
-    // Create an observer for the container
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // Initialize model when container is visible
-                initializeNexbotModel();
-                // Stop observing
-                observer.unobserve(container);
-            }
-        });
-    }, {
-        rootMargin: '100px 0px', // Start loading slightly before visible
-        threshold: 0.1 // Trigger at 10% visibility
-    });
-    
-    // Start observing
-    observer.observe(container);
-}
-
-/**
- * Initialize NEXBOT 3D model with performance considerations
- */
-function initializeNexbotModel() {
-    const container = document.querySelector('.nexbot-container');
-    const placeholder = document.querySelector('.nexbot-placeholder');
-    
-    if (!container || !placeholder) return;
-    
-    // Check device capability
-    const isMobile = document.body.classList.contains('mobile');
-    const isLowEnd = document.body.classList.contains('low-end-device');
-    const prefersReducedMotion = document.body.classList.contains('reduce-motion');
-    const isSaveData = document.body.classList.contains('save-data');
-    
-    // Skip 3D model on low-end devices, save-data mode, or reduced motion preference
-    if (isLowEnd || isSaveData || prefersReducedMotion || (isMobile && navigator.hardwareConcurrency <= 4)) {
-        // Use static image instead
-        useStaticNexbotImage(container);
+function initThreeJsScene() {
+    // Skip for low-end devices or reduced motion
+    if (document.body.classList.contains('low-end-device') || 
+        document.body.classList.contains('reduce-motion')) {
         return;
     }
-    
-    // For capable devices, show loading state
-    const loadingElement = document.createElement('div');
-    loadingElement.className = 'nexbot-loading';
-    loadingElement.innerHTML = `
-        <span>Loading 3D Model</span>
-        <div class="loading-spinner"></div>
-    `;
-    container.appendChild(loadingElement);
-    
-    // Get model URL
-    const modelUrl = placeholder.getAttribute('data-src');
-    
-    // Load Spline viewer only when needed
-    const script = document.createElement('script');
-    script.type = 'module';
-    script.src = 'https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js';
-    script.onload = function() {
-        // Create viewer after script is loaded
-        const viewer = document.createElement('spline-viewer');
-        viewer.setAttribute('url', modelUrl);
-        
-        // When model is loaded, remove loading indicator
-        viewer.addEventListener('load', function() {
-            if (loadingElement.parentNode) {
-                loadingElement.remove();
-            }
-            // Start monitoring performance after model loads
-            monitorModelPerformance(container, viewer);
-        });
-        
-        // Handle load timeout - switch to static after 10 seconds
-        const loadTimeout = setTimeout(() => {
-            if (loadingElement.parentNode) {
-                console.warn('3D model load timeout, switching to static image');
-                useStaticNexbotImage(container);
-            }
-        }, 10000);
-        
-        // Add to container
-        container.appendChild(viewer);
-        placeholder.remove();
-    };
-    script.onerror = function() {
-        console.warn('Failed to load 3D model viewer');
-        // Fallback to static image
-        useStaticNexbotImage(container);
-    };
-    
-    document.body.appendChild(script);
-}
 
-/**
- * Replace container content with static NEXBOT image
- */
-function useStaticNexbotImage(container) {
-    // Clear container content
-    container.innerHTML = '';
-    
-    // Add static image
-    const img = document.createElement('img');
-    img.src = 'assets/images/nexbot-static.png';
-    img.alt = 'NEXBOT 3D Model';
-    img.className = 'nexbot-static';
-    container.appendChild(img);
-}
+    // Get container
+    const container = document.querySelector('.scene-container');
+    if (!container) return;
 
-/**
- * Monitor 3D model performance and replace if needed
- */
-function monitorModelPerformance(container, viewer) {
-    // Only run this on browsers with requestAnimationFrame
-    if (!window.requestAnimationFrame) return;
+    // Set up Three.js scene
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     
-    let lastTime = performance.now();
-    let frames = 0;
-    let lowFpsCount = 0;
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
+    renderer.setClearColor(0x000000, 0);
+    container.appendChild(renderer.domElement);
     
-    const checkFps = function() {
-        const now = performance.now();
-        frames++;
-        
-        // Calculate FPS every second
-        if (now - lastTime >= 1000) {
-            const fps = Math.round((frames * 1000) / (now - lastTime));
-            
-            // If FPS is consistently low, replace with static image
-            if (fps < 24) {
-                lowFpsCount++;
-                
-                if (lowFpsCount >= 3) {
-                    console.warn('Low FPS detected with 3D model, switching to static image');
-                    useStaticNexbotImage(container);
-                    return; // Stop monitoring
-                }
-            } else {
-                lowFpsCount = Math.max(0, lowFpsCount - 1); // Gradually reduce count if FPS improves
-            }
-            
-            frames = 0;
-            lastTime = now;
-        }
-        
-        requestAnimationFrame(checkFps);
-    };
+    // Camera position
+    camera.position.z = 5;
     
-    requestAnimationFrame(checkFps);
-}
-
-/**
- * Fix layout issues on mobile devices
- */
-function fixMobileLayout() {
-    // Fix NEXBOT container
-    const nexbotContainer = document.querySelector('.nexbot-container');
-    if (nexbotContainer) {
-        // Set appropriate size based on device width
-        const width = window.innerWidth <= 375 ? '240px' : '280px';
-        const height = window.innerWidth <= 375 ? '300px' : '350px';
-        const bottomOffset = window.innerWidth <= 375 ? '-330px' : '-380px';
+    // Create particles
+    const particlesGeometry = new THREE.BufferGeometry();
+    const particleCount = window.innerWidth < 768 ? 1000 : 2000;
+    
+    const positionArray = new Float32Array(particleCount * 3);
+    const colorArray = new Float32Array(particleCount * 3);
+    
+    // Fill position and color arrays
+    for (let i = 0; i < particleCount * 3; i += 3) {
+        // Positions - create a sphere distribution
+        const radius = Math.random() * 10 + 5;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos((Math.random() * 2) - 1);
         
-        // Apply the styles
-        nexbotContainer.style.position = 'absolute';
-        nexbotContainer.style.width = width;
-        nexbotContainer.style.height = height;
-        nexbotContainer.style.top = 'auto';
-        nexbotContainer.style.bottom = bottomOffset;
-        nexbotContainer.style.left = '50%';
-        nexbotContainer.style.transform = 'translateX(-50%)';
-        nexbotContainer.style.right = 'auto';
+        positionArray[i] = radius * Math.sin(phi) * Math.cos(theta);
+        positionArray[i + 1] = radius * Math.sin(phi) * Math.sin(theta);
+        positionArray[i + 2] = radius * Math.cos(phi);
+        
+        // Colors - purple and blue gradient
+        const hue = Math.random() * 0.1 + 0.7; // 0.7-0.8 range for purple/blue
+        const saturation = Math.random() * 0.3 + 0.7; // 0.7-1.0
+        const lightness = Math.random() * 0.2 + 0.5; // 0.5-0.7
+        
+        const color = new THREE.Color();
+        color.setHSL(hue, saturation, lightness);
+        
+        colorArray[i] = color.r;
+        colorArray[i + 1] = color.g;
+        colorArray[i + 2] = color.b;
     }
     
-    // Fix hero section
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        hero.style.maxWidth = '100%';
-        hero.style.width = '100%';
-        hero.style.textAlign = 'center';
-        hero.style.alignItems = 'center';
-        hero.style.paddingLeft = '0';
-        hero.style.marginBottom = window.innerWidth <= 375 ? '300px' : '350px';
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positionArray, 3));
+    particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+    
+    // Create material
+    const particlesMaterial = new THREE.PointsMaterial({
+        size: window.innerWidth < 768 ? 0.03 : 0.05,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.6,
+        blending: THREE.AdditiveBlending
+    });
+    
+    // Create mesh
+    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particles);
+    
+    // Mouse interaction
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetMouseX = 0;
+    let targetMouseY = 0;
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+    
+    // Mouse movement
+    document.addEventListener('mousemove', (event) => {
+        mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+        mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+    });
+    
+    // Scroll effect
+    let scrollY = 0;
+    let targetScrollY = 0;
+    
+    window.addEventListener('scroll', () => {
+        targetScrollY = window.scrollY * 0.0005;
+    }, { passive: true });
+    
+    // Animation loop
+    function animate() {
+        requestAnimationFrame(animate);
+        
+        // Smooth mouse movement
+        targetMouseX = mouseX * 0.1;
+        targetMouseY = mouseY * 0.1;
+        
+        // Rotate particles based on mouse
+        particles.rotation.x += (targetMouseY - particles.rotation.x) * 0.05;
+        particles.rotation.y += (targetMouseX - particles.rotation.y) * 0.05;
+        
+        // Rotate based on scroll
+        particles.rotation.z += (targetScrollY - particles.rotation.z) * 0.05;
+        
+        // Add subtle constant rotation
+        particles.rotation.y += 0.001;
+        
+        renderer.render(scene, camera);
     }
     
-    // Fix hero text alignment
-    const heroText = document.querySelectorAll('.hero h1, .hero h2, .hero p');
-    heroText.forEach(element => {
-        element.style.textAlign = 'center';
-        element.style.width = '100%';
-    });
-    
-    // Make CTA buttons full width
-    const ctaButtons = document.querySelectorAll('.cta-btn');
-    ctaButtons.forEach(button => {
-        button.style.width = '100%';
-        button.style.justifyContent = 'center';
-    });
+    animate();
 }
 
 /**
@@ -524,75 +416,6 @@ function fixIOSViewportHeight() {
 }
 
 /**
- * Initialize performance monitoring (for development)
- */
-function initializePerformanceMonitoring() {
-    if (!window.performance || !window.performance.mark) return;
-    
-    // Mark initial render
-    window.performance.mark('initial_render');
-    
-    // Report after everything is loaded
-    window.addEventListener('load', function() {
-        window.performance.mark('fully_loaded');
-        window.performance.measure('total_load_time', 'initial_render', 'fully_loaded');
-        
-        // Log performance metrics
-        const metric = window.performance.getEntriesByName('total_load_time')[0];
-        console.log(`Total load time: ${Math.round(metric.duration)}ms`);
-    });
-    
-    // Monitor FPS if available
-    if ('requestAnimationFrame' in window) {
-        let lastTime = performance.now();
-        let frame = 0;
-        let lastFpsUpdate = 0;
-        
-        const reportFPS = function() {
-            frame++;
-            const now = performance.now();
-            
-            if (now - lastFpsUpdate > 1000) {
-                const fps = Math.round((frame * 1000) / (now - lastFpsUpdate));
-                console.log(`Current FPS: ${fps}`);
-                
-                // Reset
-                lastFpsUpdate = now;
-                frame = 0;
-                
-                // Alert if FPS is low
-                if (fps < 30) {
-                    console.warn('Low FPS detected - consider enabling reduce-motion mode');
-                    document.body.classList.add('reduce-motion');
-                }
-            }
-            
-            lastTime = now;
-            requestAnimationFrame(reportFPS);
-        };
-        
-        requestAnimationFrame(reportFPS);
-    }
-    
-    // Monitor Cumulative Layout Shift
-    if ('PerformanceObserver' in window) {
-        try {
-            const observer = new PerformanceObserver((list) => {
-                for (const entry of list.getEntries()) {
-                    if (entry.hadRecentInput) continue;
-                    if (entry.value > 0.1) {
-                        console.warn('Layout shift detected:', entry);
-                    }
-                }
-            });
-            observer.observe({ type: 'layout-shift', buffered: true });
-        } catch (e) {
-            console.warn('PerformanceObserver not supported');
-        }
-    }
-}
-
-/**
  * Handle window resize events
  */
 window.addEventListener('resize', function() {
@@ -602,32 +425,8 @@ window.addEventListener('resize', function() {
         // Update mobile/desktop classes
         if (window.innerWidth <= 768) {
             document.body.classList.add('mobile');
-            fixMobileLayout();
         } else {
             document.body.classList.remove('mobile');
-            
-            // Reset mobile layout overrides
-            const hero = document.querySelector('.hero');
-            if (hero) {
-                hero.style.maxWidth = '';
-                hero.style.width = '';
-                hero.style.textAlign = '';
-                hero.style.alignItems = '';
-                hero.style.paddingLeft = '';
-                hero.style.marginBottom = '';
-            }
-            
-            const heroText = document.querySelectorAll('.hero h1, .hero h2, .hero p');
-            heroText.forEach(element => {
-                element.style.textAlign = '';
-                element.style.width = '';
-            });
-            
-            const ctaButtons = document.querySelectorAll('.cta-btn');
-            ctaButtons.forEach(button => {
-                button.style.width = '';
-                button.style.justifyContent = '';
-            });
         }
         
         // Update iOS 100vh fix if needed
