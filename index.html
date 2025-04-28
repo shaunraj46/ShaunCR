@@ -2,8 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <!-- Enhanced viewport for all devices including notched phones -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <meta name="theme-color" content="#0F172A">
+    <!-- Apple specific meta tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- PWA capability hints -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- Prevent touch delay on mobile -->
+    <meta name="msapplication-tap-highlight" content="no">
+    
     <title>Shaun Raj | Engineering Student & Founder</title>
     <meta name="description" content="Shaun Clarence Raj - Engineering Student & Founder of SpicyNuggets, creating intelligent, sustainable AI systems">
     
@@ -11,7 +20,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <!-- High-resolution favicon for iOS -->
+    <link rel="apple-touch-icon" href="assets/images/favicon.png">
     
     <!-- Critical CSS -->
     <style>
@@ -61,6 +74,7 @@
             min-height: 100vh;
             opacity: 0;
             transition: opacity 0.5s ease;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body.loaded {
@@ -109,6 +123,12 @@
             height: 100%;
             z-index: 0;
             overflow: hidden;
+        }
+        
+        /* Add this for better touch feedback */
+        .touch-active {
+            transition: transform 0.1s ease;
+            transform: scale(0.98);
         }
     </style>
     
