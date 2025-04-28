@@ -1,228 +1,135 @@
 /**
- * Main JavaScript file for Shaun Raj's Portfolio
- * Contains initialization and general functionality
+ * Main JavaScript for Shaun Raj's Portfolio
+ * Performance-optimized with prioritized loading
+ * Complete version with all optimizations included
  */
 
-// Wait for DOM to be fully loaded
+// Wait for DOM to be loaded before initializing
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Portfolio website initialized');
+    // Initialize core functionality immediately
+    initializeCore();
     
-    // Initialize mobile-specific functionality first
-    setupMobileDetection();
-    setupMobileMenu();
-    fixViewportHeight();
+    // Add load event to handle non-critical initializations
+    window.addEventListener('load', function() {
+        // Remove page loader
+        hidePageLoader();
+        
+        // Initialize animations after everything is loaded
+        initializeAnimations();
+        
+        // Set body as loaded to enable transitions and animations
+        document.body.classList.remove('preload');
+        document.body.classList.add('loaded');
+        
+        // Initialize performance monitoring (in development, can be commented out in production)
+        // initializePerformanceMonitoring();
+    });
     
-    // Initialize animations, particles, and other features
-    initParticles();
-    initScrollEffects();
-    initAOS();
-    initNavLinks();
+    // Initialize 3D model with IntersectionObserver for better performance
+    initializeNexbotObserver();
 });
 
 /**
- * Check if the current device is mobile
+ * Initialize core functionality needed immediately
  */
-function isMobileDevice() {
-    return window.innerWidth < 768 || 
-           /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+function initializeCore() {
+    // Check device capability and set appropriate classes
+    detectDeviceCapabilities();
+    
+    // Initialize mobile menu
+    initializeMobileMenu();
+    
+    // Set up smooth scrolling
+    initializeSmoothScrolling();
+    
+    // Initialize scroll progress indicator
+    initializeScrollProgress();
+    
+    // Fix mobile layout issues immediately if on mobile
+    if (window.innerWidth <= 768) {
+        fixMobileLayout();
+    }
+    
+    // Fix iOS-specific issues
+    if (isIOS()) {
+        fixIOSViewportHeight();
+    }
 }
 
 /**
- * Set up mobile-specific adjustments
+ * Detect device capabilities and set appropriate body classes
  */
-function setupMobileDetection() {
-    if (isMobileDevice()) {
-        // Add mobile class to body for CSS targeting
-        document.body.classList.add('mobile-device');
-        
-        // Reduce animations for mobile performance
+function detectDeviceCapabilities() {
+    // Check if mobile
+    if (window.innerWidth <= 768) {
+        document.body.classList.add('mobile');
+    }
+    
+    // Check for reduced motion preference
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         document.body.classList.add('reduce-motion');
-        
-        // Fix positioning for mobile
-        adjustMobileLayout();
-        
-        // Enable passive event listeners for better scrolling
-        const wheelOpt = { passive: true };
-        const wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
-        
-        window.addEventListener('touchstart', function(){}, wheelOpt);
-        window.addEventListener('touchmove', function(){}, wheelOpt);
-        window.addEventListener(wheelEvent, function(){}, wheelOpt);
     }
     
-    // Handle window resize events
-    window.addEventListener('resize', function() {
-        fixViewportHeight();
-        adjustMobileLayout();
-    });
+    // Check if low-end device (limited CPU cores)
+    if (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) {
+        document.body.classList.add('low-end-device');
+    }
     
-    // Handle orientation change
-    window.addEventListener('orientationchange', function() {
-        fixViewportHeight();
-        adjustMobileLayout();
-        
-        // Small delay to ensure orientation change is complete
-        setTimeout(function() {
-            fixViewportHeight();
-            adjustMobileLayout();
-        }, 300);
-    });
-}
-
-/**
- * Fix viewport height issues on mobile
- */
-function fixViewportHeight() {
-    // Fix for mobile browsers (especially iOS Safari)
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    // Check for Data Saver mode
+    if (navigator.connection && navigator.connection.saveData) {
+        document.body.classList.add('save-data');
+    }
     
-    // Force header height
-    const header = document.querySelector('header');
-    if (header) {
-        if (isMobileDevice()) {
-            header.style.height = `${window.innerHeight}px`;
-        } else {
-            header.style.height = '100vh';
-        }
+    // Check for touch capability
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+        document.body.classList.add('touch-device');
     }
 }
 
 /**
- * Adjust layout specifically for mobile
+ * Initialize mobile menu functionality
  */
-function adjustMobileLayout() {
-    if (isMobileDevice()) {
-        // Adjust NEXBOT container
-        const nexbotContainer = document.querySelector('.nexbot-container');
-        if (nexbotContainer) {
-            if (window.innerWidth <= 375) {
-                nexbotContainer.style.width = '240px';
-                nexbotContainer.style.height = '300px';
-                nexbotContainer.style.bottom = '-330px';
-            } else {
-                nexbotContainer.style.width = '280px';
-                nexbotContainer.style.height = '350px';
-                nexbotContainer.style.bottom = '-380px';
-            }
-            
-            // Ensure absolute positioning
-            nexbotContainer.style.position = 'absolute';
-            nexbotContainer.style.left = '50%';
-            nexbotContainer.style.transform = 'translateX(-50%)';
-            nexbotContainer.style.top = 'auto';
-            nexbotContainer.style.zIndex = '1';
-        }
-        
-        // Adjust hero section
-        const hero = document.querySelector('.hero');
-        if (hero) {
-            hero.style.maxWidth = '100%';
-            hero.style.width = '100%';
-            hero.style.textAlign = 'center';
-            hero.style.zIndex = '2';
-            
-            if (window.innerWidth <= 375) {
-                hero.style.marginBottom = '300px';
-            } else {
-                hero.style.marginBottom = '350px';
-            }
-        }
-        
-        // Center align text on mobile
-        const heroHeadings = document.querySelectorAll('.hero h1, .hero h2, .hero p');
-        heroHeadings.forEach(element => {
-            element.style.textAlign = 'center';
-            element.style.width = '100%';
-        });
-        
-        // Make buttons full width
-        const ctaButtons = document.querySelectorAll('.cta-btn');
-        ctaButtons.forEach(button => {
-            button.style.width = '100%';
-            button.style.justifyContent = 'center';
-        });
-    }
-}
-
-/**
- * Initialize mobile menu toggle functionality
- */
-function setupMobileMenu() {
-    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+function initializeMobileMenu() {
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
     const navLinks = document.querySelector('.nav-links');
-    const body = document.body;
     
-    if (mobileMenuToggle && navLinks) {
-        mobileMenuToggle.addEventListener('click', function(e) {
-            e.stopPropagation();
-            
-            navLinks.classList.toggle('active');
-            this.classList.toggle('active');
-            
-            // Prevent body scrolling when menu is open
-            body.classList.toggle('menu-open');
-            
-            // Check if menu is active
-            const isActive = navLinks.classList.contains('active');
-            
-            // Toggle menu icon animation
-            const spans = this.querySelectorAll('span');
-            if (isActive) {
-                // X shape for close
-                spans[0].style.transform = 'translateY(8px) rotate(45deg)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'translateY(-8px) rotate(-45deg)';
-            } else {
-                // Bars for open
-                spans[0].style.transform = 'translateY(0) rotate(0)';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'translateY(0) rotate(0)';
-            }
+    if (!menuToggle || !navLinks) return;
+    
+    // Toggle menu on button click
+    menuToggle.addEventListener('click', function() {
+        navLinks.classList.toggle('active');
+        menuToggle.classList.toggle('active');
+        document.body.classList.toggle('menu-open');
+    });
+    
+    // Close menu when clicking a link
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', function() {
+            navLinks.classList.remove('active');
+            menuToggle.classList.remove('active');
+            document.body.classList.remove('menu-open');
         });
-        
-        // Close menu when clicking on a nav link
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', function() {
-                // Close mobile menu
-                navLinks.classList.remove('active');
-                mobileMenuToggle.classList.remove('active');
-                body.classList.remove('menu-open');
-                
-                // Reset toggle icon
-                const spans = mobileMenuToggle.querySelectorAll('span');
-                spans[0].style.transform = 'translateY(0) rotate(0)';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'translateY(0) rotate(0)';
-            });
-        });
-        
-        // Close menu when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!event.target.closest('.mobile-menu-toggle') && 
-                !event.target.closest('.nav-links') && 
-                navLinks.classList.contains('active')) {
-                
-                navLinks.classList.remove('active');
-                mobileMenuToggle.classList.remove('active');
-                body.classList.remove('menu-open');
-                
-                const spans = mobileMenuToggle.querySelectorAll('span');
-                spans[0].style.transform = 'translateY(0) rotate(0)';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'translateY(0) rotate(0)';
-            }
-        });
-    }
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', function(event) {
+        if (navLinks.classList.contains('active') && 
+            !navLinks.contains(event.target) && 
+            !menuToggle.contains(event.target)) {
+            navLinks.classList.remove('active');
+            menuToggle.classList.remove('active');
+            document.body.classList.remove('menu-open');
+        }
+    });
 }
 
 /**
- * Initialize navigation link smooth scrolling
+ * Initialize smooth scrolling for anchor links
  */
-function initNavLinks() {
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-        link.addEventListener('click', function(e) {
-            // Don't scroll if it's just a regular link without an anchor
+function initializeSmoothScrolling() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            // Skip if it's just "#"
             if (this.getAttribute('href') === '#') return;
             
             e.preventDefault();
@@ -230,27 +137,8 @@ function initNavLinks() {
             const targetElement = document.querySelector(targetId);
             
             if (targetElement) {
-                // Close mobile menu if open
-                const navLinks = document.querySelector('.nav-links');
-                const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-                const body = document.body;
-                
-                if (navLinks && navLinks.classList.contains('active')) {
-                    navLinks.classList.remove('active');
-                    body.classList.remove('menu-open');
-                    
-                    if (mobileMenuToggle) {
-                        mobileMenuToggle.classList.remove('active');
-                        
-                        const spans = mobileMenuToggle.querySelectorAll('span');
-                        spans[0].style.transform = 'translateY(0) rotate(0)';
-                        spans[1].style.opacity = '1';
-                        spans[2].style.transform = 'translateY(0) rotate(0)';
-                    }
-                }
-                
                 // Calculate proper offset based on device
-                const headerOffset = isMobileDevice() ? 60 : 100;
+                const headerOffset = window.innerWidth <= 768 ? 60 : 80;
                 const elementPosition = targetElement.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
                 
@@ -265,178 +153,486 @@ function initNavLinks() {
 }
 
 /**
- * Initialize AOS (Animate On Scroll) library
+ * Initialize scroll progress indicator
  */
-function initAOS() {
-    // Check if AOS is available
-    if (typeof AOS !== 'undefined') {
-        // Get device type
-        const isMobile = isMobileDevice();
-        const isTablet = window.innerWidth >= 768 && window.innerWidth < 992;
-        
-        // Configure AOS based on device type
-        AOS.init({
-            // Disable on mobile for better performance
-            disable: isMobile,
-            // Shorter durations on tablets
-            duration: isTablet ? 600 : 800,
-            // Only animate once on mobile and tablets
-            once: isMobile || isTablet,
-            // No mirror effect on mobile or tablet
-            mirror: !isMobile && !isTablet,
-            // Smaller offset on mobile
-            offset: isMobile ? 50 : 100
-        });
-    }
-}
-
-/**
- * Initialize scroll effects (parallax, etc.)
- */
-function initScrollEffects() {
-    // Skip heavy scroll effects on mobile
-    const isMobile = isMobileDevice();
+function initializeScrollProgress() {
+    const progressBar = document.querySelector('.scroll-progress');
+    if (!progressBar) return;
     
+    // Use passive scroll listener for better performance
     window.addEventListener('scroll', function() {
-        const scrollPosition = window.scrollY;
-        
-        // Store scroll percentage as CSS variable for use in animations
-        const maxScroll = document.body.scrollHeight - window.innerHeight;
-        const scrollPercentage = scrollPosition / maxScroll;
-        document.body.style.setProperty('--scroll-percentage', scrollPercentage);
-        
-        // Parallax effect on moving sun - skip on mobile
-        if (!isMobile) {
-            const movingSun = document.querySelector('.moving-sun');
-            if (movingSun) {
-                movingSun.style.transform = `translateY(${scrollPosition * 0.2}px) translateX(${scrollPosition * -0.1}px)`;
-            }
-        }
-        
-        // Active section detection for navigation
-        highlightActiveSection();
-    });
-}
-
-/**
- * Highlight the active section in navigation
- */
-function highlightActiveSection() {
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-links a');
-    
-    let current = '';
-    
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop - 150;
-        const sectionHeight = section.offsetHeight;
-        
-        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
-            current = section.getAttribute('id');
-        }
-    });
-    
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-        }
-    });
-}
-
-/**
- * Initialize particle system
- * This function is defined in particles.js
- * Included here as a reference
- */
-function initParticles() {
-    // This function is defined in particles.js
-    // We're just referencing it here
-    if (typeof window.initParticles === 'function') {
-        window.initParticles();
-    } else {
-        console.log('Particles initialization function not found');
-    }
-}
-
-/**
- * Add 3D tilt effect to specified elements
- * Only on desktop devices
- * 
- * @param {string} selector - CSS selector for elements to apply effect to
- * @param {number} intensity - Effect intensity (default: 10)
- */
-function apply3DTiltEffect(selector, intensity = 10) {
-    // Skip on mobile
-    if (isMobileDevice()) return;
-    
-    const elements = document.querySelectorAll(selector);
-    
-    elements.forEach(element => {
-        element.addEventListener('mousemove', e => {
-            const rect = element.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const xPercent = x / rect.width;
-            const yPercent = y / rect.height;
-            
-            const xRotation = (0.5 - yPercent) * intensity;
-            const yRotation = (xPercent - 0.5) * intensity;
-            
-            element.style.transform = `perspective(1000px) rotateX(${xRotation}deg) rotateY(${yRotation}deg)`;
+        // Use requestAnimationFrame to optimize updates
+        requestAnimationFrame(function() {
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = (window.scrollY / scrollHeight) * 100;
+            progressBar.style.width = scrolled + '%';
         });
-        
-        element.addEventListener('mouseleave', () => {
-            element.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
-        });
-    });
+    }, { passive: true });
 }
 
-// Apply 3D tilt effect to project cards on desktop
-if (!isMobileDevice()) {
-    window.addEventListener('load', function() {
-        apply3DTiltEffect('.project-card', 5);
-        apply3DTiltEffect('.skill-card', 3);
-    });
-}
-
-// Handle page resize
-window.addEventListener('resize', function() {
-    if (typeof AOS !== 'undefined') {
-        AOS.refresh();
-    }
-    
-    // Update viewport height on resize
-    fixViewportHeight();
-    
-    // Adjust layout on resize
-    adjustMobileLayout();
-});
-
-// Initialize on load
-window.addEventListener('load', function() {
-    // Mark body as loaded
-    document.body.classList.add('loaded');
-    
-    // Remove page loader if exists
+/**
+ * Hide page loader with animation
+ */
+function hidePageLoader() {
     const loader = document.querySelector('.page-loader');
-    if (loader) {
-        loader.classList.add('loader-hidden');
-        
-        setTimeout(function() {
-            if (loader.parentNode) {
-                loader.parentNode.removeChild(loader);
+    if (!loader) return;
+    
+    loader.classList.add('loader-hidden');
+    
+    // Remove from DOM after animation completes
+    loader.addEventListener('transitionend', function() {
+        if (loader.parentNode) {
+            loader.parentNode.removeChild(loader);
+        }
+    });
+}
+
+/**
+ * Initialize animations using IntersectionObserver
+ */
+function initializeAnimations() {
+    // Skip complex animations on mobile or reduced motion
+    const shouldReduceMotion = 
+        document.body.classList.contains('reduce-motion') ||
+        document.body.classList.contains('low-end-device');
+    
+    // Initialize background animations
+    initializeBackgroundEffects(shouldReduceMotion);
+    
+    // Initialize element visibility animations
+    initializeVisibilityAnimations();
+    
+    // Initialize 3D card effects - only on capable devices
+    if (!shouldReduceMotion && window.innerWidth > 768) {
+        initialize3DEffects();
+    }
+}
+
+/**
+ * Initialize background animation effects
+ */
+function initializeBackgroundEffects(reduceMotion) {
+    const movingSun = document.querySelector('.moving-sun');
+    
+    if (movingSun && !reduceMotion) {
+        // For higher-end devices, add parallax effect
+        window.addEventListener('scroll', function() {
+            // Only run on desktop and when not reducing motion
+            if (window.innerWidth <= 768 || reduceMotion) return;
+            
+            requestAnimationFrame(function() {
+                const scrollPosition = window.scrollY;
+                movingSun.style.transform = `translateY(${scrollPosition * 0.1}px) translateX(${scrollPosition * -0.05}px)`;
+            });
+        }, { passive: true });
+    }
+}
+
+/**
+ * Initialize visibility animations using IntersectionObserver
+ */
+function initializeVisibilityAnimations() {
+    // Get elements to observe
+    const elementsToAnimate = document.querySelectorAll(
+        '.fade-in, .fade-up, .fade-left, .fade-right, .zoom-in, .image-reveal, .stagger-list'
+    );
+    
+    if (elementsToAnimate.length === 0) return;
+    
+    // Create IntersectionObserver
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                
+                // Optional: Stop observing after animation is triggered
+                // observer.unobserve(entry.target);
             }
-        }, 500);
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    // Observe all elements
+    elementsToAnimate.forEach(element => {
+        observer.observe(element);
+    });
+}
+
+/**
+ * Initialize 3D effects for cards
+ */
+function initialize3DEffects() {
+    const cards = document.querySelectorAll('.card-3d, .project-card, .skill-card');
+    
+    cards.forEach(card => {
+        card.addEventListener('mousemove', function(e) {
+            const rect = card.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            
+            const offsetX = ((mouseX - centerX) / (rect.width / 2)) * 5;
+            const offsetY = ((mouseY - centerY) / (rect.height / 2)) * 5;
+            
+            card.style.transform = `perspective(1000px) rotateY(${offsetX}deg) rotateX(${-offsetY}deg)`;
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            card.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg)';
+        });
+    });
+}
+
+/**
+ * Set up observer to load NEXBOT model only when needed
+ */
+function initializeNexbotObserver() {
+    const container = document.querySelector('.nexbot-container');
+    if (!container) return;
+    
+    // Create an observer for the container
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Initialize model when container is visible
+                initializeNexbotModel();
+                // Stop observing
+                observer.unobserve(container);
+            }
+        });
+    }, {
+        rootMargin: '100px 0px', // Start loading slightly before visible
+        threshold: 0.1 // Trigger at 10% visibility
+    });
+    
+    // Start observing
+    observer.observe(container);
+}
+
+/**
+ * Initialize NEXBOT 3D model with performance considerations
+ */
+function initializeNexbotModel() {
+    const container = document.querySelector('.nexbot-container');
+    const placeholder = document.querySelector('.nexbot-placeholder');
+    
+    if (!container || !placeholder) return;
+    
+    // Check device capability
+    const isMobile = document.body.classList.contains('mobile');
+    const isLowEnd = document.body.classList.contains('low-end-device');
+    const prefersReducedMotion = document.body.classList.contains('reduce-motion');
+    const isSaveData = document.body.classList.contains('save-data');
+    
+    // Skip 3D model on low-end devices, save-data mode, or reduced motion preference
+    if (isLowEnd || isSaveData || prefersReducedMotion || (isMobile && navigator.hardwareConcurrency <= 4)) {
+        // Use static image instead
+        useStaticNexbotImage(container);
+        return;
     }
     
-    // Add performance class to body to control CSS animations
-    if (isMobileDevice() || navigator.hardwareConcurrency <= 4) {
-        document.body.classList.add('reduce-motion');
+    // For capable devices, show loading state
+    const loadingElement = document.createElement('div');
+    loadingElement.className = 'nexbot-loading';
+    loadingElement.innerHTML = `
+        <span>Loading 3D Model</span>
+        <div class="loading-spinner"></div>
+    `;
+    container.appendChild(loadingElement);
+    
+    // Get model URL
+    const modelUrl = placeholder.getAttribute('data-src');
+    
+    // Load Spline viewer only when needed
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = 'https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js';
+    script.onload = function() {
+        // Create viewer after script is loaded
+        const viewer = document.createElement('spline-viewer');
+        viewer.setAttribute('url', modelUrl);
+        
+        // When model is loaded, remove loading indicator
+        viewer.addEventListener('load', function() {
+            if (loadingElement.parentNode) {
+                loadingElement.remove();
+            }
+            // Start monitoring performance after model loads
+            monitorModelPerformance(container, viewer);
+        });
+        
+        // Handle load timeout - switch to static after 10 seconds
+        const loadTimeout = setTimeout(() => {
+            if (loadingElement.parentNode) {
+                console.warn('3D model load timeout, switching to static image');
+                useStaticNexbotImage(container);
+            }
+        }, 10000);
+        
+        // Add to container
+        container.appendChild(viewer);
+        placeholder.remove();
+    };
+    script.onerror = function() {
+        console.warn('Failed to load 3D model viewer');
+        // Fallback to static image
+        useStaticNexbotImage(container);
+    };
+    
+    document.body.appendChild(script);
+}
+
+/**
+ * Replace container content with static NEXBOT image
+ */
+function useStaticNexbotImage(container) {
+    // Clear container content
+    container.innerHTML = '';
+    
+    // Add static image
+    const img = document.createElement('img');
+    img.src = 'assets/images/nexbot-static.png';
+    img.alt = 'NEXBOT 3D Model';
+    img.className = 'nexbot-static';
+    container.appendChild(img);
+}
+
+/**
+ * Monitor 3D model performance and replace if needed
+ */
+function monitorModelPerformance(container, viewer) {
+    // Only run this on browsers with requestAnimationFrame
+    if (!window.requestAnimationFrame) return;
+    
+    let lastTime = performance.now();
+    let frames = 0;
+    let lowFpsCount = 0;
+    
+    const checkFps = function() {
+        const now = performance.now();
+        frames++;
+        
+        // Calculate FPS every second
+        if (now - lastTime >= 1000) {
+            const fps = Math.round((frames * 1000) / (now - lastTime));
+            
+            // If FPS is consistently low, replace with static image
+            if (fps < 24) {
+                lowFpsCount++;
+                
+                if (lowFpsCount >= 3) {
+                    console.warn('Low FPS detected with 3D model, switching to static image');
+                    useStaticNexbotImage(container);
+                    return; // Stop monitoring
+                }
+            } else {
+                lowFpsCount = Math.max(0, lowFpsCount - 1); // Gradually reduce count if FPS improves
+            }
+            
+            frames = 0;
+            lastTime = now;
+        }
+        
+        requestAnimationFrame(checkFps);
+    };
+    
+    requestAnimationFrame(checkFps);
+}
+
+/**
+ * Fix layout issues on mobile devices
+ */
+function fixMobileLayout() {
+    // Fix NEXBOT container
+    const nexbotContainer = document.querySelector('.nexbot-container');
+    if (nexbotContainer) {
+        // Set appropriate size based on device width
+        const width = window.innerWidth <= 375 ? '240px' : '280px';
+        const height = window.innerWidth <= 375 ? '300px' : '350px';
+        const bottomOffset = window.innerWidth <= 375 ? '-330px' : '-380px';
+        
+        // Apply the styles
+        nexbotContainer.style.position = 'absolute';
+        nexbotContainer.style.width = width;
+        nexbotContainer.style.height = height;
+        nexbotContainer.style.top = 'auto';
+        nexbotContainer.style.bottom = bottomOffset;
+        nexbotContainer.style.left = '50%';
+        nexbotContainer.style.transform = 'translateX(-50%)';
+        nexbotContainer.style.right = 'auto';
     }
     
-    // Force layout adjustments again after full load
-    adjustMobileLayout();
-    fixViewportHeight();
+    // Fix hero section
+    const hero = document.querySelector('.hero');
+    if (hero) {
+        hero.style.maxWidth = '100%';
+        hero.style.width = '100%';
+        hero.style.textAlign = 'center';
+        hero.style.alignItems = 'center';
+        hero.style.paddingLeft = '0';
+        hero.style.marginBottom = window.innerWidth <= 375 ? '300px' : '350px';
+    }
+    
+    // Fix hero text alignment
+    const heroText = document.querySelectorAll('.hero h1, .hero h2, .hero p');
+    heroText.forEach(element => {
+        element.style.textAlign = 'center';
+        element.style.width = '100%';
+    });
+    
+    // Make CTA buttons full width
+    const ctaButtons = document.querySelectorAll('.cta-btn');
+    ctaButtons.forEach(button => {
+        button.style.width = '100%';
+        button.style.justifyContent = 'center';
+    });
+}
+
+/**
+ * Check if the device is running iOS
+ */
+function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+/**
+ * Fix iOS viewport height issues
+ */
+function fixIOSViewportHeight() {
+    // Set a custom property with the actual viewport height
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    
+    // Update on resize and orientation change
+    window.addEventListener('resize', function() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    });
+    
+    window.addEventListener('orientationchange', function() {
+        // Small delay to ensure orientation change is complete
+        setTimeout(function() {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }, 100);
+    });
+}
+
+/**
+ * Initialize performance monitoring (for development)
+ */
+function initializePerformanceMonitoring() {
+    if (!window.performance || !window.performance.mark) return;
+    
+    // Mark initial render
+    window.performance.mark('initial_render');
+    
+    // Report after everything is loaded
+    window.addEventListener('load', function() {
+        window.performance.mark('fully_loaded');
+        window.performance.measure('total_load_time', 'initial_render', 'fully_loaded');
+        
+        // Log performance metrics
+        const metric = window.performance.getEntriesByName('total_load_time')[0];
+        console.log(`Total load time: ${Math.round(metric.duration)}ms`);
+    });
+    
+    // Monitor FPS if available
+    if ('requestAnimationFrame' in window) {
+        let lastTime = performance.now();
+        let frame = 0;
+        let lastFpsUpdate = 0;
+        
+        const reportFPS = function() {
+            frame++;
+            const now = performance.now();
+            
+            if (now - lastFpsUpdate > 1000) {
+                const fps = Math.round((frame * 1000) / (now - lastFpsUpdate));
+                console.log(`Current FPS: ${fps}`);
+                
+                // Reset
+                lastFpsUpdate = now;
+                frame = 0;
+                
+                // Alert if FPS is low
+                if (fps < 30) {
+                    console.warn('Low FPS detected - consider enabling reduce-motion mode');
+                    document.body.classList.add('reduce-motion');
+                }
+            }
+            
+            lastTime = now;
+            requestAnimationFrame(reportFPS);
+        };
+        
+        requestAnimationFrame(reportFPS);
+    }
+    
+    // Monitor Cumulative Layout Shift
+    if ('PerformanceObserver' in window) {
+        try {
+            const observer = new PerformanceObserver((list) => {
+                for (const entry of list.getEntries()) {
+                    if (entry.hadRecentInput) continue;
+                    if (entry.value > 0.1) {
+                        console.warn('Layout shift detected:', entry);
+                    }
+                }
+            });
+            observer.observe({ type: 'layout-shift', buffered: true });
+        } catch (e) {
+            console.warn('PerformanceObserver not supported');
+        }
+    }
+}
+
+/**
+ * Handle window resize events
+ */
+window.addEventListener('resize', function() {
+    // Debounce resize events for better performance
+    clearTimeout(window.resizeTimer);
+    window.resizeTimer = setTimeout(function() {
+        // Update mobile/desktop classes
+        if (window.innerWidth <= 768) {
+            document.body.classList.add('mobile');
+            fixMobileLayout();
+        } else {
+            document.body.classList.remove('mobile');
+            
+            // Reset mobile layout overrides
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.maxWidth = '';
+                hero.style.width = '';
+                hero.style.textAlign = '';
+                hero.style.alignItems = '';
+                hero.style.paddingLeft = '';
+                hero.style.marginBottom = '';
+            }
+            
+            const heroText = document.querySelectorAll('.hero h1, .hero h2, .hero p');
+            heroText.forEach(element => {
+                element.style.textAlign = '';
+                element.style.width = '';
+            });
+            
+            const ctaButtons = document.querySelectorAll('.cta-btn');
+            ctaButtons.forEach(button => {
+                button.style.width = '';
+                button.style.justifyContent = '';
+            });
+        }
+        
+        // Update iOS 100vh fix if needed
+        if (isIOS()) {
+            fixIOSViewportHeight();
+        }
+    }, 250);
 });

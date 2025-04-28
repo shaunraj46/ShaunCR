@@ -2,49 +2,78 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Fixed viewport meta tag for proper mobile rendering -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta name="theme-color" content="#1e1b4b">
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Shaun Raj | Engineering Student & Founder</title>
     <meta name="description" content="Shaun Clarence Raj - Engineering Student & Founder of SpicyNuggets, creating intelligent, sustainable AI systems">
-    <meta name="keywords" content="Engineering Student, SpicyNuggets, Machine Learning, AI Systems, Portfolio">
     
-    <!-- Critical CSS for faster loading -->
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    
+    <!-- Critical CSS -->
     <style>
-        /* Critical styles to avoid FOUC (Flash of Unstyled Content) */
         :root {
-            --vh: 1vh;
+            /* Core theme variables */
             --primary: #4f46e5;
             --primary-dark: #4338ca;
             --primary-light: #818cf8;
             --secondary: #0f172a;
             --secondary-dark: #0c1322;
             --purple-dark: #1e1b4b;
+            --purple-light: #6366f1;
+            --accent: #8b5cf6;
+            --text-primary: #f8fafc;
+            --text-secondary: #d1d5db;
+            
+            /* Spacing & Dimensions */
+            --container-padding: clamp(1rem, 5vw, 3rem);
+            --section-spacing: clamp(3rem, 10vh, 6rem);
+            --card-radius: 16px;
+            
+            /* Animations */
+            --transition-fast: 0.2s ease;
+            --transition-normal: 0.3s ease;
+        }
+        
+        /* Base styles */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
         }
         
         body {
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #1e1b4b, #0f172a);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: #fff;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            background: linear-gradient(135deg, var(--purple-dark), var(--secondary-dark));
+            color: var(--text-primary);
+            line-height: 1.6;
             overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
         
         body.loaded {
             opacity: 1;
         }
         
+        /* Loading screen */
         .page-loader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #1e1b4b, #0f172a);
+            background: linear-gradient(135deg, var(--purple-dark), var(--secondary-dark));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -62,7 +91,7 @@
             height: 40px;
             border: 3px solid rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            border-top-color: #4f46e5;
+            border-top-color: var(--primary);
             animation: spin 1s ease-in-out infinite;
         }
         
@@ -70,103 +99,78 @@
             to { transform: rotate(360deg); }
         }
         
-        /* Mobile-specific critical CSS */
+        /* NEXBOT container initial styling */
+        .nexbot-container {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 500px;
+            height: 600px;
+            z-index: 1;
+        }
+        
+        /* Mobile critical styles */
         @media (max-width: 768px) {
-            /* Nav styles */
+            .nexbot-container {
+                position: absolute;
+                width: 280px;
+                height: 350px;
+                top: auto;
+                bottom: -380px;
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
+            }
+            
             .nav-links {
                 display: none;
             }
             
             .mobile-menu-toggle {
                 display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                height: 24px;
-                width: 30px;
-                cursor: pointer;
-                z-index: 1000;
             }
             
-            .mobile-menu-toggle span {
-                display: block;
-                height: 2px;
-                width: 100%;
-                background-color: #fff;
-                border-radius: 2px;
-                transition: all 0.3s ease;
-            }
-            
-            /* Hero section */
             .hero {
+                max-width: 100%;
+                padding: 2rem 1rem;
                 margin-bottom: 350px;
                 text-align: center;
-                max-width: 100%;
-                width: 100%;
-                padding: 2rem 1rem;
-            }
-            
-            /* NEXBOT container */
-            .nexbot-container {
-                position: absolute;
-                bottom: -380px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 280px;
-                height: 350px;
-            }
-            
-            header {
-                min-height: 100vh;
-                padding-bottom: 450px;
             }
         }
     </style>
     
-    <!-- Preconnect to external domains -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="preconnect" href="https://prod.spline.design">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/images/favicon.png">
-    
-    <!-- Fonts and Icons (with media="print" for non-blocking loading) -->
+    <!-- Fonts and Icons with optimized loading -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
-    <!-- CSS files (load in correct order) -->
+    <!-- Main CSS -->
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/animations.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
-
-    <!-- Locomotive Scroll for premium smooth scrolling -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
-
-    <!-- GSAP for premium animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
-    <!-- Premium effects CSS -->
-    <link rel="stylesheet" href="assets/css/premium-effects.css">
 </head>
-<body data-scroll-container>
-    <!-- Scroll Progress Indicator -->
-    <div class="scroll-progress"></div>
-
-    <!-- Page Loader -->
+<body class="preload">
+    <!-- Page loader -->
     <div class="page-loader">
         <div class="spinner"></div>
     </div>
 
-    <!-- Header -->
-    <header id="home" data-scroll-section>
-        <div class="moving-sun"></div>
+    <!-- Progress indicator -->
+    <div class="scroll-progress"></div>
+    
+    <!-- Header & Hero -->
+    <header id="home">
+        <div class="cosmic-bg">
+            <!-- Optimized background effects -->
+            <div class="moving-sun"></div>
+            <div class="stars-container" aria-hidden="true"></div>
+        </div>
+        
         <div class="container">
+            <!-- Navigation -->
             <nav>
-                <div class="logo">SR</div>
+                <a href="#" class="logo">SR</a>
+                
                 <div class="nav-links">
                     <a href="#about">About</a>
                     <a href="#projects">Projects</a>
@@ -176,48 +180,48 @@
                     <a href="#leadership">Leadership</a>
                     <a href="#contact">Contact</a>
                 </div>
-                <div class="mobile-menu-toggle">
+                
+                <button class="mobile-menu-toggle" aria-label="Toggle menu">
                     <span></span>
                     <span></span>
                     <span></span>
-                </div>
+                </button>
             </nav>
             
+            <!-- Hero content -->
             <div class="hero">
-                <h1 data-scroll data-scroll-speed="0.1" class="text-reveal">Shaun Clarence Raj</h1>
-                <h2 data-scroll data-scroll-speed="0.2" class="text-reveal">Engineering Student & Founder</h2>
-                <p data-scroll data-scroll-speed="0.3">Bridging cutting-edge AI research with practical business applications. Creating intelligent systems that are efficient, sustainable, and accessible to organizations of all sizes.</p>
-                <a href="#projects" class="cta-btn" data-scroll data-scroll-speed="0.4">
+                <h1 class="reveal-text">Shaun Clarence Raj</h1>
+                <h2 class="reveal-text">Engineering Student & Founder</h2>
+                <p class="reveal-text">Bridging cutting-edge AI research with practical business applications. Creating intelligent systems that are efficient, sustainable, and accessible to organizations of all sizes.</p>
+                <a href="#projects" class="cta-btn">
                     <span class="cta-text">Explore My Work</span>
                     <span class="cta-icon"><i class="fas fa-arrow-right"></i></span>
                 </a>
             </div>
             
-            <!-- NEXBOT Integration -->
+            <!-- 3D Model container with optimization -->
             <div class="nexbot-container">
-                <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
-                <spline-viewer url="https://prod.spline.design/c8G79eCmRjZV6u1B/scene.splinecode"></spline-viewer>
+                <!-- Conditional loading for better performance -->
+                <div class="nexbot-placeholder" data-src="https://prod.spline.design/c8G79eCmRjZV6u1B/scene.splinecode"></div>
             </div>
-            
-            <div class="particles" id="particles"></div>
         </div>
     </header>
     
     <!-- About Section -->
-    <section id="about" class="about" data-scroll-section>
+    <section id="about" class="about">
         <div class="container">
-            <div class="section-title" data-scroll data-scroll-speed="0.1">
+            <div class="section-title">
                 <h2>About Me</h2>
             </div>
             
             <div class="about-content">
-                <div class="about-image" data-scroll data-scroll-speed="0.2">
+                <div class="about-image glass-card">
                     <div class="profile-img image-reveal">
-                        <img src="assets/images/profile.png" alt="Shaun Raj - Engineering Student & Founder">
+                        <img src="assets/images/profile.png" alt="Shaun Raj - Engineering Student & Founder" loading="lazy">
                     </div>
                 </div>
                 
-                <div class="about-text" data-scroll data-scroll-speed="0.1">
+                <div class="about-text">
                     <h3>Innovating with Purpose</h3>
                     <p>As an Engineering Student and Founder of SpicyNuggets, I blend technical expertise with entrepreneurial vision to create AI systems that are both powerful and sustainable. Currently pursuing Engineering at Technische Hochschule Ingolstadt, I focus on developing technologies that make intelligent systems accessible while minimizing resource consumption.</p>
                     <p>My work sits at the intersection of AI innovation and real-world application, specializing in multilingual language models, energy-efficient implementation strategies, and systems that deliver business value across industries.</p>
@@ -232,15 +236,15 @@
     </section>
     
     <!-- Projects Section -->
-    <section id="projects" class="projects" data-scroll-section>
+    <section id="projects" class="projects">
         <div class="container">
-            <div class="section-title" data-scroll data-scroll-speed="0.1">
+            <div class="section-title">
                 <h2>Featured Projects</h2>
             </div>
             
             <div class="projects-grid">
-                <!-- Project 1: OWL.AI -->
-                <div class="project-card" data-scroll data-scroll-speed="0.1">
+                <!-- Project 1 -->
+                <div class="project-card glass-card">
                     <div class="project-content">
                         <h3 class="project-title"><i class="fas fa-robot"></i> OWL.AI</h3>
                         <p class="project-description">A revolutionary multi-LLM chatbot that classifies prompts by complexity using a custom machine learning model, achieving 96% accuracy in LLM selection. The intelligent model selection reduces energy consumption by 59.6% compared to traditional approaches while maintaining full response quality.</p>
@@ -261,8 +265,8 @@
                     </div>
                 </div>
                 
-                <!-- Project 2: HalloDoc -->
-                <div class="project-card" data-scroll data-scroll-speed="0.2">
+                <!-- Project 2 -->
+                <div class="project-card glass-card">
                     <div class="project-content">
                         <h3 class="project-title"><i class="fas fa-calendar-alt"></i> HalloDoc</h3>
                         <p class="project-description">A WhatsApp-based AI assistant that automates doctor appointment booking using natural language processing. The system integrates with Google Calendar and uses Twilio for seamless communication, eliminating scheduling friction and reducing administrative workload for medical practices.</p>
@@ -282,8 +286,8 @@
                     </div>
                 </div>
                 
-                <!-- Project 3: Ranked -->
-                <div class="project-card" data-scroll data-scroll-speed="0.3">
+                <!-- Project 3 -->
+                <div class="project-card glass-card">
                     <div class="project-content">
                         <h3 class="project-title"><i class="fas fa-sort-amount-up"></i> Ranked</h3>
                         <p class="project-description">An AI-powered lead scoring tool that integrates directly into CRM workflows, prioritizing incoming leads using large language models. The system analyzes conversation context, purchase intent, and customer fit to automatically rank leads, enabling sales teams to focus on high-potential opportunities.</p>
@@ -307,20 +311,20 @@
     </section>
     
     <!-- Startup Section -->
-    <section id="startup" class="startup" data-scroll-section>
+    <section id="startup" class="startup">
         <div class="container">
-            <div class="section-title" data-scroll data-scroll-speed="0.1">
+            <div class="section-title">
                 <h2>SpicyNuggets</h2>
             </div>
             
             <div class="startup-content">
-                <div class="startup-text" data-scroll data-scroll-speed="0.1">
+                <div class="startup-text">
                     <h3>Bridging Research and Application</h3>
                     <p>Founded during the 5-Euro Business competition, SpicyNuggets has evolved into a platform for developing sustainable AI solutions that connect cutting-edge research with practical business applications.</p>
                     <p>Our mission is to make intelligent systems accessible to organizations of all sizes while pioneering energy-efficient implementation methods that reduce the environmental impact of advanced AI.</p>
                     
-                    <div class="achievement-list stagger-list">
-                        <div class="achievement-item">
+                    <div class="achievement-list">
+                        <div class="achievement-item glass-card">
                             <div class="achievement-icon">
                                 <i class="fas fa-award"></i>
                             </div>
@@ -329,7 +333,7 @@
                             </div>
                         </div>
                         
-                        <div class="achievement-item">
+                        <div class="achievement-item glass-card">
                             <div class="achievement-icon">
                                 <i class="fas fa-lightbulb"></i>
                             </div>
@@ -338,7 +342,7 @@
                             </div>
                         </div>
                         
-                        <div class="achievement-item">
+                        <div class="achievement-item glass-card">
                             <div class="achievement-icon">
                                 <i class="fas fa-project-diagram"></i>
                             </div>
@@ -349,9 +353,9 @@
                     </div>
                 </div>
                 
-                <div class="startup-image" data-scroll data-scroll-speed="0.2">
-                    <div class="startup-img image-reveal">
-                        <img src="assets/images/startup.jpg" alt="SpicyNuggets Innovation">
+                <div class="startup-image">
+                    <div class="startup-img glass-card">
+                        <img src="assets/images/startup.jpg" alt="SpicyNuggets Innovation" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -359,19 +363,20 @@
     </section>
     
     <!-- Skills Section -->
-    <section id="skills" class="skills" data-scroll-section>
+    <section id="skills" class="skills">
         <div class="container">
-            <div class="section-title" data-scroll data-scroll-speed="0.1">
+            <div class="section-title">
                 <h2>Technical Skills</h2>
             </div>
             
             <div class="skills-container">
-                <div class="skill-card" data-scroll data-scroll-speed="0.1">
+                <!-- Skill Card 1 -->
+                <div class="skill-card glass-card">
                     <div class="skill-icon">
                         <i class="fas fa-robot"></i>
                     </div>
                     <h3 class="skill-title">AI & Machine Learning</h3>
-                    <ul class="skill-list stagger-list">
+                    <ul class="skill-list">
                         <li>Large Language Models (LLMs)</li>
                         <li>Prompt Classification & Engineering</li>
                         <li>Retrieval-Augmented Generation</li>
@@ -380,12 +385,13 @@
                     </ul>
                 </div>
                 
-                <div class="skill-card" data-scroll data-scroll-speed="0.2">
+                <!-- Skill Card 2 -->
+                <div class="skill-card glass-card">
                     <div class="skill-icon">
                         <i class="fas fa-code"></i>
                     </div>
                     <h3 class="skill-title">Programming Languages</h3>
-                    <ul class="skill-list stagger-list">
+                    <ul class="skill-list">
                         <li>Python</li>
                         <li>JavaScript</li>
                         <li>C++</li>
@@ -394,12 +400,13 @@
                     </ul>
                 </div>
                 
-                <div class="skill-card" data-scroll data-scroll-speed="0.3">
+                <!-- Skill Card 3 -->
+                <div class="skill-card glass-card">
                     <div class="skill-icon">
                         <i class="fas fa-database"></i>
                     </div>
                     <h3 class="skill-title">Tools & Frameworks</h3>
-                    <ul class="skill-list stagger-list">
+                    <ul class="skill-list">
                         <li>Node.js & Express</li>
                         <li>React</li>
                         <li>Flask</li>
@@ -408,12 +415,13 @@
                     </ul>
                 </div>
                 
-                <div class="skill-card" data-scroll data-scroll-speed="0.4">
+                <!-- Skill Card 4 -->
+                <div class="skill-card glass-card">
                     <div class="skill-icon">
                         <i class="fas fa-sitemap"></i>
                     </div>
                     <h3 class="skill-title">Autonomous Systems</h3>
-                    <ul class="skill-list stagger-list">
+                    <ul class="skill-list">
                         <li>ROS2</li>
                         <li>Foxglove Visualization</li>
                         <li>Live Telemetry Systems</li>
@@ -421,39 +429,25 @@
                         <li>Data Processing Pipelines</li>
                     </ul>
                 </div>
-                
-                <div class="skill-card" data-scroll data-scroll-speed="0.5">
-                    <div class="skill-icon">
-                        <i class="fas fa-cloud"></i>
-                    </div>
-                    <h3 class="skill-title">Cloud & Deployment</h3>
-                    <ul class="skill-list stagger-list">
-                        <li>Heroku</li>
-                        <li>Vercel</li>
-                        <li>AWS (Beanstalk, Lightsail, Lambda)</li>
-                        <li>MongoDB Atlas</li>
-                        <li>Pinecone DB</li>
-                    </ul>
-                </div>
             </div>
         </div>
     </section>
     
     <!-- Formula Student Section -->
-    <section id="formula" class="formula" data-scroll-section>
+    <section id="formula" class="formula">
         <div class="container">
-            <div class="section-title" data-scroll data-scroll-speed="0.1">
+            <div class="section-title">
                 <h2>Formula Student</h2>
             </div>
             
             <div class="formula-content">
-                <div class="formula-image" data-scroll data-scroll-speed="0.2">
-                    <div class="formula-img image-reveal">
-                        <img src="assets/images/formula.jpg" alt="Formula Student Driverless">
+                <div class="formula-image">
+                    <div class="formula-img glass-card">
+                        <img src="assets/images/formula.jpg" alt="Formula Student Driverless" loading="lazy">
                     </div>
                 </div>
                 
-                <div class="formula-text" data-scroll data-scroll-speed="0.1">
+                <div class="formula-text">
                     <h3>Schanzer Racing Driverless</h3>
                     <p>As a member of the Driverless department at Schanzer Racing, I work on developing advanced telemetry systems and data visualization tools for autonomous racing vehicles. My focus is on creating real-time monitoring solutions that provide critical insights during testing and competition.</p>
                     <p>Using Foxglove Studio and ROS2, I've implemented visualization dashboards that transform complex sensor data into actionable information, enabling rapid optimization of vehicle performance and autonomous driving algorithms.</p>
@@ -464,23 +458,23 @@
     </section>
     
     <!-- Leadership Section -->
-    <section id="leadership" class="leadership" data-scroll-section>
+    <section id="leadership" class="leadership">
         <div class="container">
-            <div class="section-title" data-scroll data-scroll-speed="0.1">
+            <div class="section-title">
                 <h2>Leadership</h2>
             </div>
             
             <div class="leadership-content">
-                <div class="leadership-text" data-scroll data-scroll-speed="0.1">
+                <div class="leadership-text">
                     <h3>Student Representative</h3>
                     <p>Elected as the student representative (StuV) for Faculty E at Technische Hochschule Ingolstadt, I work to strengthen the connection between students and faculty administration. My role focuses on improving student inclusion in academic decisions and enhancing communication channels between all stakeholders.</p>
                     <p>Through this position, I've developed initiatives to gather student feedback, organized events to build community within the engineering department, and advocated for curriculum improvements that better prepare students for industry challenges.</p>
                     <p>This leadership experience has enhanced my ability to communicate effectively across diverse groups, manage stakeholder expectations, and implement processes that drive positive organizational change.</p>
                 </div>
                 
-                <div class="leadership-image" data-scroll data-scroll-speed="0.2">
-                    <div class="leadership-img image-reveal">
-                        <img src="assets/images/leadership.png" alt="Leadership Role">
+                <div class="leadership-image">
+                    <div class="leadership-img glass-card">
+                        <img src="assets/images/leadership.png" alt="Leadership Role" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -488,28 +482,28 @@
     </section>
     
     <!-- Contact Section -->
-    <section id="contact" class="contact" data-scroll-section>
+    <section id="contact" class="contact">
         <div class="container">
-            <div class="contact-content">
-                <h2 class="contact-title" data-scroll data-scroll-speed="0.1">Let's Connect</h2>
-                <p class="contact-subtitle" data-scroll data-scroll-speed="0.2">I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
+            <div class="contact-content glass-card">
+                <h2 class="contact-title">Let's Connect</h2>
+                <p class="contact-subtitle">I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
                 
                 <div class="contact-links">
-                    <a href="mailto:shaunraj46@gmail.com" class="contact-link" data-scroll data-scroll-speed="0.1">
+                    <a href="mailto:shaunraj46@gmail.com" class="contact-link">
                         <div class="contact-icon">
                             <i class="fas fa-envelope"></i>
                         </div>
                         <div class="contact-label">Email</div>
                     </a>
                     
-                    <a href="https://www.linkedin.com/in/shaun-clarence-raj-631817205" class="contact-link" data-scroll data-scroll-speed="0.2">
+                    <a href="https://www.linkedin.com/in/shaun-clarence-raj-631817205" class="contact-link">
                         <div class="contact-icon">
                             <i class="fab fa-linkedin-in"></i>
                         </div>
                         <div class="contact-label">LinkedIn</div>
                     </a>
                     
-                    <a href="https://github.com/shaunraj46" class="contact-link" data-scroll data-scroll-speed="0.3">
+                    <a href="https://github.com/shaunraj46" class="contact-link">
                         <div class="contact-icon">
                             <i class="fab fa-github"></i>
                         </div>
@@ -517,7 +511,7 @@
                     </a>
                 </div>
                 
-                <a href="mailto:shaunraj46@gmail.com" class="cta-btn" data-scroll data-scroll-speed="0.3">
+                <a href="mailto:shaunraj46@gmail.com" class="cta-btn">
                     <span class="cta-text">Start a Conversation</span>
                     <span class="cta-icon"><i class="fas fa-paper-plane"></i></span>
                 </a>
@@ -526,7 +520,7 @@
     </section>
     
     <!-- Footer -->
-    <footer data-scroll-section>
+    <footer>
         <div class="container">
             <div class="social-links">
                 <a href="https://github.com/shaunraj46" class="social-link">
@@ -543,68 +537,158 @@
         </div>
     </footer>
     
-    <!-- Scripts -->
-    <!-- AOS Animation Library -->
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    
-    <!-- Custom JS -->
-    <script src="assets/js/particles.js"></script>
-    <script src="assets/js/animations.js"></script>
-    <script src="assets/js/main.js"></script>
-    
-    <!-- Premium effects JS -->
-    <script src="assets/js/smooth-scroll.js"></script>
-    <script src="assets/js/premium-transitions.js"></script>
-    
-    <!-- Critical fix for viewport height in mobile browsers -->
+    <!-- Optimized JavaScript loading -->
     <script>
-        // Fix for 100vh on mobile browsers (especially iOS Safari)
-        function setVhProperty() {
-            const vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-        }
-        
-        // Set initial viewport height
-        setVhProperty();
-        
-        // Update on resize and orientation change
-        window.addEventListener('resize', setVhProperty);
-        window.addEventListener('orientationchange', function() {
-            // Small delay to ensure orientation change is complete
-            setTimeout(setVhProperty, 100);
+        // Critical initial functions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fix mobile layout issues immediately
+            if (window.innerWidth <= 768) {
+                document.body.classList.add('mobile');
+                fixMobileLayout();
+            }
+            
+            // Initialize mobile menu
+            initMobileMenu();
+            
+            // Initialize performance monitoring
+            initPerformanceMonitoring();
+            
+            // Load 3D model based on device capability
+            loadNexbotModel();
         });
         
-        // Fix for immediate mobile rendering
+        // Fix mobile layout
         function fixMobileLayout() {
-            if (window.innerWidth < 768) {
-                // Adjust NEXBOT container
-                const nexbotContainer = document.querySelector('.nexbot-container');
-                if (nexbotContainer) {
-                    nexbotContainer.style.position = 'absolute';
-                    nexbotContainer.style.bottom = '-380px';
-                    nexbotContainer.style.left = '50%';
-                    nexbotContainer.style.transform = 'translateX(-50%)';
-                    nexbotContainer.style.width = window.innerWidth <= 375 ? '240px' : '280px';
-                    nexbotContainer.style.height = window.innerWidth <= 375 ? '300px' : '350px';
-                }
+            const nexbotContainer = document.querySelector('.nexbot-container');
+            if (nexbotContainer) {
+                nexbotContainer.style.position = 'absolute';
+                nexbotContainer.style.top = 'auto';
+                nexbotContainer.style.bottom = window.innerWidth <= 375 ? '-330px' : '-380px';
+                nexbotContainer.style.left = '50%';
+                nexbotContainer.style.transform = 'translateX(-50%)';
+                nexbotContainer.style.width = window.innerWidth <= 375 ? '240px' : '280px';
+                nexbotContainer.style.height = window.innerWidth <= 375 ? '300px' : '350px';
+            }
+        }
+        
+        // Mobile menu toggle
+        function initMobileMenu() {
+            const menuToggle = document.querySelector('.mobile-menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                    menuToggle.classList.toggle('active');
+                    document.body.classList.toggle('menu-open');
+                });
                 
-                // Fix hero section
-                const hero = document.querySelector('.hero');
-                if (hero) {
-                    hero.style.marginBottom = window.innerWidth <= 375 ? '300px' : '350px';
+                // Close menu when clicking a link
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        navLinks.classList.remove('active');
+                        menuToggle.classList.remove('active');
+                        document.body.classList.remove('menu-open');
+                    });
+                });
+            }
+        }
+        
+        // Conditional loading of 3D model
+        function loadNexbotModel() {
+            const container = document.querySelector('.nexbot-container');
+            const placeholder = document.querySelector('.nexbot-placeholder');
+            
+            if (!container || !placeholder) return;
+            
+            // Check if device is capable of running 3D
+            const isMobile = window.innerWidth <= 768;
+            const isLowEnd = navigator.hardwareConcurrency <= 4;
+            
+            if (isMobile && isLowEnd) {
+                // Use static image instead on low-end mobile
+                container.innerHTML = '<img src="assets/images/nexbot-static.png" alt="NEXBOT 3D Model" class="nexbot-static">';
+                return;
+            }
+            
+            // Load 3D model for capable devices
+            const modelUrl = placeholder.getAttribute('data-src');
+            import('https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js')
+            .then(() => {
+                const viewer = document.createElement('spline-viewer');
+                viewer.setAttribute('url', modelUrl);
+                container.appendChild(viewer);
+                placeholder.remove();
+            })
+            .catch(err => {
+                console.warn('Failed to load 3D model:', err);
+                // Fallback to static image
+                container.innerHTML = '<img src="assets/images/nexbot-static.png" alt="NEXBOT 3D Model" class="nexbot-static">';
+            });
+        }
+        
+        // Performance monitoring
+        function initPerformanceMonitoring() {
+            // Detect user preference for reduced motion
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.body.classList.add('reduce-motion');
+            }
+            
+            // Monitor for layout shifts
+            if ('PerformanceObserver' in window) {
+                try {
+                    const observer = new PerformanceObserver((list) => {
+                        for (const entry of list.getEntries()) {
+                            if (entry.hadRecentInput) continue;
+                            if (entry.value > 0.1) {
+                                console.warn('Layout shift detected:', entry);
+                            }
+                        }
+                    });
+                    observer.observe({type: 'layout-shift', buffered: true});
+                } catch (e) {
+                    console.warn('PerformanceObserver not supported');
                 }
             }
         }
         
-        // Run on load and after a delay
+        // On full load
         window.addEventListener('load', function() {
-            fixMobileLayout();
-            setTimeout(fixMobileLayout, 500);
+            // Remove loader
+            document.querySelector('.page-loader').classList.add('loader-hidden');
+            // Remove preload class to enable transitions
+            document.body.classList.remove('preload');
             document.body.classList.add('loaded');
+            
+            // Defer non-critical scripts
+            setTimeout(() => {
+                // Load animation scripts
+                const animScript = document.createElement('script');
+                animScript.src = 'assets/js/animations.js';
+                document.body.appendChild(animScript);
+                
+                // Load particle effects
+                if (!document.body.classList.contains('reduce-motion') && window.innerWidth > 768) {
+                    const particlesScript = document.createElement('script');
+                    particlesScript.src = 'assets/js/particles.js';
+                    document.body.appendChild(particlesScript);
+                }
+            }, 1000);
         });
         
-        // Apply fix immediately as well
-        fixMobileLayout();
+        // Handle resize events
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                if (window.innerWidth <= 768) {
+                    document.body.classList.add('mobile');
+                    fixMobileLayout();
+                } else {
+                    document.body.classList.remove('mobile');
+                }
+            }, 250);
+        });
     </script>
 </body>
 </html>

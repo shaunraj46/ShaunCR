@@ -1,31 +1,20 @@
 /* 
  * Animations CSS File for Shaun Raj's Portfolio
- * Defines all animation keyframes and effects
+ * Performance-optimized animations with mobile considerations
  */
 
-/* Float animation */
+/* Keyframe Animations - Core set */
+
+/* Float animation - simplified for better performance */
 @keyframes float {
     0% {
         transform: translateY(0) translateX(0);
     }
     50% {
-        transform: translateY(100px) translateX(-100px);
+        transform: translateY(40px) translateX(-40px);
     }
     100% {
-        transform: translateY(50px) translateX(-200px);
-    }
-}
-
-/* Floating sun animation */
-@keyframes floating {
-    0% {
-        transform: translateY(0) translateX(0) scale(1);
-    }
-    50% {
-        transform: translateY(100px) translateX(-100px) scale(1.1);
-    }
-    100% {
-        transform: translateY(50px) translateX(-150px) scale(0.95);
+        transform: translateY(20px) translateX(-60px);
     }
 }
 
@@ -41,40 +30,7 @@
     }
 }
 
-/* Rotation animation */
-@keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Shimmer effect for elements */
-@keyframes shimmer {
-    0% {
-        background-position: -200% 0;
-    }
-    100% {
-        background-position: 200% 0;
-    }
-}
-
-/* Gradient border animation */
-@keyframes gradientBorder {
-    0% {
-        border-image-source: linear-gradient(45deg, var(--primary), var(--accent));
-    }
-    50% {
-        border-image-source: linear-gradient(45deg, var(--accent), var(--primary));
-    }
-    100% {
-        border-image-source: linear-gradient(45deg, var(--primary), var(--accent));
-    }
-}
-
-/* Pulse animation */
+/* Pulse animation - used sparingly */
 @keyframes pulse {
     0% {
         transform: scale(1);
@@ -90,7 +46,7 @@
     }
 }
 
-/* Background gradient shift */
+/* Background gradient shift - more efficient version */
 @keyframes gradientShift {
     0% {
         background-position: 0% 50%;
@@ -100,19 +56,6 @@
     }
     100% {
         background-position: 0% 50%;
-    }
-}
-
-/* Spotlight effect */
-@keyframes spotlight {
-    0% {
-        filter: brightness(1);
-    }
-    50% {
-        filter: brightness(1.2);
-    }
-    100% {
-        filter: brightness(1);
     }
 }
 
@@ -126,119 +69,110 @@
     }
 }
 
-/* 3D rotation effect */
-@keyframes rotate3d {
-    0% {
-        transform: perspective(1000px) rotateY(0deg);
-    }
-    50% {
-        transform: perspective(1000px) rotateY(15deg);
-    }
-    100% {
-        transform: perspective(1000px) rotateY(0deg);
-    }
-}
-
-/* Floating animation for skill cards */
+/* Floating animation for skill cards - subtle version */
 @keyframes floatCard {
     0%, 100% {
         transform: translateY(0);
     }
     50% {
-        transform: translateY(-10px);
+        transform: translateY(-8px);
     }
 }
 
-/* AOS (Animate On Scroll) Animations */
-[data-aos="custom-fade-up"] {
+/* Intersection Observer Animations */
+/* These use modern IntersectionObserver API instead of scroll events */
+
+.fade-in {
     opacity: 0;
-    transform: translateY(50px);
-    transition-property: transform, opacity;
+    transition: opacity 0.8s ease-out;
 }
 
-[data-aos="custom-fade-up"].aos-animate {
+.fade-in.visible {
+    opacity: 1;
+}
+
+.fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-up.visible {
     opacity: 1;
     transform: translateY(0);
 }
 
-[data-aos="custom-fade-right"] {
+.fade-right {
     opacity: 0;
-    transform: translateX(-50px);
-    transition-property: transform, opacity;
+    transform: translateX(-30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
-[data-aos="custom-fade-right"].aos-animate {
+.fade-right.visible {
     opacity: 1;
     transform: translateX(0);
 }
 
-[data-aos="custom-fade-left"] {
+.fade-left {
     opacity: 0;
-    transform: translateX(50px);
-    transition-property: transform, opacity;
+    transform: translateX(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
-[data-aos="custom-fade-left"].aos-animate {
+.fade-left.visible {
     opacity: 1;
     transform: translateX(0);
 }
 
-[data-aos="custom-zoom-in"] {
+.zoom-in {
     opacity: 0;
-    transform: scale(0.8);
-    transition-property: transform, opacity;
+    transform: scale(0.9);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
-[data-aos="custom-zoom-in"].aos-animate {
+.zoom-in.visible {
     opacity: 1;
     transform: scale(1);
 }
 
-[data-aos="custom-flip"] {
-    opacity: 0;
-    transform: perspective(2500px) rotateY(90deg);
-    transition-property: transform, opacity;
+/* Staggered animation delays */
+.delay-1 {
+    transition-delay: 0.1s;
 }
 
-[data-aos="custom-flip"].aos-animate {
-    opacity: 1;
-    transform: perspective(2500px) rotateY(0deg);
+.delay-2 {
+    transition-delay: 0.2s;
 }
 
-/* Class-based animations */
-.animate-shimmer {
-    background: linear-gradient(90deg, 
-        rgba(255, 255, 255, 0.0), 
-        rgba(255, 255, 255, 0.2), 
-        rgba(255, 255, 255, 0.0));
-    background-size: 200% auto;
-    animation: shimmer 3s linear infinite;
+.delay-3 {
+    transition-delay: 0.3s;
 }
 
-.animate-pulse {
-    animation: pulse 2s infinite ease-in-out;
+.delay-4 {
+    transition-delay: 0.4s;
 }
 
+.delay-5 {
+    transition-delay: 0.5s;
+}
+
+/* Animation Classes - Apply these directly to elements */
+
+/* Moving Sun animation - only on desktop */
+@media (min-width: 768px) {
+    .moving-sun {
+        animation: float 40s infinite alternate ease-in-out;
+    }
+}
+
+/* Subtle floating elements */
 .animate-float {
     animation: floatCard 5s infinite ease-in-out;
 }
 
-.animate-spotlight {
-    animation: spotlight 3s infinite ease-in-out;
-}
-
-.animate-rotate3d {
-    animation: rotate3d 7s infinite ease-in-out;
-}
-
-/* 3D hover effect for cards */
-.card-3d {
-    transition: transform 0.5s ease;
-    transform-style: preserve-3d;
-}
-
-.card-3d:hover {
-    transform: perspective(1000px) rotateX(5deg) rotateY(5deg);
+/* Subtle pulse effect */
+.animate-pulse {
+    animation: pulse 3s infinite ease-in-out;
 }
 
 /* Gradient text effect */
@@ -256,115 +190,179 @@
     box-shadow: 0 0 15px var(--primary);
 }
 
-/* Glitch text effect */
-.glitch {
-    position: relative;
-}
-
-.glitch::before,
-.glitch::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.glitch::before {
-    left: 2px;
-    text-shadow: -1px 0 var(--primary);
-    background: rgba(0, 0, 0, 0.2);
-    clip: rect(44px, 450px, 56px, 0);
-    animation: glitch-anim 5s infinite linear alternate-reverse;
-}
-
-.glitch::after {
-    left: -2px;
-    text-shadow: -1px 0 var(--accent);
-    background: rgba(0, 0, 0, 0.2);
-    clip: rect(44px, 450px, 56px, 0);
-    animation: glitch-anim2 5s infinite linear alternate-reverse;
-}
-
-@keyframes glitch-anim {
-    0% {
-        clip: rect(4px, 9999px, 66px, 0);
-    }
-    10% {
-        clip: rect(87px, 9999px, 82px, 0);
-    }
-    20% {
-        clip: rect(33px, 9999px, 27px, 0);
-    }
-    30% {
-        clip: rect(92px, 9999px, 9px, 0);
-    }
-    40% {
-        clip: rect(26px, 9999px, 14px, 0);
-    }
-    50% {
-        clip: rect(46px, 9999px, 65px, 0);
-    }
-    60% {
-        clip: rect(3px, 9999px, 33px, 0);
-    }
-    70% {
-        clip: rect(60px, 9999px, 64px, 0);
-    }
-    80% {
-        clip: rect(95px, 9999px, 39px, 0);
-    }
-    90% {
-        clip: rect(18px, 9999px, 17px, 0);
-    }
-    100% {
-        clip: rect(53px, 9999px, 81px, 0);
-    }
-}
-
-@keyframes glitch-anim2 {
-    0% {
-        clip: rect(65px, 9999px, 27px, 0);
-    }
-    10% {
-        clip: rect(93px, 9999px, 67px, 0);
-    }
-    20% {
-        clip: rect(9px, 9999px, 36px, 0);
-    }
-    30% {
-        clip: rect(96px, 9999px, 12px, 0);
-    }
-    40% {
-        clip: rect(95px, 9999px, 1px, 0);
-    }
-    50% {
-        clip: rect(54px, 9999px, 98px, 0);
-    }
-    60% {
-        clip: rect(58px, 9999px, 57px, 0);
-    }
-    70% {
-        clip: rect(19px, 9999px, 74px, 0);
-    }
-    80% {
-        clip: rect(81px, 9999px, 19px, 0);
-    }
-    90% {
-        clip: rect(8px, 9999px, 65px, 0);
-    }
-    100% {
-        clip: rect(30px, 9999px, 92px, 0);
-    }
-}
-
-/* Tilt animation for project cards */
-.tilt-effect {
+/* 3D card effect - optimized version */
+.card-3d {
     transition: transform 0.3s ease;
     transform-style: preserve-3d;
 }
 
-.tilt-effect:hover {
-    transform: perspective(1000px) rotateX(5deg) rotateY(5deg) scale(1.02);
+.card-3d:hover {
+    transform: perspective(1000px) rotateX(3deg) rotateY(3deg);
+}
+
+/* Image reveal effect */
+.image-reveal {
+    position: relative;
+    overflow: hidden;
+}
+
+.image-reveal img {
+    transform: scale(1.05);
+    opacity: 0;
+    transition: transform 0.8s ease, opacity 0.8s ease;
+}
+
+.image-reveal.visible img {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Text reveal animation */
+.reveal-text {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Staggered animation for lists */
+.stagger-list li {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.stagger-list.visible li:nth-child(1) { transition-delay: 0.1s; }
+.stagger-list.visible li:nth-child(2) { transition-delay: 0.2s; }
+.stagger-list.visible li:nth-child(3) { transition-delay: 0.3s; }
+.stagger-list.visible li:nth-child(4) { transition-delay: 0.4s; }
+.stagger-list.visible li:nth-child(5) { transition-delay: 0.5s; }
+
+.stagger-list.visible li {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Performance optimizations for lower-end devices */
+@media (max-width: 768px), (prefers-reduced-motion: reduce) {
+    /* Disable most animations on mobile/reduced motion */
+    .moving-sun,
+    .animate-float,
+    .animate-pulse {
+        animation: none !important;
+    }
+    
+    /* Simplify transitions for better performance */
+    .fade-up,
+    .fade-right,
+    .fade-left,
+    .zoom-in {
+        transition-duration: 0.5s;
+    }
+    
+    /* Reduce or eliminate transition delays */
+    .delay-1, .delay-2, .delay-3, .delay-4, .delay-5 {
+        transition-delay: 0.1s;
+    }
+    
+    /* Simplify hover effects */
+    .card-3d:hover {
+        transform: translateY(-5px);
+    }
+}
+
+/* IntersectionObserver Animation Script */
+/* This script is embedded here for reference, but should be implemented in JS */
+/*
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all elements that need to be animated
+    const animatedElements = document.querySelectorAll('.fade-in, .fade-up, .fade-left, .fade-right, .zoom-in, .image-reveal, .stagger-list');
+    
+    // Create IntersectionObserver instance
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                
+                // Optional: Unobserve after animation is triggered
+                // observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.1, // When 10% of the element is visible
+        rootMargin: '0px 0px -50px 0px' // Trigger a bit before the element is in view
+    });
+    
+    // Observe all elements
+    animatedElements.forEach(element => {
+        observer.observe(element);
+    });
+});
+*/
+
+/* NEXBOT Animation loading state */
+.nexbot-placeholder {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: rgba(30, 41, 59, 0.3);
+    border-radius: var(--border-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.nexbot-placeholder::after {
+    content: '';
+    position: absolute;
+    width: 30%;
+    height: 30%;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--primary), var(--accent));
+    opacity: 0.6;
+    filter: blur(20px);
+    animation: pulse 2s infinite ease-in-out;
+}
+
+/* Scroll progress indicator animation */
+.scroll-progress {
+    transform-origin: left;
+    will-change: width;
+}
+
+/* Star twinkling effect - subtle and low-impact */
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+.twinkling-star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.twinkling-star:nth-child(odd) {
+    animation: twinkle 3s infinite ease-in-out;
+}
+
+.twinkling-star:nth-child(even) {
+    animation: twinkle 5s infinite ease-in-out;
+}
+
+/* Make sure animations start when the page is loaded */
+body.loaded .hero h1,
+body.loaded .hero h2,
+body.loaded .hero p,
+body.loaded .hero .cta-btn {
+    animation-play-state: running;
+}
+
+/* Preload state - hold animations until everything is ready */
+body.preload .hero h1,
+body.preload .hero h2,
+body.preload .hero p,
+body.preload .hero .cta-btn {
+    animation-play-state: paused;
 }
