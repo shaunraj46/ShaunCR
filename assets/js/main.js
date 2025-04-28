@@ -1,6 +1,7 @@
 /**
  * Main JavaScript for Shaun Raj's Portfolio 2.0
  * Implements Three.js background effect, animations and interactions
+ * Enhanced with mobile and tablet optimizations
  */
 
 // Wait for DOM to be loaded before initializing
@@ -8,8 +9,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize core functionality immediately
     initializeCore();
     
-    // Initialize Three.js scene
+    // Add enhanced mobile detection
+    enhancedDeviceDetection();
+    
+    // Add enhanced touch experience for mobile
+    enhancedTouchExperience();
+    
+    // Handle orientation changes
+    handleOrientationChanges();
+    
+    // Optimize for slow connections
+    optimizeForSlowConnections();
+    
+    // Initialize Three.js scene with mobile optimizations
     initThreeJsScene();
+    optimizeThreeJS();
     
     // Add load event to handle post-loading initialization
     window.addEventListener('load', function() {
@@ -435,3 +449,207 @@ window.addEventListener('resize', function() {
         }
     }, 250);
 });
+
+/**
+ * Improve detection of device capabilities
+ */
+function enhancedDeviceDetection() {
+    // Detect tablet specifically
+    if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
+        document.body.classList.add('tablet');
+    }
+    
+    // Detect orientation
+    if (window.innerHeight > window.innerWidth) {
+        document.body.classList.add('portrait');
+    } else {
+        document.body.classList.add('landscape');
+    }
+    
+    // Check device memory (if available)
+    if (navigator.deviceMemory) {
+        if (navigator.deviceMemory <= 4) {
+            document.body.classList.add('low-memory-device');
+        }
+    }
+    
+    // Better detection for older devices
+    if (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) {
+        document.body.classList.add('very-low-end-device');
+    }
+    
+    // Detect connection type if available
+    if (navigator.connection) {
+        if (navigator.connection.effectiveType === '2g' || 
+            navigator.connection.effectiveType === 'slow-2g') {
+            document.body.classList.add('slow-connection');
+        }
+    }
+}
+
+/**
+ * Enhanced mobile touch experience
+ */
+function enhancedTouchExperience() {
+    // Skip if not a touch device
+    if (!('ontouchstart' in window || navigator.maxTouchPoints > 0)) return;
+    
+    // Add active state to touchable elements
+    const touchElements = document.querySelectorAll('a, button, .cta-btn, .project-card, .skill-card');
+    
+    touchElements.forEach(element => {
+        element.addEventListener('touchstart', function() {
+            this.classList.add('touch-active');
+        }, { passive: true });
+        
+        element.addEventListener('touchend', function() {
+            this.classList.remove('touch-active');
+        }, { passive: true });
+        
+        element.addEventListener('touchcancel', function() {
+            this.classList.remove('touch-active');
+        }, { passive: true });
+    });
+    
+    // Fix 300ms touch delay on mobile browsers
+    document.documentElement.style.touchAction = 'manipulation';
+}
+
+/**
+ * Optimize Three.js for mobile if present
+ */
+function optimizeThreeJS() {
+    // If Three.js is used (check for scene container)
+    const sceneContainer = document.querySelector('.scene-container');
+    if (!sceneContainer) return;
+    
+    // Mobile optimizations for Three.js
+    if (window.innerWidth <= 768) {
+        // Lower resolution
+        if (typeof THREE !== 'undefined' && THREE.WebGLRenderer) {
+            // Wait for Three.js to be initialized
+            const checkRenderer = setInterval(() => {
+                const renderer = sceneContainer.querySelector('canvas');
+                if (renderer) {
+                    // Renderer found, apply optimizations
+                    const context = renderer.getContext('webgl') || renderer.getContext('experimental-webgl');
+                    if (context) {
+                        // Reduce precision if possible
+                        if (context.getShaderPrecisionFormat) {
+                            const vertHighpFloat = context.getShaderPrecisionFormat(context.VERTEX_SHADER, context.HIGH_FLOAT);
+                            const fragHighpFloat = context.getShaderPrecisionFormat(context.FRAGMENT_SHADER, context.HIGH_FLOAT);
+                            
+                            if (vertHighpFloat && vertHighpFloat.precision < 23 && 
+                                fragHighpFloat && fragHighpFloat.precision < 23) {
+                                context.hint = context.HINT || {};
+                                context.hint.FRAGMENT_SHADER_DERIVATIVE_HINT = context.FRAGMENT_SHADER_DERIVATIVE_HINT || {};
+                                context.hint(context.FRAGMENT_SHADER_DERIVATIVE_HINT, context.FASTEST);
+                            }
+                        }
+                    }
+                    
+                    // Clear interval once optimizations are applied
+                    clearInterval(checkRenderer);
+                }
+            }, 100);
+            
+            // Ensure we don't keep checking forever
+            setTimeout(() => {
+                clearInterval(checkRenderer);
+            }, 5000);
+        }
+    }
+}
+
+/**
+ * Optimize content loading for slow connections
+ */
+function optimizeForSlowConnections() {
+    // Check if we're on a slow connection
+    const isSlowConnection = document.body.classList.contains('slow-connection') ||
+                             document.body.classList.contains('save-data');
+    
+    if (isSlowConnection) {
+        // Lazy load images further down the page with low priority
+        const lowerPriorityImages = document.querySelectorAll('.startup-img img, .formula-img img, .leadership-img img');
+        lowerPriorityImages.forEach(img => {
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            
+            // If srcset is already set up, we'll insert a small placeholder first
+            if (img.srcset) {
+                const originalSrc = img.src;
+                const originalSrcset = img.srcset;
+                
+                // Set to placeholder temporarily (could be a tiny image or data URI in production)
+                img.src = 'assets/images/placeholder.jpg';
+                img.srcset = '';
+                
+                // Restore actual image after page becomes interactive
+                window.addEventListener('DOMContentLoaded', () => {
+                    setTimeout(() => {
+                        img.src = originalSrc;
+                        img.srcset = originalSrcset;
+                    }, 1000); // Delay loading of lower priority images
+                });
+            }
+        });
+        
+        // Potentially disable animations for very slow connections
+        if (navigator.connection && 
+            (navigator.connection.effectiveType === 'slow-2g' || navigator.connection.saveData)) {
+            document.body.classList.add('reduce-motion');
+        }
+    }
+}
+
+/**
+ * Handle orientation changes effectively
+ */
+function handleOrientationChanges() {
+    // Initial orientation class
+    if (window.innerHeight > window.innerWidth) {
+        document.body.classList.add('portrait');
+        document.body.classList.remove('landscape');
+    } else {
+        document.body.classList.add('landscape');
+        document.body.classList.remove('portrait');
+    }
+    
+    // Listen for orientation changes
+    window.addEventListener('orientationchange', function() {
+        // Small delay to ensure dimensions have updated
+        setTimeout(() => {
+            if (window.innerHeight > window.innerWidth) {
+                document.body.classList.add('portrait');
+                document.body.classList.remove('landscape');
+            } else {
+                document.body.classList.add('landscape');
+                document.body.classList.remove('portrait');
+            }
+            
+            // Refresh any layout that needs updating
+            updateLayoutForOrientation();
+        }, 200);
+    });
+}
+
+/**
+ * Update layout elements when orientation changes
+ */
+function updateLayoutForOrientation() {
+    // Fix hero height on orientation change
+    const hero = document.querySelector('.hero');
+    if (hero) {
+        if (document.body.classList.contains('landscape') && window.innerWidth < 1024) {
+            hero.style.minHeight = '70vh';
+        } else {
+            hero.style.minHeight = '';
+        }
+    }
+    
+    // Fix any iOS-specific issues again after orientation change
+    if (isIOS()) {
+        fixIOSViewportHeight();
+    }
+}
