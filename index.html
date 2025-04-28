@@ -2,20 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Enhanced viewport for all devices including notched phones -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta name="theme-color" content="#0F172A">
-    <!-- Apple specific meta tags -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <!-- PWA capability hints -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <!-- Prevent touch delay on mobile -->
-    <meta name="msapplication-tap-highlight" content="no">
-    <!-- Added mobile optimizations -->
-    <meta name="format-detection" content="telephone=no">
-    <meta name="apple-mobile-web-app-title" content="Shaun Raj">
-    
     <title>Shaun Raj | Engineering Student & Founder</title>
     <meta name="description" content="Shaun Clarence Raj - Engineering Student & Founder of SpicyNuggets, creating intelligent, sustainable AI systems">
     
@@ -23,14 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    
-    <!-- Preload critical fonts -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" as="style">
-    
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/images/favicon.png">
-    <!-- High-resolution favicon for iOS -->
-    <link rel="apple-touch-icon" href="assets/images/favicon.png">
     
     <!-- Critical CSS -->
     <style>
@@ -80,8 +61,6 @@
             min-height: 100vh;
             opacity: 0;
             transition: opacity 0.5s ease;
-            -webkit-tap-highlight-color: transparent;
-            width: 100%;
         }
         
         body.loaded {
@@ -123,94 +102,13 @@
         
         /* 3D Scene Container initial styling */
         .scene-container {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1;
+            z-index: 0;
             overflow: hidden;
-            pointer-events: none;
-        }
-        
-        /* Add this for better touch feedback */
-        .touch-active {
-            transition: transform 0.1s ease;
-            transform: scale(0.98);
-        }
-        
-        /* Additional critical mobile styles */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem !important;
-            }
-            .hero h2 {
-                font-size: 1.5rem !important;
-            }
-            .hero p {
-                font-size: 1.1rem;
-            }
-            /* Prevent content shifting during load */
-            .section-title, .glass-card {
-                min-height: 50px;
-            }
-        }
-        
-        /* Add this for better touch feedback */
-        @media (hover: none) {
-            a:active, button:active, .cta-btn:active {
-                transform: scale(0.97);
-            }
-        }
-        
-        /* Fix content going off screen */
-        body, html {
-            overflow-x: hidden;
-            width: 100%;
-            position: relative;
-            margin: 0;
-            padding: 0;
-        }
-        
-        /* Fix hero section visibility */
-        @media (max-width: 767px) {
-            .hero {
-                position: relative;
-                z-index: 10 !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-                min-height: 100vh;
-                width: 100%;
-                padding: 6rem 1rem 2rem 1rem;
-                box-sizing: border-box;
-            }
-            
-            .hero h1, .hero h2, .hero p, .hero .cta-btn {
-                position: relative;
-                z-index: 10 !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-                max-width: 100%;
-            }
-            
-            .scene-container {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: 1;
-                overflow: hidden;
-                pointer-events: none;
-            }
-            
-            .container {
-                width: 100%;
-                max-width: 100%;
-                padding-left: 15px;
-                padding-right: 15px;
-                box-sizing: border-box;
-            }
         }
     </style>
     
@@ -239,16 +137,16 @@
         <div class="container">
             <!-- Navigation -->
             <nav>
-                <a href="#" class="logo" aria-label="Shaun Raj Logo">SR</a>
+                <a href="#" class="logo">SR</a>
                 
                 <div class="nav-links">
-                    <a href="#about" aria-label="About section">About</a>
-                    <a href="#projects" aria-label="Projects section">Projects</a>
-                    <a href="#startup" aria-label="Startup section">Startup</a>
-                    <a href="#skills" aria-label="Skills section">Skills</a>
-                    <a href="#formula" aria-label="Formula section">Formula</a>
-                    <a href="#leadership" aria-label="Leadership section">Leadership</a>
-                    <a href="#contact" aria-label="Contact section">Contact</a>
+                    <a href="#about">About</a>
+                    <a href="#projects">Projects</a>
+                    <a href="#startup">Startup</a>
+                    <a href="#skills">Skills</a>
+                    <a href="#formula">Formula</a>
+                    <a href="#leadership">Leadership</a>
+                    <a href="#contact">Contact</a>
                 </div>
                 
                 <button class="mobile-menu-toggle" aria-label="Toggle menu">
@@ -260,10 +158,10 @@
             
             <!-- Hero content -->
             <div class="hero">
-                <h1 class="animated-heading" style="position: relative; z-index: 10;">Shaun Clarence Raj</h1>
-                <h2 class="animated-heading" style="position: relative; z-index: 10;">Engineering Student & Founder</h2>
-                <p class="animated-text" style="position: relative; z-index: 10;">Bridging cutting-edge AI research with practical business applications. Creating intelligent systems that are efficient, sustainable, and accessible to organizations of all sizes.</p>
-                <a href="#projects" class="cta-btn" aria-label="Explore my work" style="position: relative; z-index: 10;">
+                <h1 class="animated-heading">Shaun Clarence Raj</h1>
+                <h2 class="animated-heading">Engineering Student & Founder</h2>
+                <p class="animated-text">Bridging cutting-edge AI research with practical business applications. Creating intelligent systems that are efficient, sustainable, and accessible to organizations of all sizes.</p>
+                <a href="#projects" class="cta-btn">
                     <span class="cta-text">Explore My Work</span>
                     <span class="cta-icon"><i class="fas fa-arrow-right"></i></span>
                 </a>
@@ -281,12 +179,7 @@
             <div class="about-content">
                 <div class="about-image glass-card">
                     <div class="profile-img image-reveal">
-                        <img src="assets/images/profile.png" 
-                             srcset="assets/images/profile-small.png 400w,
-                                    assets/images/profile.png 800w"
-                             sizes="(max-width: 768px) 100vw, 50vw"
-                             alt="Shaun Raj - Engineering Student & Founder" 
-                             loading="lazy">
+                        <img src="assets/images/profile.png" alt="Shaun Raj - Engineering Student & Founder" loading="lazy">
                     </div>
                 </div>
                 
@@ -295,7 +188,7 @@
                     <p>As an Engineering Student and Founder of SpicyNuggets, I blend technical expertise with entrepreneurial vision to create AI systems that are both powerful and sustainable. Currently pursuing Engineering at Technische Hochschule Ingolstadt, I focus on developing technologies that make intelligent systems accessible while minimizing resource consumption.</p>
                     <p>My work sits at the intersection of AI innovation and real-world application, specializing in multilingual language models, energy-efficient implementation strategies, and systems that deliver business value across industries.</p>
                     <p>I'm passionate about demonstrating that cutting-edge AI can be both performance-optimized and environmentally responsible — a philosophy that drives all my projects.</p>
-                    <a href="#contact" class="cta-btn" aria-label="Connect with me">
+                    <a href="#contact" class="cta-btn">
                         <span class="cta-text">Connect With Me</span>
                         <span class="cta-icon"><i class="fas fa-arrow-right"></i></span>
                     </a>
@@ -327,7 +220,7 @@
                             <span class="tech-tag">Machine Learning</span>
                         </div>
                         
-                        <a href="https://owl-ai.de" target="_blank" rel="noopener" class="project-link" aria-label="View OWL.AI project">
+                        <a href="https://owl-ai.de" target="_blank" class="project-link">
                             <i class="fas fa-external-link-alt"></i>
                             <span>View Project</span>
                         </a>
@@ -348,7 +241,7 @@
                             <span class="tech-tag">Node.js</span>
                         </div>
                         
-                        <a href="https://hallodoc.spicynuggets.eu" target="_blank" rel="noopener" class="project-link" aria-label="View HalloDoc project">
+                        <a href="https://hallodoc.spicynuggets.eu" target="_blank" class="project-link">
                             <i class="fas fa-external-link-alt"></i>
                             <span>View Project</span>
                         </a>
@@ -369,7 +262,7 @@
                             <span class="tech-tag">Python</span>
                         </div>
                         
-                        <a href="https://ranked.spicynuggets.eu" target="_blank" rel="noopener" class="project-link" aria-label="View Ranked project">
+                        <a href="https://ranked.spicynuggets.eu" target="_blank" class="project-link">
                             <i class="fas fa-external-link-alt"></i>
                             <span>View Project</span>
                         </a>
@@ -424,12 +317,7 @@
                 
                 <div class="startup-image">
                     <div class="startup-img glass-card">
-                        <img src="assets/images/startup.jpg"
-                             srcset="assets/images/startup-small.jpg 400w,
-                                    assets/images/startup.jpg 800w"
-                             sizes="(max-width: 768px) 100vw, 50vw"
-                             alt="SpicyNuggets Innovation" 
-                             loading="lazy">
+                        <img src="assets/images/startup.jpg" alt="SpicyNuggets Innovation" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -517,12 +405,7 @@
             <div class="formula-content">
                 <div class="formula-image">
                     <div class="formula-img glass-card">
-                        <img src="assets/images/formula.jpg"
-                             srcset="assets/images/formula-small.jpg 400w,
-                                    assets/images/formula.jpg 800w"
-                             sizes="(max-width: 768px) 100vw, 50vw"
-                             alt="Formula Student Driverless" 
-                             loading="lazy">
+                        <img src="assets/images/formula.jpg" alt="Formula Student Driverless" loading="lazy">
                     </div>
                 </div>
                 
@@ -553,12 +436,7 @@
                 
                 <div class="leadership-image">
                     <div class="leadership-img glass-card">
-                        <img src="assets/images/leadership.png"
-                             srcset="assets/images/leadership-small.png 400w,
-                                    assets/images/leadership.png 800w"
-                             sizes="(max-width: 768px) 100vw, 50vw"
-                             alt="Leadership Role" 
-                             loading="lazy">
+                        <img src="assets/images/leadership.png" alt="Leadership Role" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -573,21 +451,21 @@
                 <p class="contact-subtitle">I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
                 
                 <div class="contact-links">
-                    <a href="mailto:shaunraj46@gmail.com" class="contact-link" aria-label="Email Shaun Raj">
+                    <a href="mailto:shaunraj46@gmail.com" class="contact-link">
                         <div class="contact-icon">
                             <i class="fas fa-envelope"></i>
                         </div>
                         <div class="contact-label">Email</div>
                     </a>
                     
-                    <a href="https://www.linkedin.com/in/shaun-clarence-raj-631817205" class="contact-link" aria-label="Shaun Raj on LinkedIn" rel="noopener">
+                    <a href="https://www.linkedin.com/in/shaun-clarence-raj-631817205" class="contact-link">
                         <div class="contact-icon">
                             <i class="fab fa-linkedin-in"></i>
                         </div>
                         <div class="contact-label">LinkedIn</div>
                     </a>
                     
-                    <a href="https://github.com/shaunraj46" class="contact-link" aria-label="Shaun Raj on GitHub" rel="noopener">
+                    <a href="https://github.com/shaunraj46" class="contact-link">
                         <div class="contact-icon">
                             <i class="fab fa-github"></i>
                         </div>
@@ -595,7 +473,7 @@
                     </a>
                 </div>
                 
-                <a href="mailto:shaunraj46@gmail.com" class="cta-btn" aria-label="Send email to Shaun Raj">
+                <a href="mailto:shaunraj46@gmail.com" class="cta-btn">
                     <span class="cta-text">Start a Conversation</span>
                     <span class="cta-icon"><i class="fas fa-paper-plane"></i></span>
                 </a>
@@ -607,13 +485,13 @@
     <footer>
         <div class="container">
             <div class="social-links">
-                <a href="https://github.com/shaunraj46" class="social-link" aria-label="GitHub Profile" rel="noopener">
+                <a href="https://github.com/shaunraj46" class="social-link">
                     <i class="fab fa-github"></i>
                 </a>
-                <a href="https://www.linkedin.com/in/shaun-clarence-raj-631817205" class="social-link" aria-label="LinkedIn Profile" rel="noopener">
+                <a href="https://www.linkedin.com/in/shaun-clarence-raj-631817205" class="social-link">
                     <i class="fab fa-linkedin-in"></i>
                 </a>
-                <a href="mailto:shaunraj46@gmail.com" class="social-link" aria-label="Email Contact">
+                <a href="mailto:shaunraj46@gmail.com" class="social-link">
                     <i class="fas fa-envelope"></i>
                 </a>
             </div>
