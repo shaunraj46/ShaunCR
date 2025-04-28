@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <!-- Enhanced viewport for all devices including notched phones -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover, user-scalable=yes">
     <meta name="theme-color" content="#0F172A">
     <!-- Apple specific meta tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -81,6 +81,7 @@
             opacity: 0;
             transition: opacity 0.5s ease;
             -webkit-tap-highlight-color: transparent;
+            width: 100%;
         }
         
         body.loaded {
@@ -122,13 +123,14 @@
         
         /* 3D Scene Container initial styling */
         .scene-container {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0;
+            z-index: 1;
             overflow: hidden;
+            pointer-events: none;
         }
         
         /* Add this for better touch feedback */
@@ -158,6 +160,56 @@
         @media (hover: none) {
             a:active, button:active, .cta-btn:active {
                 transform: scale(0.97);
+            }
+        }
+        
+        /* Fix content going off screen */
+        body, html {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Fix hero section visibility */
+        @media (max-width: 767px) {
+            .hero {
+                position: relative;
+                z-index: 10 !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                min-height: 100vh;
+                width: 100%;
+                padding: 6rem 1rem 2rem 1rem;
+                box-sizing: border-box;
+            }
+            
+            .hero h1, .hero h2, .hero p, .hero .cta-btn {
+                position: relative;
+                z-index: 10 !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                max-width: 100%;
+            }
+            
+            .scene-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 1;
+                overflow: hidden;
+                pointer-events: none;
+            }
+            
+            .container {
+                width: 100%;
+                max-width: 100%;
+                padding-left: 15px;
+                padding-right: 15px;
+                box-sizing: border-box;
             }
         }
     </style>
@@ -208,10 +260,10 @@
             
             <!-- Hero content -->
             <div class="hero">
-                <h1 class="animated-heading">Shaun Clarence Raj</h1>
-                <h2 class="animated-heading">Engineering Student & Founder</h2>
-                <p class="animated-text">Bridging cutting-edge AI research with practical business applications. Creating intelligent systems that are efficient, sustainable, and accessible to organizations of all sizes.</p>
-                <a href="#projects" class="cta-btn" aria-label="Explore my work">
+                <h1 class="animated-heading" style="position: relative; z-index: 10;">Shaun Clarence Raj</h1>
+                <h2 class="animated-heading" style="position: relative; z-index: 10;">Engineering Student & Founder</h2>
+                <p class="animated-text" style="position: relative; z-index: 10;">Bridging cutting-edge AI research with practical business applications. Creating intelligent systems that are efficient, sustainable, and accessible to organizations of all sizes.</p>
+                <a href="#projects" class="cta-btn" aria-label="Explore my work" style="position: relative; z-index: 10;">
                     <span class="cta-text">Explore My Work</span>
                     <span class="cta-icon"><i class="fas fa-arrow-right"></i></span>
                 </a>

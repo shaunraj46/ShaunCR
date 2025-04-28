@@ -6,6 +6,9 @@
 
 // Wait for DOM to be loaded before initializing
 document.addEventListener('DOMContentLoaded', function() {
+    // Fix hero visibility immediately
+    fixHeroVisibility();
+    
     // Initialize core functionality immediately
     initializeCore();
     
@@ -23,7 +26,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize Three.js scene with mobile optimizations
     initThreeJsScene();
-    optimizeThreeJS();
+    
+    // Force a redraw of Three.js scene for mobile
+    if (window.innerWidth <= 768) {
+        // Re-init Three.js specifically for mobile
+        setTimeout(function() {
+            initThreeJsScene();
+        }, 100);
+    }
     
     // Add load event to handle post-loading initialization
     window.addEventListener('load', function() {
@@ -36,8 +46,50 @@ document.addEventListener('DOMContentLoaded', function() {
         // Set body as loaded to enable transitions and animations
         document.body.classList.remove('preload');
         document.body.classList.add('loaded');
+        
+        // Check visibility again after full load
+        setTimeout(function() {
+            fixHeroVisibility();
+        }, 200);
     });
 });
+
+/**
+ * Fix hero visibility issues
+ */
+function fixHeroVisibility() {
+    // Ensure hero section is visible
+    const hero = document.querySelector('.hero');
+    if (hero) {
+        // Force visibility
+        hero.style.visibility = 'visible';
+        hero.style.opacity = '1';
+        hero.style.zIndex = '10';
+        
+        // Ensure text is visible
+        const heroElements = hero.querySelectorAll('h1, h2, p, .cta-btn');
+        heroElements.forEach(el => {
+            el.style.visibility = 'visible';
+            el.style.opacity = '1';
+            el.style.position = 'relative';
+            el.style.zIndex = '10';
+        });
+    }
+    
+    // Check if scene container exists and is properly positioned
+    const sceneContainer = document.querySelector('.scene-container');
+    if (sceneContainer) {
+        // Ensure it's properly positioned and sized
+        sceneContainer.style.position = window.innerWidth <= 768 ? 'fixed' : 'absolute';
+        sceneContainer.style.width = '100%';
+        sceneContainer.style.height = '100%';
+        sceneContainer.style.top = '0';
+        sceneContainer.style.left = '0';
+        sceneContainer.style.zIndex = '1'; // Behind content
+        sceneContainer.style.overflow = 'hidden';
+        sceneContainer.style.pointerEvents = 'none'; // Don't interfere with clicks
+    }
+}
 
 /**
  * Initialize core functionality
@@ -274,35 +326,46 @@ function initialize3DEffects() {
 }
 
 /**
- * Initialize Three.js scene with background effect
+ * Enhanced Three.js initialization for mobile
  */
 function initThreeJsScene() {
-    // Skip for low-end devices or reduced motion
-    if (document.body.classList.contains('low-end-device') || 
-        document.body.classList.contains('reduce-motion')) {
-        return;
-    }
-
     // Get container
     const container = document.querySelector('.scene-container');
     if (!container) return;
 
+    // Clear any existing content
+    container.innerHTML = '';
+
     // Set up Three.js scene
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({ 
+        antialias: window.innerWidth > 768, // Disable antialiasing on mobile for performance
+        alpha: true 
+    });
     
+    // Configure renderer for mobile
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Limit pixel ratio for performance
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
+    
+    // Ensure canvas is visible and covers the screen
+    const canvas = renderer.domElement;
+    canvas.style.position = 'absolute';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.zIndex = '1';
+    canvas.style.pointerEvents = 'none'; // Make it non-interactive
     
     // Camera position
     camera.position.z = 5;
     
-    // Create particles
+    // Create particles - reduced for mobile
     const particlesGeometry = new THREE.BufferGeometry();
-    const particleCount = window.innerWidth < 768 ? 1000 : 2000;
+    const particleCount = window.innerWidth < 768 ? 800 : 2000; // Reduced on mobile
     
     const positionArray = new Float32Array(particleCount * 3);
     const colorArray = new Float32Array(particleCount * 3);
@@ -318,7 +381,7 @@ function initThreeJsScene() {
         positionArray[i + 1] = radius * Math.sin(phi) * Math.sin(theta);
         positionArray[i + 2] = radius * Math.cos(phi);
         
-        // Colors - purple and blue gradient
+        // Colors - purple and blue gradient - simplified for mobile
         const hue = Math.random() * 0.1 + 0.7; // 0.7-0.8 range for purple/blue
         const saturation = Math.random() * 0.3 + 0.7; // 0.7-1.0
         const lightness = Math.random() * 0.2 + 0.5; // 0.5-0.7
@@ -334,12 +397,12 @@ function initThreeJsScene() {
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positionArray, 3));
     particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
     
-    // Create material
+    // Create material - optimized for mobile
     const particlesMaterial = new THREE.PointsMaterial({
-        size: window.innerWidth < 768 ? 0.03 : 0.05,
+        size: window.innerWidth < 768 ? 0.04 : 0.05, // Slightly larger on mobile for visibility
         vertexColors: true,
         transparent: true,
-        opacity: 0.6,
+        opacity: window.innerWidth < 768 ? 0.7 : 0.6, // More visible on mobile
         blending: THREE.AdditiveBlending
     });
     
@@ -347,55 +410,35 @@ function initThreeJsScene() {
     const particles = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particles);
     
-    // Mouse interaction
-    let mouseX = 0;
-    let mouseY = 0;
-    let targetMouseX = 0;
-    let targetMouseY = 0;
-    
-    // Handle window resize
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-    
-    // Mouse movement
-    document.addEventListener('mousemove', (event) => {
-        mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-        mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-    });
-    
-    // Scroll effect
-    let scrollY = 0;
-    let targetScrollY = 0;
-    
-    window.addEventListener('scroll', () => {
-        targetScrollY = window.scrollY * 0.0005;
-    }, { passive: true });
+    // Simpler animation for mobile
+    let lastTime = 0;
+    const rotationSpeed = window.innerWidth < 768 ? 0.0003 : 0.0001; // Faster on mobile for better effect
     
     // Animation loop
-    function animate() {
+    function animate(time) {
         requestAnimationFrame(animate);
         
-        // Smooth mouse movement
-        targetMouseX = mouseX * 0.1;
-        targetMouseY = mouseY * 0.1;
+        // Simple constant rotation - more optimized for mobile
+        particles.rotation.y += rotationSpeed * (time - lastTime);
+        particles.rotation.z += rotationSpeed * 0.5 * (time - lastTime);
         
-        // Rotate particles based on mouse
-        particles.rotation.x += (targetMouseY - particles.rotation.x) * 0.05;
-        particles.rotation.y += (targetMouseX - particles.rotation.y) * 0.05;
-        
-        // Rotate based on scroll
-        particles.rotation.z += (targetScrollY - particles.rotation.z) * 0.05;
-        
-        // Add subtle constant rotation
-        particles.rotation.y += 0.001;
+        lastTime = time;
         
         renderer.render(scene, camera);
     }
     
-    animate();
+    // Simplified resize handler for better performance
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }, { passive: true });
+    
+    // Start animation
+    animate(0);
+    
+    // Log success for debugging
+    console.log('Three.js scene initialized');
 }
 
 /**
@@ -447,6 +490,9 @@ window.addEventListener('resize', function() {
         if (isIOS()) {
             fixIOSViewportHeight();
         }
+        
+        // Check visibility again
+        fixHeroVisibility();
     }, 250);
 });
 
@@ -513,52 +559,6 @@ function enhancedTouchExperience() {
     
     // Fix 300ms touch delay on mobile browsers
     document.documentElement.style.touchAction = 'manipulation';
-}
-
-/**
- * Optimize Three.js for mobile if present
- */
-function optimizeThreeJS() {
-    // If Three.js is used (check for scene container)
-    const sceneContainer = document.querySelector('.scene-container');
-    if (!sceneContainer) return;
-    
-    // Mobile optimizations for Three.js
-    if (window.innerWidth <= 768) {
-        // Lower resolution
-        if (typeof THREE !== 'undefined' && THREE.WebGLRenderer) {
-            // Wait for Three.js to be initialized
-            const checkRenderer = setInterval(() => {
-                const renderer = sceneContainer.querySelector('canvas');
-                if (renderer) {
-                    // Renderer found, apply optimizations
-                    const context = renderer.getContext('webgl') || renderer.getContext('experimental-webgl');
-                    if (context) {
-                        // Reduce precision if possible
-                        if (context.getShaderPrecisionFormat) {
-                            const vertHighpFloat = context.getShaderPrecisionFormat(context.VERTEX_SHADER, context.HIGH_FLOAT);
-                            const fragHighpFloat = context.getShaderPrecisionFormat(context.FRAGMENT_SHADER, context.HIGH_FLOAT);
-                            
-                            if (vertHighpFloat && vertHighpFloat.precision < 23 && 
-                                fragHighpFloat && fragHighpFloat.precision < 23) {
-                                context.hint = context.HINT || {};
-                                context.hint.FRAGMENT_SHADER_DERIVATIVE_HINT = context.FRAGMENT_SHADER_DERIVATIVE_HINT || {};
-                                context.hint(context.FRAGMENT_SHADER_DERIVATIVE_HINT, context.FASTEST);
-                            }
-                        }
-                    }
-                    
-                    // Clear interval once optimizations are applied
-                    clearInterval(checkRenderer);
-                }
-            }, 100);
-            
-            // Ensure we don't keep checking forever
-            setTimeout(() => {
-                clearInterval(checkRenderer);
-            }, 5000);
-        }
-    }
 }
 
 /**
@@ -630,6 +630,9 @@ function handleOrientationChanges() {
             
             // Refresh any layout that needs updating
             updateLayoutForOrientation();
+            
+            // Check visibility again after orientation change
+            fixHeroVisibility();
         }, 200);
     });
 }
