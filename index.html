@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
@@ -13,51 +13,147 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="icon" type="image/png" href="assets/images/favicon.png">
     
-    <!-- Critical CSS -->
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        primary: {
+                            DEFAULT: '#6366F1',
+                            dark: '#4F46E5',
+                            light: '#A5B4FC',
+                        },
+                        secondary: {
+                            DEFAULT: '#0F172A',
+                            dark: '#030712',
+                            light: '#1E293B',
+                        },
+                        violet: {
+                            DEFAULT: '#8B5CF6',
+                            dark: '#7C3AED',
+                        },
+                        slate: {
+                            50: '#F8FAFC',
+                            200: '#E2E8F0',
+                            400: '#94A3B8',
+                            600: '#475569',
+                            800: '#1E293B',
+                        },
+                    },
+                    boxShadow: {
+                        'premium': '0 10px 25px rgba(0, 0, 0, 0.2)',
+                        'highlight': '0 10px 30px rgba(99, 102, 241, 0.4)',
+                        'glow': '0 0 15px rgba(99, 102, 241, 0.4)',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in-up': 'fadeInUp 1s forwards',
+                        'fade-in-up-delay': 'fadeInUp 1s 0.3s forwards',
+                        'fade-in-up-delay-2': 'fadeInUp 1s 0.6s forwards',
+                        'fade-in-up-delay-3': 'fadeInUp 1s 0.9s forwards',
+                        'particle-float': 'particleFloat 15s linear infinite',
+                        'scroll-down': 'scrollDown 2s infinite',
+                        'arrow-bounce': 'arrowBounce 2s infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                        'morphShape': 'morphShape 12s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        fadeInUp: {
+                            'from': {
+                                opacity: '0',
+                                transform: 'translateY(30px)'
+                            },
+                            'to': {
+                                opacity: '1',
+                                transform: 'translateY(0)'
+                            },
+                        },
+                        particleFloat: {
+                            '0%': {
+                                transform: 'translateY(0) translateX(0)',
+                                opacity: '0'
+                            },
+                            '10%': { opacity: '0.5' },
+                            '90%': { opacity: '0.5' },
+                            '100%': {
+                                transform: 'translateY(-100px) translateX(50px)',
+                                opacity: '0'
+                            },
+                        },
+                        scrollDown: {
+                            '0%': {
+                                opacity: '1',
+                                transform: 'translateY(0)'
+                            },
+                            '100%': {
+                                opacity: '0',
+                                transform: 'translateY(20px)'
+                            },
+                        },
+                        arrowBounce: {
+                            '0%, 20%, 50%, 80%, 100%': {
+                                transform: 'translateY(0) rotate(45deg)'
+                            },
+                            '40%': {
+                                transform: 'translateY(5px) rotate(45deg)'
+                            },
+                            '60%': {
+                                transform: 'translateY(3px) rotate(45deg)'
+                            },
+                        },
+                        morphShape: {
+                            '0%': {
+                                borderRadius: '40% 60% 70% 30% / 40% 50% 60% 50%'
+                            },
+                            '25%': {
+                                borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%'
+                            },
+                            '50%': {
+                                borderRadius: '30% 60% 70% 40% / 50% 60% 30% 60%'
+                            },
+                            '75%': {
+                                borderRadius: '60% 40% 30% 70% / 40% 70% 60% 30%'
+                            },
+                            '100%': {
+                                borderRadius: '40% 60% 70% 30% / 40% 50% 60% 50%'
+                            },
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-primary': 'linear-gradient(135deg, #4F46E5, #7C3AED, #8B5CF6)',
+                        'gradient-secondary': 'linear-gradient(135deg, #6366F1, #4F46E5)',
+                        'gradient-bg': 'linear-gradient(135deg, #131C31, #0F172A, #080D1A)',
+                        'gradient-card': 'linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.8))',
+                    },
+                    backdropBlur: {
+                        'premium': '12px',
+                    },
+                },
+            },
+            plugins: [],
+        }
+    </script>
+    
+    <!-- Custom CSS for Premium Effects -->
     <style>
-        :root {
-            /* Core theme variables */
-            --primary: #6366F1;
-            --primary-dark: #4F46E5;
-            --primary-light: #A5B4FC;
-            --secondary: #0F172A;
-            --secondary-dark: #030712;
-            --purple-dark: #1E1B4B;
-            --purple-light: #7C3AED;
-            --accent: #8B5CF6;
-            --accent-gradient: linear-gradient(135deg, #4F46E5, #8B5CF6);
-            --text-primary: #F8FAFC;
-            --text-secondary: #E2E8F0;
-            
-            /* Spacing & Dimensions */
-            --container-padding: clamp(1rem, 5vw, 3rem);
-            --section-spacing: clamp(3rem, 10vh, 6rem);
-            
-            /* Animations */
-            --transition-fast: 0.2s ease;
-            --transition-normal: 0.3s ease;
-        }
-        
-        /* Base styles */
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        html {
-            scroll-behavior: smooth;
-            font-size: 16px;
-        }
-        
+        /* Progressive loading effect */
         body {
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #131C31, #0F172A, #080D1A);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-            position: relative;
-            min-height: 100vh;
             opacity: 0;
             transition: opacity 0.5s ease;
         }
@@ -66,270 +162,492 @@
             opacity: 1;
         }
         
-        /* 3D Scene Container initial styling */
-        .scene-container {
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+            background-color: #030712;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #6366F1, #8B5CF6);
+            border-radius: 6px;
+            border: 3px solid #030712;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #8B5CF6, #6366F1);
+        }
+        
+        /* Premium glass effect */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+            border-color: rgba(99, 102, 241, 0.2);
+        }
+        
+        /* Premium background effects */
+        .floating-shape {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .floating-shape::before,
+        .floating-shape::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            background: linear-gradient(45deg, #4F46E5 0%, #8B5CF6 100%);
+            opacity: 0.2;
+            filter: blur(15px);
+            animation: morphShape 12s ease-in-out infinite alternate;
+        }
+        
+        .floating-shape::after {
+            width: 90%;
+            height: 90%;
+            background: linear-gradient(-45deg, #8B5CF6 0%, #6366F1 100%);
+            opacity: 0.3;
+            filter: blur(20px);
+            animation-duration: 10s;
+            animation-delay: 1s;
+        }
+        
+        /* 3D Background Animation */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bg-particle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(165, 180, 252, 0.6), rgba(79, 70, 229, 0.2));
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+            opacity: 0.4;
+            filter: blur(2px);
+        }
+        
+        /* Custom loader */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #030712;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            flex-direction: column;
+        }
+        
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            position: relative;
+        }
+        
+        .loader-spinner::before,
+        .loader-spinner::after {
+            content: "";
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top-color: #6366F1;
+        }
+        
+        .loader-spinner::before {
+            animation: spin 1.5s cubic-bezier(0.65, 0.05, 0.36, 1) infinite;
+            z-index: 1;
+        }
+        
+        .loader-spinner::after {
+            border: 4px solid rgba(99, 102, 241, 0.15);
             z-index: 0;
-            overflow: hidden;
+        }
+        
+        /* Custom Scroll Progress Bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(to right, #6366F1, #8B5CF6);
+            z-index: 999;
+            transition: width 0.1s ease;
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+        }
+        
+        /* Mouse scroll indicator */
+        .mouse {
+            width: 30px;
+            height: 50px;
+            border: 2px solid #E2E8F0;
+            border-radius: 25px;
+            position: relative;
+        }
+        
+        .mouse::before {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #E2E8F0;
+            left: 50%;
+            top: 10px;
+            transform: translateX(-50%);
+            animation: scrollDown 2s infinite;
+        }
+        
+        .arrow-down {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .arrow-down span {
+            display: block;
+            width: 10px;
+            height: 10px;
+            border-right: 2px solid #E2E8F0;
+            border-bottom: 2px solid #E2E8F0;
+            transform: rotate(45deg);
+            animation: arrowBounce 2s infinite;
+        }
+        
+        .arrow-down span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        /* Preload - disable animations until everything is loaded */
+        body.preload * {
+            animation-duration: 0s !important;
+            transition-duration: 0s !important;
+        }
+        
+        /* Hero particles */
+        .hero-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: rgba(165, 180, 252, 0.6);
+            opacity: 0.5;
+            animation: particleFloat 15s linear infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateX(0) rotateY(0); }
+            25% { transform: translateY(-15px) rotateX(5deg) rotateY(5deg); }
+            50% { transform: translateY(0) rotateX(10deg) rotateY(10deg); }
+            75% { transform: translateY(15px) rotateX(5deg) rotateY(15deg); }
         }
     </style>
-    
-    <!-- Fonts and Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Main CSS -->
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/responsive.css">
-    <link rel="stylesheet" href="assets/css/custom-cursor.css">
-    <link rel="stylesheet" href="assets/css/premium-loader.css">
 </head>
-<body class="preload">
-    <!-- Premium page loader -->
-    <div class="page-loader">
-        <div class="loader-logo">SR</div>
-        <div class="loader-content">
+<body class="bg-gradient-bg text-slate-50 font-sans min-h-screen preload overflow-x-hidden">
+    <!-- Loader -->
+    <div class="loader" id="pageLoader">
+        <div class="mb-8 text-4xl font-bold bg-gradient-primary bg-clip-text text-transparent animate-pulse-slow">SR</div>
+        <div class="relative flex justify-center items-center">
             <div class="loader-spinner"></div>
-            <div class="loader-text">Loading</div>
-            <div class="loader-particle"></div>
-            <div class="loader-particle"></div>
-            <div class="loader-particle"></div>
-            <div class="loader-particle"></div>
+            <div class="absolute text-xs uppercase tracking-wider text-slate-400 animate-pulse">Loading</div>
         </div>
-        <div class="loader-counter">0%</div>
+        <div class="mt-6 text-slate-400 font-mono font-semibold" id="loaderCounter">0%</div>
     </div>
-
-    <!-- Custom cursor (desktop only) -->
-    <div class="cursor-container">
-        <div class="cursor"></div>
-        <div class="cursor-dot"></div>
-    </div>
-
-    <!-- Progress indicator -->
-    <div class="scroll-progress"></div>
     
-    <!-- 3D Scene Container -->
-    <div class="scene-container"></div>
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
     
-    <!-- Header & Hero -->
-    <header id="home">
-        <div class="container">
-            <!-- Navigation -->
-            <nav>
-                <a href="#" class="logo" data-cursor="hover">SR</a>
+    <!-- Animated Background -->
+    <div class="animated-bg" aria-hidden="true"></div>
+    
+    <!-- Header & Navigation -->
+    <header class="min-h-screen relative flex items-center" id="home">
+        <nav class="fixed top-0 left-0 w-full z-50 transition-all duration-300" id="mainNav">
+            <div class="container mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
+                <a href="#" class="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent transition-transform duration-300 hover:scale-110">SR</a>
                 
-                <div class="nav-links">
-                    <a href="#about" data-cursor="hover">About</a>
-                    <a href="#projects" data-cursor="hover">Projects</a>
-                    <a href="#startup" data-cursor="hover">Startup</a>
-                    <a href="#skills" data-cursor="hover">Skills</a>
-                    <a href="#formula" data-cursor="hover">Formula</a>
-                    <a href="#leadership" data-cursor="hover">Leadership</a>
-                    <a href="#contact" data-cursor="hover">Contact</a>
-                </div>
-                
-                <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <!-- Mobile Menu Toggle -->
+                <button class="md:hidden text-slate-50 focus:outline-none" id="menuToggle" aria-label="Toggle menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
                 </button>
-            </nav>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-6 items-center">
+                    <a href="#about" class="text-slate-50 font-medium uppercase text-sm tracking-wide hover:text-primary-light transition-colors">About</a>
+                    <a href="#projects" class="text-slate-50 font-medium uppercase text-sm tracking-wide hover:text-primary-light transition-colors">Projects</a>
+                    <a href="#startup" class="text-slate-50 font-medium uppercase text-sm tracking-wide hover:text-primary-light transition-colors">Startup</a>
+                    <a href="#skills" class="text-slate-50 font-medium uppercase text-sm tracking-wide hover:text-primary-light transition-colors">Skills</a>
+                    <a href="#formula" class="text-slate-50 font-medium uppercase text-sm tracking-wide hover:text-primary-light transition-colors">Formula</a>
+                    <a href="#leadership" class="text-slate-50 font-medium uppercase text-sm tracking-wide hover:text-primary-light transition-colors">Leadership</a>
+                    <a href="#contact" class="text-slate-50 font-medium uppercase text-sm tracking-wide hover:text-primary-light transition-colors">Contact</a>
+                </div>
+            </div>
             
-            <!-- Hero content -->
-            <div class="hero">
-                <div class="hero-content">
-                    <h1 class="animated-heading">Shaun Clarence Raj</h1>
-                    <h2 class="animated-heading">Engineering Student & Founder</h2>
-                    <p class="animated-text">Bridging cutting-edge AI research with practical business applications. Creating intelligent systems that are efficient, sustainable, and accessible to organizations of all sizes.</p>
-                    <a href="#projects" class="cta-btn" data-cursor="button-hover">
-                        <span class="cta-text">Explore My Work</span>
-                        <span class="cta-icon"><i class="fas fa-arrow-right"></i></span>
+            <!-- Mobile Navigation Menu (Hidden by default) -->
+            <div class="md:hidden fixed top-0 left-0 w-full h-0 bg-secondary-dark bg-opacity-95 backdrop-blur-premium overflow-hidden transition-all duration-300 flex flex-col items-center justify-center z-40" id="mobileMenu">
+                <a href="#about" class="text-slate-50 text-xl py-3 hover:text-primary-light transition-colors">About</a>
+                <a href="#projects" class="text-slate-50 text-xl py-3 hover:text-primary-light transition-colors">Projects</a>
+                <a href="#startup" class="text-slate-50 text-xl py-3 hover:text-primary-light transition-colors">Startup</a>
+                <a href="#skills" class="text-slate-50 text-xl py-3 hover:text-primary-light transition-colors">Skills</a>
+                <a href="#formula" class="text-slate-50 text-xl py-3 hover:text-primary-light transition-colors">Formula</a>
+                <a href="#leadership" class="text-slate-50 text-xl py-3 hover:text-primary-light transition-colors">Leadership</a>
+                <a href="#contact" class="text-slate-50 text-xl py-3 hover:text-primary-light transition-colors">Contact</a>
+            </div>
+        </nav>
+        
+        <div class="container mx-auto px-4 md:px-6 relative z-10">
+            <div class="flex flex-col-reverse lg:flex-row items-center">
+                <!-- Hero Content -->
+                <div class="w-full lg:w-3/5 text-center lg:text-left pt-12 lg:pt-0">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-slate-50 to-primary-light bg-clip-text text-transparent opacity-0 animate-fade-in-up">
+                        Shaun Clarence Raj
+                    </h1>
+                    <h2 class="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-slate-200 to-slate-400 bg-clip-text text-transparent opacity-0 animate-fade-in-up-delay">
+                        Engineering Student & Founder
+                    </h2>
+                    <p class="text-base md:text-lg text-slate-200 mb-8 max-w-xl mx-auto lg:mx-0 opacity-0 animate-fade-in-up-delay-2">
+                        Bridging cutting-edge AI research with practical business applications. Creating intelligent systems that are efficient, sustainable, and accessible to organizations of all sizes.
+                    </p>
+                    <a href="#projects" class="inline-flex items-center bg-gradient-primary hover:shadow-highlight transition-all px-8 py-3 rounded-full text-white font-semibold opacity-0 animate-fade-in-up-delay-3 group">
+                        <span>Explore My Work</span>
+                        <span class="ml-4 w-10 h-10 flex items-center justify-center bg-white bg-opacity-20 rounded-full group-hover:translate-x-1 transition-transform">
+                            <i class="fas fa-arrow-right text-white"></i>
+                        </span>
                     </a>
                 </div>
                 
-                <!-- 3D animated hero shape -->
-                <div class="hero-shape">
-                    <div class="floating-shape"></div>
-                </div>
-                
-                <!-- Scroll down indicator -->
-                <div class="scroll-down-indicator">
-                    <div class="mouse"></div>
-                    <div class="arrow-down">
-                        <span></span>
-                        <span></span>
+                <!-- Hero 3D Shape -->
+                <div class="w-full lg:w-2/5 pointer-events-none relative">
+                    <div class="floating-shape mx-auto"></div>
+                    
+                    <!-- Hero Particles -->
+                    <div class="hero-particles absolute top-0 left-0 w-full h-full overflow-hidden">
+                        <div class="hero-particle" style="top: 20%; left: 10%; animation-duration: 20s;"></div>
+                        <div class="hero-particle" style="top: 40%; left: 25%; animation-duration: 25s; animation-delay: 1s;"></div>
+                        <div class="hero-particle" style="top: 70%; left: 35%; animation-duration: 18s; animation-delay: 2s;"></div>
+                        <div class="hero-particle" style="top: 30%; left: 60%; animation-duration: 22s; animation-delay: 0.5s;"></div>
+                        <div class="hero-particle" style="top: 80%; left: 70%; animation-duration: 23s; animation-delay: 1.5s;"></div>
+                        <div class="hero-particle" style="top: 10%; left: 80%; animation-duration: 21s; animation-delay: 3s;"></div>
+                        <div class="hero-particle" style="top: 50%; left: 90%; animation-duration: 19s; animation-delay: 2.5s;"></div>
                     </div>
+                </div>
+            </div>
+            
+            <!-- Scroll Down Indicator -->
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-slate-400 opacity-70 hover:opacity-100 transition-opacity cursor-pointer" id="scrollDown">
+                <div class="mouse"></div>
+                <div class="arrow-down mt-2">
+                    <span></span>
+                    <span></span>
                 </div>
             </div>
         </div>
     </header>
     
     <!-- About Section -->
-    <section id="about" class="about">
-        <div class="container">
-            <div class="section-title section-intro-animation">
-                <h2>About Me</h2>
+    <section id="about" class="py-16 md:py-24 relative">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-12 md:mb-16 section-fade">
+                <h2 class="text-3xl md:text-4xl font-bold relative inline-block">
+                    About Me
+                    <span class="block h-1 w-24 bg-gradient-primary mt-4 mx-auto rounded-full"></span>
+                </h2>
             </div>
             
-            <div class="about-content">
-                <div class="about-image glass-card">
-                    <div class="profile-img image-reveal">
-                        <img src="assets/images/profile.png" alt="Shaun Raj - Engineering Student & Founder" loading="lazy">
+            <div class="flex flex-col lg:flex-row gap-12 items-center">
+                <div class="w-full lg:w-1/2 section-fade">
+                    <div class="glass-card overflow-hidden rounded-2xl transform perspective-1000 transition-all duration-500">
+                        <div class="overflow-hidden">
+                            <img src="assets/images/profile.png" alt="Shaun Raj - Engineering Student & Founder" class="w-full h-auto transform hover:scale-105 transition-transform duration-700">
+                        </div>
                     </div>
                 </div>
                 
-                <div class="about-text">
-                    <h3 class="section-intro-animation">Innovating with Purpose</h3>
-                    <p class="section-intro-animation">As an Engineering Student and Founder of SpicyNuggets, I blend technical expertise with entrepreneurial vision to create AI systems that are both powerful and sustainable. Currently pursuing Engineering at Technische Hochschule Ingolstadt, I focus on developing technologies that make intelligent systems accessible while minimizing resource consumption.</p>
-                    <p class="section-intro-animation">My work sits at the intersection of AI innovation and real-world application, specializing in multilingual language models, energy-efficient implementation strategies, and systems that deliver business value across industries.</p>
-                    <p class="section-intro-animation">I'm passionate about demonstrating that cutting-edge AI can be both performance-optimized and environmentally responsible — a philosophy that drives all my projects.</p>
-                    <a href="#contact" class="cta-btn" data-cursor="button-hover">
-                        <span class="cta-text">Connect With Me</span>
-                        <span class="cta-icon"><i class="fas fa-arrow-right"></i></span>
+                <div class="w-full lg:w-1/2 section-fade">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-white">Innovating with Purpose</h3>
+                    <p class="text-slate-200 mb-4">As an Engineering Student and Founder of SpicyNuggets, I blend technical expertise with entrepreneurial vision to create AI systems that are both powerful and sustainable. Currently pursuing Engineering at Technische Hochschule Ingolstadt, I focus on developing technologies that make intelligent systems accessible while minimizing resource consumption.</p>
+                    <p class="text-slate-200 mb-4">My work sits at the intersection of AI innovation and real-world application, specializing in multilingual language models, energy-efficient implementation strategies, and systems that deliver business value across industries.</p>
+                    <p class="text-slate-200 mb-6">I'm passionate about demonstrating that cutting-edge AI can be both performance-optimized and environmentally responsible — a philosophy that drives all my projects.</p>
+                    <a href="#contact" class="inline-flex items-center bg-gradient-primary hover:shadow-highlight transition-all px-8 py-3 rounded-full text-white font-semibold group">
+                        <span>Connect With Me</span>
+                        <span class="ml-4 w-10 h-10 flex items-center justify-center bg-white bg-opacity-20 rounded-full group-hover:translate-x-1 transition-transform">
+                            <i class="fas fa-arrow-right text-white"></i>
+                        </span>
                     </a>
                 </div>
             </div>
         </div>
-        
-        <!-- Background particles for section -->
-        <div class="section-particles"></div>
     </section>
     
     <!-- Projects Section -->
-    <section id="projects" class="projects">
-        <div class="container">
-            <div class="section-title section-intro-animation">
-                <h2>Featured Projects</h2>
+    <section id="projects" class="py-16 md:py-24 relative">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-12 md:mb-16 section-fade">
+                <h2 class="text-3xl md:text-4xl font-bold relative inline-block">
+                    Featured Projects
+                    <span class="block h-1 w-24 bg-gradient-primary mt-4 mx-auto rounded-full"></span>
+                </h2>
             </div>
             
-            <div class="projects-grid">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Project 1 -->
-                <div class="project-card glass-card">
-                    <div class="project-content">
-                        <div class="project-icon">
-                            <i class="fas fa-robot"></i>
-                        </div>
-                        <h3 class="project-title">OWL.AI</h3>
-                        <p class="project-description">A revolutionary multi-LLM chatbot that classifies prompts by complexity using a custom machine learning model, achieving 96% accuracy in LLM selection. The intelligent model selection reduces energy consumption by 59.6% compared to traditional approaches while maintaining full response quality.</p>
-                        
-                        <div class="project-tech">
-                            <span class="tech-tag">Node.js</span>
-                            <span class="tech-tag">Express</span>
-                            <span class="tech-tag">GPT-4</span>
-                            <span class="tech-tag">Claude</span>
-                            <span class="tech-tag">LLaMA</span>
-                            <span class="tech-tag">Machine Learning</span>
-                        </div>
-                        
-                        <a href="https://owl-ai.de" target="_blank" class="project-link" data-cursor="hover">
-                            <span>View Project</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
+                <div class="glass-card rounded-2xl p-6 md:p-8 h-full flex flex-col section-fade">
+                    <div class="mb-6 w-16 h-16 rounded-xl bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT">
+                        <i class="fas fa-robot"></i>
                     </div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4 text-white">OWL.AI</h3>
+                    <p class="text-slate-200 mb-6 flex-grow">A revolutionary multi-LLM chatbot that classifies prompts by complexity using a custom machine learning model, achieving 96% accuracy in LLM selection. The intelligent model selection reduces energy consumption by 59.6% compared to traditional approaches while maintaining full response quality.</p>
+                    
+                    <div class="mb-6 flex flex-wrap gap-2">
+                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">Node.js</span>
+                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">Express</span>
+                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">GPT-4</span>
+                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">Claude</span>
+                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">LLaMA</span>
+                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">ML</span>
+                    </div>
+                    
+                    <a href="https://owl-ai.de" target="_blank" class="text-primary-light font-semibold inline-flex items-center group">
+                        <span>View Project</span>
+                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                    </a>
                 </div>
                 
                 <!-- Project 2 -->
-                <div class="project-card glass-card">
-                    <div class="project-content">
-                        <div class="project-icon">
-                            <i class="fas fa-calendar-alt"></i>
-                        </div>
-                        <h3 class="project-title">HalloDoc</h3>
-                        <p class="project-description">A WhatsApp-based AI assistant that automates doctor appointment booking using natural language processing. The system integrates with Google Calendar and uses Twilio for seamless communication, eliminating scheduling friction and reducing administrative workload for medical practices.</p>
-                        
-                        <div class="project-tech">
-                            <span class="tech-tag">Twilio</span>
-                            <span class="tech-tag">Google Calendar API</span>
-                            <span class="tech-tag">NLP</span>
-                            <span class="tech-tag">MongoDB</span>
-                            <span class="tech-tag">Node.js</span>
-                        </div>
-                        
-                        <a href="https://hallodoc.spicynuggets.eu" target="_blank" class="project-link" data-cursor="hover">
-                            <span>View Project</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
+                <div class="glass-card rounded-2xl p-6 md:p-8 h-full flex flex-col section-fade">
+                    <div class="mb-6 w-16 h-16 rounded-xl bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT">
+                        <i class="fas fa-calendar-alt"></i>
                     </div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4 text-white">HalloDoc</h3>
+                    <p class="text-slate-200 mb-6 flex-grow">A WhatsApp-based AI assistant that automates doctor appointment booking using natural language processing. The system integrates with Google Calendar and uses Twilio for seamless communication, eliminating scheduling friction and reducing administrative workload for medical practices.</p>
+                    
+                    <div class="mb-6 flex flex-wrap gap-2">
+                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">Twilio</span>
+                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">Google Calendar API</span>
+                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">NLP</span>
+                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">MongoDB</span>
+                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">Node.js</span>
+                    </div>
+                    
+                    <a href="https://hallodoc.spicynuggets.eu" target="_blank" class="text-primary-light font-semibold inline-flex items-center group">
+                        <span>View Project</span>
+                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                    </a>
                 </div>
                 
                 <!-- Project 3 -->
-                <div class="project-card glass-card">
-                    <div class="project-content">
-                        <div class="project-icon">
-                            <i class="fas fa-sort-amount-up"></i>
-                        </div>
-                        <h3 class="project-title">Ranked</h3>
-                        <p class="project-description">An AI-powered lead scoring tool that integrates directly into CRM workflows, prioritizing incoming leads using large language models. The system analyzes conversation context, purchase intent, and customer fit to automatically rank leads, enabling sales teams to focus on high-potential opportunities.</p>
-                        
-                        <div class="project-tech">
-                            <span class="tech-tag">CRM Integration</span>
-                            <span class="tech-tag">LLMs</span>
-                            <span class="tech-tag">Lead Scoring</span>
-                            <span class="tech-tag">API</span>
-                            <span class="tech-tag">Python</span>
-                        </div>
-                        
-                        <a href="https://ranked.spicynuggets.eu" target="_blank" class="project-link" data-cursor="hover">
-                            <span>View Project</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
+                <div class="glass-card rounded-2xl p-6 md:p-8 h-full flex flex-col section-fade">
+                    <div class="mb-6 w-16 h-16 rounded-xl bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT">
+                        <i class="fas fa-sort-amount-up"></i>
                     </div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4 text-white">Ranked</h3>
+                    <p class="text-slate-200 mb-6 flex-grow">An AI-powered lead scoring tool that integrates directly into CRM workflows, prioritizing incoming leads using large language models. The system analyzes conversation context, purchase intent, and customer fit to automatically rank leads, enabling sales teams to focus on high-potential opportunities.</p>
+                    
+                    <div class="mb-6 flex flex-wrap gap-2">
+                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">CRM Integration</span>
+                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">LLMs</span>
+                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">Lead Scoring</span>
+                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">API</span>
+                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">Python</span>
+                    </div>
+                    
+                    <a href="https://ranked.spicynuggets.eu" target="_blank" class="text-primary-light font-semibold inline-flex items-center group">
+                        <span>View Project</span>
+                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                    </a>
                 </div>
             </div>
         </div>
     </section>
     
     <!-- Startup Section -->
-    <section id="startup" class="startup">
-        <div class="container">
-            <div class="section-title section-intro-animation">
-                <h2>SpicyNuggets</h2>
+    <section id="startup" class="py-16 md:py-24 relative">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-12 md:mb-16 section-fade">
+                <h2 class="text-3xl md:text-4xl font-bold relative inline-block">
+                    SpicyNuggets
+                    <span class="block h-1 w-24 bg-gradient-primary mt-4 mx-auto rounded-full"></span>
+                </h2>
             </div>
             
-            <div class="startup-content">
-                <div class="startup-text">
-                    <h3 class="section-intro-animation">Bridging Research and Application</h3>
-                    <p class="section-intro-animation">Founded during the 5-Euro Business competition, SpicyNuggets has evolved into a platform for developing sustainable AI solutions that connect cutting-edge research with practical business applications.</p>
-                    <p class="section-intro-animation">Our mission is to make intelligent systems accessible to organizations of all sizes while pioneering energy-efficient implementation methods that reduce the environmental impact of advanced AI.</p>
+            <div class="flex flex-col-reverse lg:flex-row gap-12 items-center">
+                <div class="w-full lg:w-3/5 section-fade">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-white">Bridging Research and Application</h3>
+                    <p class="text-slate-200 mb-4">Founded during the 5-Euro Business competition, SpicyNuggets has evolved into a platform for developing sustainable AI solutions that connect cutting-edge research with practical business applications.</p>
+                    <p class="text-slate-200 mb-6">Our mission is to make intelligent systems accessible to organizations of all sizes while pioneering energy-efficient implementation methods that reduce the environmental impact of advanced AI.</p>
                     
-                    <div class="achievement-list">
-                        <div class="achievement-item glass-card">
-                            <div class="achievement-icon">
+                    <div class="space-y-4">
+                        <div class="glass-card rounded-xl p-4 flex items-start gap-4 transition-transform hover:translate-x-2">
+                            <div class="bg-violet-dark bg-opacity-20 text-violet-DEFAULT w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
                                 <i class="fas fa-award"></i>
                             </div>
-                            <div class="achievement-text">
-                                <strong>Sustainability Award Winner</strong> - Recognized for energy-efficient AI systems that reduce carbon footprint without compromising performance.
+                            <div>
+                                <strong class="block text-white mb-1">Sustainability Award Winner</strong>
+                                <span class="text-slate-300">Recognized for energy-efficient AI systems that reduce carbon footprint without compromising performance.</span>
                             </div>
                         </div>
                         
-                        <div class="achievement-item glass-card">
-                            <div class="achievement-icon">
+                        <div class="glass-card rounded-xl p-4 flex items-start gap-4 transition-transform hover:translate-x-2">
+                            <div class="bg-violet-dark bg-opacity-20 text-violet-DEFAULT w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
                                 <i class="fas fa-lightbulb"></i>
                             </div>
-                            <div class="achievement-text">
-                                <strong>Innovation in AI Selection</strong> - Pioneered intelligent model selection algorithms that optimize for both accuracy and energy consumption.
+                            <div>
+                                <strong class="block text-white mb-1">Innovation in AI Selection</strong>
+                                <span class="text-slate-300">Pioneered intelligent model selection algorithms that optimize for both accuracy and energy consumption.</span>
                             </div>
                         </div>
                         
-                        <div class="achievement-item glass-card">
-                            <div class="achievement-icon">
+                        <div class="glass-card rounded-xl p-4 flex items-start gap-4 transition-transform hover:translate-x-2">
+                            <div class="bg-violet-dark bg-opacity-20 text-violet-DEFAULT w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
                                 <i class="fas fa-project-diagram"></i>
                             </div>
-                            <div class="achievement-text">
-                                <strong>Product Portfolio</strong> - Developed and deployed OWL.AI, HalloDoc, and Ranked under the SpicyNuggets brand, creating a diverse ecosystem of AI solutions.
+                            <div>
+                                <strong class="block text-white mb-1">Product Portfolio</strong>
+                                <span class="text-slate-300">Developed and deployed OWL.AI, HalloDoc, and Ranked under the SpicyNuggets brand, creating a diverse ecosystem of AI solutions.</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="startup-image">
-                    <div class="startup-img glass-card">
-                        <img src="assets/images/startup.jpg" alt="SpicyNuggets Innovation" loading="lazy">
+                <div class="w-full lg:w-2/5 section-fade">
+                    <div class="glass-card overflow-hidden rounded-2xl transform perspective-1000 hover:rotate-y-5 transition-all duration-500">
+                        <img src="assets/images/startup.jpg" alt="SpicyNuggets Innovation" class="w-full h-auto transform hover:scale-105 transition-transform duration-700">
                     </div>
                 </div>
             </div>
@@ -337,70 +655,113 @@
     </section>
     
     <!-- Skills Section -->
-    <section id="skills" class="skills">
-        <div class="container">
-            <div class="section-title section-intro-animation">
-                <h2>Technical Skills</h2>
+    <section id="skills" class="py-16 md:py-24 relative">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-12 md:mb-16 section-fade">
+                <h2 class="text-3xl md:text-4xl font-bold relative inline-block">
+                    Technical Skills
+                    <span class="block h-1 w-24 bg-gradient-primary mt-4 mx-auto rounded-full"></span>
+                </h2>
             </div>
             
-            <div class="skills-container">
-                <!-- Skill Card 1 -->
-                <div class="skill-card glass-card">
-                    <div class="skill-icon">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- AI & Machine Learning -->
+                <div class="glass-card rounded-2xl p-6 h-full section-fade">
+                    <div class="w-20 h-20 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT mb-6 animate-float">
                         <i class="fas fa-robot"></i>
                     </div>
-                    <h3 class="skill-title">AI & Machine Learning</h3>
-                    <ul class="skill-list">
-                        <li>Large Language Models (LLMs)</li>
-                        <li>Prompt Classification & Engineering</li>
-                        <li>Retrieval-Augmented Generation</li>
-                        <li>Quantum SVM Implementation</li>
-                        <li>Energy-Efficient AI Systems</li>
+                    <h3 class="text-xl font-bold mb-4 text-white">AI & Machine Learning</h3>
+                    <ul class="space-y-2">
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> Large Language Models (LLMs)
+                        </li>
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> Prompt Classification & Engineering
+                        </li>
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> Retrieval-Augmented Generation
+                        </li>
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> Quantum SVM Implementation
+                        </li>
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> Energy-Efficient AI Systems
+                        </li>
                     </ul>
                 </div>
                 
-                <!-- Skill Card 2 -->
-                <div class="skill-card glass-card">
-                    <div class="skill-icon">
+                <!-- Programming Languages -->
+                <div class="glass-card rounded-2xl p-6 h-full section-fade">
+                    <div class="w-20 h-20 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT mb-6 animate-float" style="animation-delay: 0.2s">
                         <i class="fas fa-code"></i>
                     </div>
-                    <h3 class="skill-title">Programming Languages</h3>
-                    <ul class="skill-list">
-                        <li>Python</li>
-                        <li>JavaScript</li>
-                        <li>C++</li>
-                        <li>SQL</li>
-                        <li>HTML/CSS</li>
+                    <h3 class="text-xl font-bold mb-4 text-white">Programming Languages</h3>
+                    <ul class="space-y-2">
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> Python
+                        </li>
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> JavaScript
+                        </li>
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> C++
+                        </li>
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> SQL
+                        </li>
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> HTML/CSS
+                        </li>
                     </ul>
                 </div>
                 
-                <!-- Skill Card 3 -->
-                <div class="skill-card glass-card">
-                    <div class="skill-icon">
+                <!-- Tools & Frameworks -->
+                <div class="glass-card rounded-2xl p-6 h-full section-fade">
+                    <div class="w-20 h-20 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT mb-6 animate-float" style="animation-delay: 0.4s">
                         <i class="fas fa-database"></i>
                     </div>
-                    <h3 class="skill-title">Tools & Frameworks</h3>
-                    <ul class="skill-list">
-                        <li>Node.js & Express</li>
-                        <li>React</li>
-                        <li>Flask</li>
-                        <li>MongoDB</li>
-                        <li>Docker</li>
+                    <h3 class="text-xl font-bold mb-4 text-white">Tools & Frameworks</h3>
+                    <ul class="space-y-2">
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> Node.js & Express
+                        </li>
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> React
+                        </li>
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> Flask
+                        </li>
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> MongoDB
+                        </li>
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> Docker
+                        </li>
                     </ul>
                 </div>
                 
-                <!-- Skill Card 4 -->
-                <div class="skill-card glass-card">
-                    <div class="skill-icon">
+                <!-- Autonomous Systems -->
+                <div class="glass-card rounded-2xl p-6 h-full section-fade">
+                    <div class="w-20 h-20 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT mb-6 animate-float" style="animation-delay: 0.6s">
                         <i class="fas fa-sitemap"></i>
                     </div>
-                    <h3 class="skill-title">Autonomous Systems</h3>
-                    <ul class="skill-list">
-                        <li>ROS2</li>
-                        <li>Foxglove Visualization</li>
-                        <li>Live Telemetry Systems</li>
-                        <li>Sensor Fusion</li>
-                        <li>Data Processing Pipelines</li>
+                    <h3 class="text-xl font-bold mb-4 text-white">Autonomous Systems</h3>
+                    <ul class="space-y-2">
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> ROS2
+                        </li>
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> Foxglove Visualization
+                        </li>
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> Live Telemetry Systems
+                        </li>
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> Sensor Fusion
+                        </li>
+                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
+                            <span class="text-primary-light mr-2">⚡</span> Data Processing Pipelines
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -408,47 +769,53 @@
     </section>
     
     <!-- Formula Student Section -->
-    <section id="formula" class="formula">
-        <div class="container">
-            <div class="section-title section-intro-animation">
-                <h2>Formula Student</h2>
+    <section id="formula" class="py-16 md:py-24 relative">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-12 md:mb-16 section-fade">
+                <h2 class="text-3xl md:text-4xl font-bold relative inline-block">
+                    Formula Student
+                    <span class="block h-1 w-24 bg-gradient-primary mt-4 mx-auto rounded-full"></span>
+                </h2>
             </div>
             
-            <div class="formula-content">
-                <div class="formula-image">
-                    <div class="formula-img glass-card">
-                        <img src="assets/images/formula.jpg" alt="Formula Student Driverless" loading="lazy">
+            <div class="flex flex-col lg:flex-row gap-12 items-center">
+                <div class="w-full lg:w-2/5 section-fade">
+                    <div class="glass-card overflow-hidden rounded-2xl transform perspective-1000 hover:rotate-y-5 transition-all duration-500">
+                        <img src="assets/images/formula.jpg" alt="Formula Student Driverless" class="w-full h-auto transform hover:scale-105 transition-transform duration-700">
                     </div>
                 </div>
                 
-                <div class="formula-text">
-                    <h3 class="section-intro-animation">Schanzer Racing Driverless</h3>
-                    <p class="section-intro-animation">As a member of the Driverless department at Schanzer Racing, I work on developing advanced telemetry systems and data visualization tools for autonomous racing vehicles. My focus is on creating real-time monitoring solutions that provide critical insights during testing and competition.</p>
-                    <p class="section-intro-animation">Using Foxglove Studio and ROS2, I've implemented visualization dashboards that transform complex sensor data into actionable information, enabling rapid optimization of vehicle performance and autonomous driving algorithms.</p>
-                    <p class="section-intro-animation">This experience combines my passion for autonomous systems with practical applications of data processing in high-performance environments, strengthening my ability to work with real-time, mission-critical systems.</p>
+                <div class="w-full lg:w-3/5 section-fade">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-white">Schanzer Racing Driverless</h3>
+                    <p class="text-slate-200 mb-4">As a member of the Driverless department at Schanzer Racing, I work on developing advanced telemetry systems and data visualization tools for autonomous racing vehicles. My focus is on creating real-time monitoring solutions that provide critical insights during testing and competition.</p>
+                    <p class="text-slate-200 mb-4">Using Foxglove Studio and ROS2, I've implemented visualization dashboards that transform complex sensor data into actionable information, enabling rapid optimization of vehicle performance and autonomous driving algorithms.</p>
+                    <p class="text-slate-200">This experience combines my passion for autonomous systems with practical applications of data processing in high-performance environments, strengthening my ability to work with real-time, mission-critical systems.</p>
                 </div>
             </div>
         </div>
     </section>
     
     <!-- Leadership Section -->
-    <section id="leadership" class="leadership">
-        <div class="container">
-            <div class="section-title section-intro-animation">
-                <h2>Leadership</h2>
+    <section id="leadership" class="py-16 md:py-24 relative">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-12 md:mb-16 section-fade">
+                <h2 class="text-3xl md:text-4xl font-bold relative inline-block">
+                    Leadership
+                    <span class="block h-1 w-24 bg-gradient-primary mt-4 mx-auto rounded-full"></span>
+                </h2>
             </div>
             
-            <div class="leadership-content">
-                <div class="leadership-text">
-                    <h3 class="section-intro-animation">Student Representative</h3>
-                    <p class="section-intro-animation">Elected as the student representative (StuV) for Faculty E at Technische Hochschule Ingolstadt, I work to strengthen the connection between students and faculty administration. My role focuses on improving student inclusion in academic decisions and enhancing communication channels between all stakeholders.</p>
-                    <p class="section-intro-animation">Through this position, I've developed initiatives to gather student feedback, organized events to build community within the engineering department, and advocated for curriculum improvements that better prepare students for industry challenges.</p>
-                    <p class="section-intro-animation">This leadership experience has enhanced my ability to communicate effectively across diverse groups, manage stakeholder expectations, and implement processes that drive positive organizational change.</p>
+            <div class="flex flex-col-reverse lg:flex-row gap-12 items-center">
+                <div class="w-full lg:w-3/5 section-fade">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-white">Student Representative</h3>
+                    <p class="text-slate-200 mb-4">Elected as the student representative (StuV) for Faculty E at Technische Hochschule Ingolstadt, I work to strengthen the connection between students and faculty administration. My role focuses on improving student inclusion in academic decisions and enhancing communication channels between all stakeholders.</p>
+                    <p class="text-slate-200 mb-4">Through this position, I've developed initiatives to gather student feedback, organized events to build community within the engineering department, and advocated for curriculum improvements that better prepare students for industry challenges.</p>
+                    <p class="text-slate-200">This leadership experience has enhanced my ability to communicate effectively across diverse groups, manage stakeholder expectations, and implement processes that drive positive organizational change.</p>
                 </div>
                 
-                <div class="leadership-image">
-                    <div class="leadership-img glass-card">
-                        <img src="assets/images/leadership.png" alt="Leadership Role" loading="lazy">
+                <div class="w-full lg:w-2/5 section-fade">
+                    <div class="glass-card overflow-hidden rounded-2xl transform perspective-1000 hover:rotate-y-5 transition-all duration-500">
+                        <img src="assets/images/leadership.png" alt="Leadership Role" class="w-full h-auto transform hover:scale-105 transition-transform duration-700">
                     </div>
                 </div>
             </div>
@@ -456,64 +823,333 @@
     </section>
     
     <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <div class="contact-content glass-card">
-                <h2 class="contact-title section-intro-animation">Let's Connect</h2>
-                <p class="contact-subtitle section-intro-animation">I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
-                
-                <div class="contact-links">
-                    <a href="mailto:shaunraj46@gmail.com" class="contact-link" data-cursor="hover">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="contact-label">Email</div>
-                    </a>
+    <section id="contact" class="py-16 md:py-24 relative">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="max-w-3xl mx-auto section-fade">
+                <div class="glass-card rounded-2xl p-8 md:p-12 text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white">Let's Connect</h2>
+                    <p class="text-slate-200 text-lg mb-10">I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
                     
-                    <a href="https://www.linkedin.com/in/shaun-clarence-raj-631817205" class="contact-link" data-cursor="hover">
-                        <div class="contact-icon">
-                            <i class="fab fa-linkedin-in"></i>
-                        </div>
-                        <div class="contact-label">LinkedIn</div>
-                    </a>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+                        <a href="mailto:shaunraj46@gmail.com" class="flex flex-col items-center group">
+                            <div class="w-20 h-20 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT mb-4 group-hover:-translate-y-3 transition-transform">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <span class="text-lg font-bold text-white">Email</span>
+                        </a>
+                        
+                        <a href="https://www.linkedin.com/in/shaun-clarence-raj-631817205" class="flex flex-col items-center group">
+                            <div class="w-20 h-20 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT mb-4 group-hover:-translate-y-3 transition-transform">
+                                <i class="fab fa-linkedin-in"></i>
+                            </div>
+                            <span class="text-lg font-bold text-white">LinkedIn</span>
+                        </a>
+                        
+                        <a href="https://github.com/shaunraj46" class="flex flex-col items-center group">
+                            <div class="w-20 h-20 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT mb-4 group-hover:-translate-y-3 transition-transform">
+                                <i class="fab fa-github"></i>
+                            </div>
+                            <span class="text-lg font-bold text-white">GitHub</span>
+                        </a>
+                    </div>
                     
-                    <a href="https://github.com/shaunraj46" class="contact-link" data-cursor="hover">
-                        <div class="contact-icon">
-                            <i class="fab fa-github"></i>
-                        </div>
-                        <div class="contact-label">GitHub</div>
+                    <a href="mailto:shaunraj46@gmail.com" class="inline-flex items-center bg-gradient-primary hover:shadow-highlight transition-all px-8 py-3 rounded-full text-white font-semibold group">
+                        <span>Start a Conversation</span>
+                        <span class="ml-4 w-10 h-10 flex items-center justify-center bg-white bg-opacity-20 rounded-full group-hover:translate-x-1 transition-transform">
+                            <i class="fas fa-paper-plane text-white"></i>
+                        </span>
                     </a>
                 </div>
-                
-                <a href="mailto:shaunraj46@gmail.com" class="cta-btn" data-cursor="button-hover">
-                    <span class="cta-text">Start a Conversation</span>
-                    <span class="cta-icon"><i class="fas fa-paper-plane"></i></span>
-                </a>
             </div>
         </div>
     </section>
     
     <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="social-links">
-                <a href="https://github.com/shaunraj46" class="social-link" data-cursor="hover">
+    <footer class="py-12 border-t border-slate-800 bg-secondary-dark">
+        <div class="container mx-auto px-4 md:px-6 text-center">
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="https://github.com/shaunraj46" class="w-12 h-12 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-xl text-slate-50 hover:-translate-y-2 transition-transform">
                     <i class="fab fa-github"></i>
                 </a>
-                <a href="https://www.linkedin.com/in/shaun-clarence-raj-631817205" class="social-link" data-cursor="hover">
+                <a href="https://www.linkedin.com/in/shaun-clarence-raj-631817205" class="w-12 h-12 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-xl text-slate-50 hover:-translate-y-2 transition-transform">
                     <i class="fab fa-linkedin-in"></i>
                 </a>
-                <a href="mailto:shaunraj46@gmail.com" class="social-link" data-cursor="hover">
+                <a href="mailto:shaunraj46@gmail.com" class="w-12 h-12 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-xl text-slate-50 hover:-translate-y-2 transition-transform">
                     <i class="fas fa-envelope"></i>
                 </a>
             </div>
-            <p class="copyright">&copy; 2025 Shaun Clarence Raj. All Rights Reserved.</p>
+            <p class="text-slate-600 text-sm">&copy; 2025 Shaun Clarence Raj. All Rights Reserved.</p>
         </div>
     </footer>
     
-    <!-- Three.js for 3D effects -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Main JS -->
-    <script src="assets/js/main.js"></script>
+    <!-- Premium JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Page
+            initializePage();
+            
+            // Add animation background particles
+            createBackgroundParticles();
+            
+            // Add load event to handle post-loading initialization
+            window.addEventListener('load', function() {
+                // Hide page loader with animation
+                hidePageLoader();
+                
+                // Initialize animations and effects
+                initializeAnimations();
+                
+                // Remove preload class to enable animations
+                document.body.classList.remove('preload');
+                document.body.classList.add('loaded');
+            });
+        });
+        
+        /**
+         * Initialize page functionality
+         */
+        function initializePage() {
+            // Initialize mobile menu
+            initMobileMenu();
+            
+            // Initialize scroll tracking
+            initScrollTracking();
+            
+            // Initialize scroll down indicator
+            initScrollDownIndicator();
+            
+            // Initialize section fade-in effects
+            initSectionFadeEffects();
+        }
+        
+        /**
+         * Initialize mobile menu functionality
+         */
+        function initMobileMenu() {
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            if (!menuToggle || !mobileMenu) return;
+            
+            menuToggle.addEventListener('click', function() {
+                // Toggle menu open/closed state
+                if (mobileMenu.classList.contains('h-0')) {
+                    // Open menu
+                    mobileMenu.classList.remove('h-0');
+                    mobileMenu.classList.add('h-screen');
+                    menuToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>';
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling
+                } else {
+                    // Close menu
+                    closeMenu();
+                }
+            });
+            
+            // Close menu when clicking a menu item
+            document.querySelectorAll('#mobileMenu a').forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+            
+            // Close menu function
+            function closeMenu() {
+                mobileMenu.classList.add('h-0');
+                mobileMenu.classList.remove('h-screen');
+                menuToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>';
+                document.body.style.overflow = ''; // Re-enable scrolling
+            }
+            
+            // Close menu on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && mobileMenu.classList.contains('h-screen')) {
+                    closeMenu();
+                }
+            });
+        }
+        
+        /**
+         * Initialize scroll tracking
+         */
+        function initScrollTracking() {
+            const nav = document.getElementById('mainNav');
+            const scrollProgress = document.getElementById('scrollProgress');
+            
+            if (!nav || !scrollProgress) return;
+            
+            // Update on scroll
+            window.addEventListener('scroll', function() {
+                // Update scroll progress bar
+                const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrolled = (window.scrollY / scrollHeight) * 100;
+                scrollProgress.style.width = scrolled + '%';
+                
+                // Update navigation background
+                if (window.scrollY > 50) {
+                    nav.classList.add('bg-secondary-dark', 'bg-opacity-80', 'backdrop-blur-premium', 'shadow-md');
+                } else {
+                    nav.classList.remove('bg-secondary-dark', 'bg-opacity-80', 'backdrop-blur-premium', 'shadow-md');
+                }
+                
+                // Update active nav link
+                updateActiveNavLink();
+            });
+        }
+        
+        /**
+         * Update active navigation link based on scroll position
+         */
+        function updateActiveNavLink() {
+            const sections = document.querySelectorAll('section[id], header[id]');
+            const navLinks = document.querySelectorAll('nav a');
+            
+            let currentSection = '';
+            const scrollPosition = window.scrollY + window.innerHeight / 3;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    currentSection = section.id;
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('text-primary-light');
+                const href = link.getAttribute('href');
+                if (href && href === `#${currentSection}`) {
+                    link.classList.add('text-primary-light');
+                }
+            });
+        }
+        
+        /**
+         * Initialize scroll down indicator
+         */
+        function initScrollDownIndicator() {
+            const scrollDown = document.getElementById('scrollDown');
+            if (!scrollDown) return;
+            
+            // Hide on scroll
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > window.innerHeight * 0.3) {
+                    scrollDown.classList.add('opacity-0');
+                } else {
+                    scrollDown.classList.remove('opacity-0');
+                }
+            });
+            
+            // Scroll to about section on click
+            scrollDown.addEventListener('click', function() {
+                const aboutSection = document.getElementById('about');
+                if (aboutSection) {
+                    const offsetTop = aboutSection.offsetTop;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        }
+        
+        /**
+         * Initialize section fade-in effects
+         */
+        function initSectionFadeEffects() {
+            const fadeElements = document.querySelectorAll('.section-fade');
+            
+            // Create intersection observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fade-in-up');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -10% 0px'
+            });
+            
+            // Observe all fade elements
+            fadeElements.forEach(element => {
+                observer.observe(element);
+            });
+        }
+        
+        /**
+         * Hide page loader with animation
+         */
+        function hidePageLoader() {
+            const loader = document.getElementById('pageLoader');
+            const counter = document.getElementById('loaderCounter');
+            
+            if (!loader || !counter) return;
+            
+            // Animate counter from 0 to 100
+            let count = 0;
+            const counterInterval = setInterval(() => {
+                count += Math.floor(Math.random() * 5) + 1;
+                if (count > 100) count = 100;
+                
+                counter.textContent = count + '%';
+                
+                if (count === 100) {
+                    clearInterval(counterInterval);
+                    
+                    // Add small delay before hiding
+                    setTimeout(() => {
+                        loader.classList.add('hidden');
+                    }, 300);
+                }
+            }, 40);
+        }
+        
+        /**
+         * Initialize animations
+         */
+        function initializeAnimations() {
+            // Add staggered animations to elements
+            animateElementsWithStagger('.glass-card', 100);
+            animateElementsWithStagger('[class*="animate-float"]', 200);
+        }
+        
+        /**
+         * Animate elements with stagger effect
+         */
+        function animateElementsWithStagger(selector, staggerDelay) {
+            const elements = document.querySelectorAll(selector);
+            
+            elements.forEach((element, index) => {
+                const delay = index * staggerDelay / 1000;
+                element.style.transitionDelay = `${delay}s`;
+            });
+        }
+        
+        /**
+         * Create background particles
+         */
+        function createBackgroundParticles() {
+            const container = document.querySelector('.animated-bg');
+            if (!container) return;
+            
+            // Create particles
+            for (let i = 0; i < 20; i++) {
+                const size = Math.random() * 120 + 40;
+                const particle = document.createElement('div');
+                particle.className = 'bg-particle';
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.left = `${Math.random() * 100}%`;
+                
+                // Animation
+                const duration = Math.random() * 30 + 20;
+                particle.style.animation = `float ${duration}s ease-in-out infinite`;
+                particle.style.animationDelay = `${Math.random() * 20}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+    </script>
 </body>
 </html>
