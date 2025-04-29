@@ -216,7 +216,10 @@
             height: 5rem;
             margin-top: -5rem;
             z-index: 10;
-            background: linear-gradient(to bottom, transparent, hsl(var(--background)));
+            .section-divider {
+            background: linear-gradient(to bottom, hsla(var(--background) / 0), hsla(var(--background) / 0.6));
+        }
+
             pointer-events: none;
         }
         
@@ -468,7 +471,7 @@
             background-color: hsla(var(--background) / 0.8);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid hsla(var(--border) / 0.1);
-            position: relative;
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
