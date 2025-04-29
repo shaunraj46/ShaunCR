@@ -220,7 +220,7 @@
             pointer-events: none;
         }
         
-        /* Section Card */
+        /* Section Card with Fade Effect */
         .section-card {
             position: relative;
             background-color: hsla(var(--card) / 0.9);
@@ -232,6 +232,18 @@
             margin: 3rem 0;
             padding: 5rem 0 4rem 0; /* Added more top padding to make room for the header */
             overflow: hidden;
+            /* Fade effect base state */
+            opacity: 0.4;
+            filter: blur(5px);
+            transform: translateY(20px);
+            transition: opacity 1s ease, filter 1s ease, transform 1s ease;
+        }
+        
+        /* Active fade section */
+        .section-card.in-view {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0);
         }
         
         /* Section background accent */
@@ -365,6 +377,19 @@
             }
         }
         
+        /* Content reveal animations */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            will-change: opacity, transform;
+        }
+        
+        .reveal-on-scroll.is-revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
         /* Premium loader */
         .premium-loader {
             position: fixed;
@@ -465,44 +490,10 @@
             height: 5rem;
         }
         
-        /* Enhanced Scroll Transition Effects */
-        .scroll-transition-item {
-            opacity: 0;
-            transform: translateY(30px);
-            filter: blur(0);
-            transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
-            will-change: opacity, transform, filter;
-        }
-        
-        .scroll-transition-item.visible {
+        /* Hero Section special handling */
+        #home {
             opacity: 1;
-            transform: translateY(0);
             filter: blur(0);
-        }
-        
-        /* Offscreen states */
-        .scroll-transition-item.above-viewport {
-            opacity: 0;
-            transform: translateY(-30px);
-            filter: blur(4px);
-        }
-        
-        .scroll-transition-item.below-viewport {
-            opacity: 0;
-            transform: translateY(30px);
-            filter: blur(0);
-        }
-        
-        /* Section Reveal Effect */
-        .section-reveal {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 1s ease, transform 1s ease;
-            will-change: opacity, transform;
-        }
-        
-        .section-reveal.visible {
-            opacity: 1;
             transform: translateY(0);
         }
     </style>
@@ -570,16 +561,16 @@
             <div class="flex flex-col-reverse lg:flex-row items-center">
                 <!-- Hero Content -->
                 <div class="w-full lg:w-3/5 text-center lg:text-left pt-16 lg:pt-0">
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 scroll-transition-item">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 reveal-on-scroll" data-delay="0">
                         <span class="text-gradient">Shaun Clarence Raj</span>
                     </h1>
-                    <h2 class="text-2xl md:text-3xl font-bold mb-6 text-foreground/90 scroll-transition-item">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-6 text-foreground/90 reveal-on-scroll" data-delay="100">
                         Engineering Student & Founder
                     </h2>
-                    <p class="text-base md:text-lg text-foreground/80 mb-8 max-w-xl mx-auto lg:mx-0 scroll-transition-item">
+                    <p class="text-base md:text-lg text-foreground/80 mb-8 max-w-xl mx-auto lg:mx-0 reveal-on-scroll" data-delay="200">
                         Bridging cutting-edge AI research with practical business applications. Creating intelligent systems that are efficient, sustainable, and accessible to organizations of all sizes.
                     </p>
-                    <a href="#projects" class="glow-button rounded-full py-3 px-6 text-white font-semibold inline-flex items-center scroll-transition-item group">
+                    <a href="#projects" class="glow-button rounded-full py-3 px-6 text-white font-semibold inline-flex items-center reveal-on-scroll group" data-delay="300">
                         <span>Explore My Work</span>
                         <span class="ml-4 w-10 h-10 flex items-center justify-center bg-white/10 rounded-full group-hover:translate-x-1 transition-transform duration-300">
                             <i class="fas fa-arrow-right text-white"></i>
@@ -589,7 +580,7 @@
                 
                 <!-- Hero 3D Shape -->
                 <div class="w-full lg:w-2/5 pointer-events-none relative flex justify-center lg:justify-end">
-                    <div class="floating-shape scroll-transition-item"></div>
+                    <div class="floating-shape"></div>
                 </div>
             </div>
             
@@ -604,13 +595,13 @@
     <div class="section-divider"></div>
     
     <!-- About Section -->
-    <section id="about" class="section-card section-reveal">
+    <section id="about" class="section-card">
         <!-- Section Accent Background -->
         <div class="section-accent"></div>
         
         <div class="container max-w-7xl mx-auto px-4">
             <!-- Fixed Section Header (NOT sticky) -->
-            <div class="section-header text-center mb-8">
+            <div class="section-header text-center mb-8 reveal-on-scroll" data-delay="0">
                 <h2 class="text-3xl md:text-4xl font-bold mb-3 text-foreground">
                     About Me
                 </h2>
@@ -619,7 +610,7 @@
             
             <!-- Section Content (z-index higher than header) -->
             <div class="section-content flex flex-col lg:flex-row gap-16 items-center">
-                <div class="w-full lg:w-1/2 scroll-transition-item">
+                <div class="w-full lg:w-1/2 reveal-on-scroll" data-delay="200">
                     <div class="glass-card rounded-3xl overflow-hidden transform transition-all duration-500">
                         <div class="overflow-hidden">
                             <img src="assets/images/profile.png" alt="Shaun Raj - Engineering Student & Founder" class="w-full h-auto transform transition-transform duration-700 hover:scale-105">
@@ -628,11 +619,11 @@
                 </div>
                 
                 <div class="w-full lg:w-1/2">
-                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-foreground scroll-transition-item">Innovating with Purpose</h3>
-                    <p class="text-muted-foreground mb-4 scroll-transition-item">As an Engineering Student and Founder of SpicyNuggets, I blend technical expertise with entrepreneurial vision to create AI systems that are both powerful and sustainable. Currently pursuing Engineering at Technische Hochschule Ingolstadt, I focus on developing technologies that make intelligent systems accessible while minimizing resource consumption.</p>
-                    <p class="text-muted-foreground mb-4 scroll-transition-item">My work sits at the intersection of AI innovation and real-world application, specializing in multilingual language models, energy-efficient implementation strategies, and systems that deliver business value across industries.</p>
-                    <p class="text-muted-foreground mb-8 scroll-transition-item">I'm passionate about demonstrating that cutting-edge AI can be both performance-optimized and environmentally responsible — a philosophy that drives all my projects.</p>
-                    <a href="#contact" class="glow-button rounded-full py-3 px-6 text-white font-semibold inline-flex items-center group scroll-transition-item">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-foreground reveal-on-scroll" data-delay="300">Innovating with Purpose</h3>
+                    <p class="text-muted-foreground mb-4 reveal-on-scroll" data-delay="400">As an Engineering Student and Founder of SpicyNuggets, I blend technical expertise with entrepreneurial vision to create AI systems that are both powerful and sustainable. Currently pursuing Engineering at Technische Hochschule Ingolstadt, I focus on developing technologies that make intelligent systems accessible while minimizing resource consumption.</p>
+                    <p class="text-muted-foreground mb-4 reveal-on-scroll" data-delay="500">My work sits at the intersection of AI innovation and real-world application, specializing in multilingual language models, energy-efficient implementation strategies, and systems that deliver business value across industries.</p>
+                    <p class="text-muted-foreground mb-8 reveal-on-scroll" data-delay="600">I'm passionate about demonstrating that cutting-edge AI can be both performance-optimized and environmentally responsible — a philosophy that drives all my projects.</p>
+                    <a href="#contact" class="glow-button rounded-full py-3 px-6 text-white font-semibold inline-flex items-center group reveal-on-scroll" data-delay="700">
                         <span>Connect With Me</span>
                         <span class="ml-4 w-10 h-10 flex items-center justify-center bg-white/10 rounded-full group-hover:translate-x-1 transition-transform duration-300">
                             <i class="fas fa-arrow-right text-white"></i>
@@ -647,13 +638,13 @@
     <div class="section-gap"></div>
     
     <!-- Projects Section -->
-    <section id="projects" class="section-card section-reveal">
+    <section id="projects" class="section-card">
         <!-- Section Accent Background -->
         <div class="section-accent"></div>
         
         <div class="container max-w-7xl mx-auto px-4">
             <!-- Fixed Section Header -->
-            <div class="section-header text-center mb-8">
+            <div class="section-header text-center mb-8 reveal-on-scroll">
                 <h2 class="text-3xl md:text-4xl font-bold mb-3 text-foreground">
                     Featured Projects
                 </h2>
@@ -663,7 +654,7 @@
             <!-- Section Content -->
             <div class="section-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Project 1 -->
-                <div class="glass-card rounded-3xl p-8 h-full flex flex-col group scroll-transition-item">
+                <div class="glass-card rounded-3xl p-8 h-full flex flex-col group reveal-on-scroll" data-delay="200">
                     <div class="mb-6 w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center text-3xl text-primary group-hover:scale-110 transition-transform duration-300">
                         <i class="fas fa-robot"></i>
                     </div>
@@ -685,7 +676,7 @@
                 </div>
                 
                 <!-- Project 2 -->
-                <div class="glass-card rounded-3xl p-8 h-full flex flex-col group scroll-transition-item">
+                <div class="glass-card rounded-3xl p-8 h-full flex flex-col group reveal-on-scroll" data-delay="300">
                     <div class="mb-6 w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center text-3xl text-primary group-hover:scale-110 transition-transform duration-300">
                         <i class="fas fa-calendar-alt"></i>
                     </div>
@@ -706,7 +697,7 @@
                 </div>
                 
                 <!-- Project 3 -->
-                <div class="glass-card rounded-3xl p-8 h-full flex flex-col group scroll-transition-item">
+                <div class="glass-card rounded-3xl p-8 h-full flex flex-col group reveal-on-scroll" data-delay="400">
                     <div class="mb-6 w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center text-3xl text-primary group-hover:scale-110 transition-transform duration-300">
                         <i class="fas fa-sort-amount-up"></i>
                     </div>
@@ -733,13 +724,13 @@
     <div class="section-gap"></div>
     
     <!-- Startup Section -->
-    <section id="startup" class="section-card section-reveal">
+    <section id="startup" class="section-card">
         <!-- Section Accent Background -->
         <div class="section-accent"></div>
         
         <div class="container max-w-7xl mx-auto px-4">
             <!-- Fixed Section Header -->
-            <div class="section-header text-center mb-8">
+            <div class="section-header text-center mb-8 reveal-on-scroll">
                 <h2 class="text-3xl md:text-4xl font-bold mb-3 text-foreground">
                     SpicyNuggets
                 </h2>
@@ -749,12 +740,12 @@
             <!-- Section Content -->
             <div class="section-content flex flex-col-reverse lg:flex-row gap-16 items-center">
                 <div class="w-full lg:w-3/5">
-                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-foreground scroll-transition-item">Bridging Research and Application</h3>
-                    <p class="text-muted-foreground mb-4 scroll-transition-item">Founded during the 5-Euro Business competition, SpicyNuggets has evolved into a platform for developing sustainable AI solutions that connect cutting-edge research with practical business applications.</p>
-                    <p class="text-muted-foreground mb-8 scroll-transition-item">Our mission is to make intelligent systems accessible to organizations of all sizes while pioneering energy-efficient implementation methods that reduce the environmental impact of advanced AI.</p>
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-foreground reveal-on-scroll" data-delay="200">Bridging Research and Application</h3>
+                    <p class="text-muted-foreground mb-4 reveal-on-scroll" data-delay="300">Founded during the 5-Euro Business competition, SpicyNuggets has evolved into a platform for developing sustainable AI solutions that connect cutting-edge research with practical business applications.</p>
+                    <p class="text-muted-foreground mb-8 reveal-on-scroll" data-delay="400">Our mission is to make intelligent systems accessible to organizations of all sizes while pioneering energy-efficient implementation methods that reduce the environmental impact of advanced AI.</p>
                     
                     <div class="space-y-6">
-                        <div class="glass-card rounded-2xl p-6 flex items-start gap-4 transition-all duration-300 hover:translate-x-2 group scroll-transition-item">
+                        <div class="glass-card rounded-2xl p-6 flex items-start gap-4 transition-all duration-300 hover:translate-x-2 group reveal-on-scroll" data-delay="500">
                             <div class="bg-primary/10 text-primary w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform duration-300">
                                 <i class="fas fa-award"></i>
                             </div>
@@ -764,7 +755,7 @@
                             </div>
                         </div>
                         
-                        <div class="glass-card rounded-2xl p-6 flex items-start gap-4 transition-all duration-300 hover:translate-x-2 group scroll-transition-item">
+                        <div class="glass-card rounded-2xl p-6 flex items-start gap-4 transition-all duration-300 hover:translate-x-2 group reveal-on-scroll" data-delay="600">
                             <div class="bg-primary/10 text-primary w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform duration-300">
                                 <i class="fas fa-lightbulb"></i>
                             </div>
@@ -774,7 +765,7 @@
                             </div>
                         </div>
                         
-                        <div class="glass-card rounded-2xl p-6 flex items-start gap-4 transition-all duration-300 hover:translate-x-2 group scroll-transition-item">
+                        <div class="glass-card rounded-2xl p-6 flex items-start gap-4 transition-all duration-300 hover:translate-x-2 group reveal-on-scroll" data-delay="700">
                             <div class="bg-primary/10 text-primary w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform duration-300">
                                 <i class="fas fa-project-diagram"></i>
                             </div>
@@ -786,7 +777,7 @@
                     </div>
                 </div>
                 
-                <div class="w-full lg:w-2/5 scroll-transition-item">
+                <div class="w-full lg:w-2/5 reveal-on-scroll" data-delay="200">
                     <div class="glass-card rounded-3xl overflow-hidden">
                         <img src="assets/images/startup.jpg" alt="SpicyNuggets Innovation" class="w-full h-auto transform hover:scale-105 transition-transform duration-500">
                     </div>
@@ -799,13 +790,13 @@
     <div class="section-gap"></div>
     
     <!-- Skills Section -->
-    <section id="skills" class="section-card section-reveal">
+    <section id="skills" class="section-card">
         <!-- Section Accent Background -->
         <div class="section-accent"></div>
         
         <div class="container max-w-7xl mx-auto px-4">
             <!-- Fixed Section Header -->
-            <div class="section-header text-center mb-8">
+            <div class="section-header text-center mb-8 reveal-on-scroll">
                 <h2 class="text-3xl md:text-4xl font-bold mb-3 text-foreground">
                     Technical Skills
                 </h2>
@@ -815,7 +806,7 @@
             <!-- Section Content -->
             <div class="section-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <!-- AI & Machine Learning -->
-                <div class="glass-card rounded-3xl p-8 h-full group scroll-transition-item">
+                <div class="glass-card rounded-3xl p-8 h-full group reveal-on-scroll" data-delay="200">
                     <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-3xl text-primary mb-6 group-hover:scale-110 transition-transform duration-300">
                         <i class="fas fa-robot"></i>
                     </div>
@@ -840,7 +831,7 @@
                 </div>
                 
                 <!-- Programming Languages -->
-                <div class="glass-card rounded-3xl p-8 h-full group scroll-transition-item">
+                <div class="glass-card rounded-3xl p-8 h-full group reveal-on-scroll" data-delay="300">
                     <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-3xl text-primary mb-6 group-hover:scale-110 transition-transform duration-300">
                         <i class="fas fa-code"></i>
                     </div>
@@ -865,7 +856,7 @@
                 </div>
                 
                 <!-- Tools & Frameworks -->
-                <div class="glass-card rounded-3xl p-8 h-full group scroll-transition-item">
+                <div class="glass-card rounded-3xl p-8 h-full group reveal-on-scroll" data-delay="400">
                     <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-3xl text-primary mb-6 group-hover:scale-110 transition-transform duration-300">
                         <i class="fas fa-database"></i>
                     </div>
@@ -890,7 +881,7 @@
                 </div>
                 
                 <!-- Autonomous Systems -->
-                <div class="glass-card rounded-3xl p-8 h-full group scroll-transition-item">
+                <div class="glass-card rounded-3xl p-8 h-full group reveal-on-scroll" data-delay="500">
                     <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-3xl text-primary mb-6 group-hover:scale-110 transition-transform duration-300">
                         <i class="fas fa-sitemap"></i>
                     </div>
@@ -921,13 +912,13 @@
     <div class="section-gap"></div>
     
     <!-- Formula Student Section -->
-    <section id="formula" class="section-card section-reveal">
+    <section id="formula" class="section-card">
         <!-- Section Accent Background -->
         <div class="section-accent"></div>
         
         <div class="container max-w-7xl mx-auto px-4">
             <!-- Fixed Section Header -->
-            <div class="section-header text-center mb-8">
+            <div class="section-header text-center mb-8 reveal-on-scroll">
                 <h2 class="text-3xl md:text-4xl font-bold mb-3 text-foreground">
                     Formula Student
                 </h2>
@@ -936,17 +927,17 @@
             
             <!-- Section Content -->
             <div class="section-content flex flex-col lg:flex-row gap-16 items-center">
-                <div class="w-full lg:w-2/5 scroll-transition-item">
+                <div class="w-full lg:w-2/5 reveal-on-scroll" data-delay="200">
                     <div class="glass-card rounded-3xl overflow-hidden">
                         <img src="assets/images/formula.jpg" alt="Formula Student Driverless" class="w-full h-auto transform hover:scale-105 transition-transform duration-500">
                     </div>
                 </div>
                 
                 <div class="w-full lg:w-3/5">
-                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-foreground scroll-transition-item">Schanzer Racing Driverless</h3>
-                    <p class="text-muted-foreground mb-4 scroll-transition-item">As a member of the Driverless department at Schanzer Racing, I work on developing advanced telemetry systems and data visualization tools for autonomous racing vehicles. My focus is on creating real-time monitoring solutions that provide critical insights during testing and competition.</p>
-                    <p class="text-muted-foreground mb-4 scroll-transition-item">Using Foxglove Studio and ROS2, I've implemented visualization dashboards that transform complex sensor data into actionable information, enabling rapid optimization of vehicle performance and autonomous driving algorithms.</p>
-                    <p class="text-muted-foreground scroll-transition-item">This experience combines my passion for autonomous systems with practical applications of data processing in high-performance environments, strengthening my ability to work with real-time, mission-critical systems.</p>
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-foreground reveal-on-scroll" data-delay="300">Schanzer Racing Driverless</h3>
+                    <p class="text-muted-foreground mb-4 reveal-on-scroll" data-delay="400">As a member of the Driverless department at Schanzer Racing, I work on developing advanced telemetry systems and data visualization tools for autonomous racing vehicles. My focus is on creating real-time monitoring solutions that provide critical insights during testing and competition.</p>
+                    <p class="text-muted-foreground mb-4 reveal-on-scroll" data-delay="500">Using Foxglove Studio and ROS2, I've implemented visualization dashboards that transform complex sensor data into actionable information, enabling rapid optimization of vehicle performance and autonomous driving algorithms.</p>
+                    <p class="text-muted-foreground reveal-on-scroll" data-delay="600">This experience combines my passion for autonomous systems with practical applications of data processing in high-performance environments, strengthening my ability to work with real-time, mission-critical systems.</p>
                 </div>
             </div>
         </div>
@@ -956,13 +947,13 @@
     <div class="section-gap"></div>
     
     <!-- Leadership Section -->
-    <section id="leadership" class="section-card section-reveal">
+    <section id="leadership" class="section-card">
         <!-- Section Accent Background -->
         <div class="section-accent"></div>
         
         <div class="container max-w-7xl mx-auto px-4">
             <!-- Fixed Section Header -->
-            <div class="section-header text-center mb-8">
+            <div class="section-header text-center mb-8 reveal-on-scroll">
                 <h2 class="text-3xl md:text-4xl font-bold mb-3 text-foreground">
                     Leadership
                 </h2>
@@ -972,13 +963,13 @@
             <!-- Section Content -->
             <div class="section-content flex flex-col-reverse lg:flex-row gap-16 items-center">
                 <div class="w-full lg:w-3/5">
-                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-foreground scroll-transition-item">Student Representative</h3>
-                    <p class="text-muted-foreground mb-4 scroll-transition-item">Elected as the student representative (StuV) for Faculty E at Technische Hochschule Ingolstadt, I work to strengthen the connection between students and faculty administration. My role focuses on improving student inclusion in academic decisions and enhancing communication channels between all stakeholders.</p>
-                    <p class="text-muted-foreground mb-4 scroll-transition-item">Through this position, I've developed initiatives to gather student feedback, organized events to build community within the engineering department, and advocated for curriculum improvements that better prepare students for industry challenges.</p>
-                    <p class="text-muted-foreground scroll-transition-item">This leadership experience has enhanced my ability to communicate effectively across diverse groups, manage stakeholder expectations, and implement processes that drive positive organizational change.</p>
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-foreground reveal-on-scroll" data-delay="300">Student Representative</h3>
+                    <p class="text-muted-foreground mb-4 reveal-on-scroll" data-delay="400">Elected as the student representative (StuV) for Faculty E at Technische Hochschule Ingolstadt, I work to strengthen the connection between students and faculty administration. My role focuses on improving student inclusion in academic decisions and enhancing communication channels between all stakeholders.</p>
+                    <p class="text-muted-foreground mb-4 reveal-on-scroll" data-delay="500">Through this position, I've developed initiatives to gather student feedback, organized events to build community within the engineering department, and advocated for curriculum improvements that better prepare students for industry challenges.</p>
+                    <p class="text-muted-foreground reveal-on-scroll" data-delay="600">This leadership experience has enhanced my ability to communicate effectively across diverse groups, manage stakeholder expectations, and implement processes that drive positive organizational change.</p>
                 </div>
                 
-                <div class="w-full lg:w-2/5 scroll-transition-item">
+                <div class="w-full lg:w-2/5 reveal-on-scroll" data-delay="200">
                     <div class="glass-card rounded-3xl overflow-hidden">
                         <img src="assets/images/leadership.png" alt="Leadership Role" class="w-full h-auto transform hover:scale-105 transition-transform duration-500">
                     </div>
@@ -991,13 +982,13 @@
     <div class="section-gap"></div>
     
     <!-- Contact Section -->
-    <section id="contact" class="section-card section-reveal">
+    <section id="contact" class="section-card">
         <!-- Section Accent Background -->
         <div class="section-accent"></div>
         
         <div class="container max-w-7xl mx-auto px-4">
             <!-- Fixed Section Header -->
-            <div class="section-header text-center mb-8">
+            <div class="section-header text-center mb-8 reveal-on-scroll">
                 <h2 class="text-3xl md:text-4xl font-bold mb-3 text-foreground">
                     Let's Connect
                 </h2>
@@ -1007,24 +998,24 @@
             <!-- Section Content -->
             <div class="section-content max-w-3xl mx-auto">
                 <div class="glass-card rounded-3xl p-10 md:p-16 text-center">
-                    <p class="text-muted-foreground text-lg mb-12 scroll-transition-item">I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
+                    <p class="text-muted-foreground text-lg mb-12 reveal-on-scroll" data-delay="100">I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
                     
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
-                        <a href="mailto:shaunraj46@gmail.com" class="flex flex-col items-center group scroll-transition-item">
+                        <a href="mailto:shaunraj46@gmail.com" class="flex flex-col items-center group reveal-on-scroll" data-delay="200">
                             <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-3xl text-primary mb-4 transition-all duration-300 group-hover:bg-primary/20 group-hover:-translate-y-2">
                                 <i class="fas fa-envelope"></i>
                             </div>
                             <span class="text-lg font-bold text-foreground">Email</span>
                         </a>
                         
-                        <a href="https://www.linkedin.com/in/shaun-clarence-raj-631817205" class="flex flex-col items-center group scroll-transition-item">
+                        <a href="https://www.linkedin.com/in/shaun-clarence-raj-631817205" class="flex flex-col items-center group reveal-on-scroll" data-delay="300">
                             <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-3xl text-primary mb-4 transition-all duration-300 group-hover:bg-primary/20 group-hover:-translate-y-2">
                                 <i class="fab fa-linkedin-in"></i>
                             </div>
                             <span class="text-lg font-bold text-foreground">LinkedIn</span>
                         </a>
                         
-                        <a href="https://github.com/shaunraj46" class="flex flex-col items-center group scroll-transition-item">
+                        <a href="https://github.com/shaunraj46" class="flex flex-col items-center group reveal-on-scroll" data-delay="400">
                             <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-3xl text-primary mb-4 transition-all duration-300 group-hover:bg-primary/20 group-hover:-translate-y-2">
                                 <i class="fab fa-github"></i>
                             </div>
@@ -1032,7 +1023,7 @@
                         </a>
                     </div>
                     
-                    <a href="mailto:shaunraj46@gmail.com" class="glow-button rounded-full py-3 px-8 text-white font-semibold inline-flex items-center group scroll-transition-item">
+                    <a href="mailto:shaunraj46@gmail.com" class="glow-button rounded-full py-3 px-8 text-white font-semibold inline-flex items-center group reveal-on-scroll" data-delay="500">
                         <span>Start a Conversation</span>
                         <span class="ml-4 w-10 h-10 flex items-center justify-center bg-white/10 rounded-full group-hover:translate-x-1 transition-transform duration-300">
                             <i class="fas fa-paper-plane text-white"></i>
@@ -1061,7 +1052,7 @@
         </div>
     </footer>
     
-    <!-- Premium JavaScript with Enhanced Scrolling Effects -->
+    <!-- Optimized JS -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize Page
@@ -1072,8 +1063,11 @@
                 // Hide page loader with animation
                 hidePageLoader();
                 
-                // Initialize enhanced scroll transitions
-                initEnhancedScrollTransitions();
+                // Initialize animations with optimized handling
+                initializeInViewportAnimations();
+                
+                // Initialize section fade transitions
+                initializeSectionFades();
                 
                 // Dynamic background blur effect
                 initDynamicBackgroundBlur();
@@ -1101,9 +1095,6 @@
             
             // Initialize smooth scrolling for anchor links
             initSmoothScrolling();
-            
-            // Initialize section reveal effect
-            initSectionReveal();
         }
         
         /**
@@ -1266,115 +1257,34 @@
         }
         
         /**
-         * Initialize enhanced scroll transitions with bidirectional effects
+         * Initialize section fade transitions
+         * This uses Intersection Observer to fade sections in and out as they enter/leave the viewport
          */
-        function initEnhancedScrollTransitions() {
-            const transitionItems = document.querySelectorAll('.scroll-transition-item');
-            let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            let scrollDirection = "down";
-            
-            if (!transitionItems.length) return;
-            
-            // Detect scroll direction
-            window.addEventListener('scroll', function() {
-                const st = window.pageYOffset || document.documentElement.scrollTop;
-                scrollDirection = st > lastScrollTop ? "down" : "up";
-                lastScrollTop = st <= 0 ? 0 : st; // For mobile
-            }, { passive: true });
-            
-            // Create optimized intersection observer
-            const observerOptions = {
-                root: null, // viewport
-                rootMargin: '-5% 0px -5% 0px', // margin around viewport
-                threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] // Multiple thresholds for smoother transitions
-            };
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    const element = entry.target;
-                    
-                    // If element is entering or leaving viewport
-                    if (entry.isIntersecting) {
-                        // Element is visible in the viewport
-                        element.classList.add('visible');
-                        element.classList.remove('above-viewport', 'below-viewport');
-                        
-                        // Apply progressive reveal based on intersection ratio
-                        const ratio = entry.intersectionRatio;
-                        applyProgressiveEffect(element, ratio, scrollDirection);
-                    } else {
-                        // Element is out of viewport
-                        if (entry.boundingClientRect.top < 0) {
-                            // Element is above viewport
-                            element.classList.add('above-viewport');
-                            element.classList.remove('visible', 'below-viewport');
-                        } else {
-                            // Element is below viewport
-                            element.classList.add('below-viewport');
-                            element.classList.remove('visible', 'above-viewport');
-                        }
-                    }
-                });
-            }, observerOptions);
-            
-            // Start observing all transition items
-            transitionItems.forEach((item, index) => {
-                // Add staggered delay based on position
-                item.style.transitionDelay = `${index * 0.05}s`;
-                observer.observe(item);
-            });
-        }
-        
-        /**
-         * Apply progressive scroll effects based on intersection ratio
-         */
-        function applyProgressiveEffect(element, ratio, direction) {
-            // Scale opacity and transform based on intersection ratio
-            // This creates a smoother transition as elements enter/exit the viewport
-            const translateAmount = (1 - ratio) * 30; // 0-30px based on ratio
-            const blurAmount = (1 - ratio) * 3; // 0-3px blur based on ratio
-            
-            if (direction === "down") {
-                // When scrolling down, elements come from below
-                element.style.opacity = ratio;
-                element.style.transform = `translateY(${translateAmount}px)`;
-                element.style.filter = `blur(${blurAmount}px)`;
-            } else {
-                // When scrolling up, elements come from above
-                element.style.opacity = ratio;
-                element.style.transform = `translateY(${-translateAmount}px)`;
-                element.style.filter = `blur(${blurAmount}px)`;
-            }
-            
-            // Reset styles when fully visible
-            if (ratio >= 0.99) {
-                element.style.opacity = "";
-                element.style.transform = "";
-                element.style.filter = "";
-            }
-        }
-        
-        /**
-         * Initialize section reveal effect
-         */
-        function initSectionReveal() {
-            const sections = document.querySelectorAll('.section-reveal');
+        function initializeSectionFades() {
+            const sections = document.querySelectorAll('.section-card');
             
             if (!sections.length) return;
             
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
+                    // When a section is at least 10% visible
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
+                        entry.target.classList.add('in-view');
+                    } else {
+                        // When section leaves viewport
+                        entry.target.classList.remove('in-view');
                     }
                 });
             }, {
-                threshold: 0.1
+                threshold: 0.1, // Trigger when at least 10% of the section is visible
+                rootMargin: '-10% 0px -10% 0px' // Slightly shrink the effective viewport
             });
             
+            // Start observing all sections
             sections.forEach(section => {
-                observer.observe(section);
+                if (section.id !== 'home') { // Skip home section
+                    observer.observe(section);
+                }
             });
         }
         
@@ -1436,6 +1346,45 @@
                         behavior: 'smooth'
                     });
                 }
+            });
+        }
+        
+        /**
+         * Initialize in-viewport animations with optimization
+         * Uses Intersection Observer for efficient detection
+         */
+        function initializeInViewportAnimations() {
+            const revealElements = document.querySelectorAll('.reveal-on-scroll');
+            
+            if (!revealElements.length) return;
+            
+            // Create optimized intersection observer
+            const observerOptions = {
+                root: null, // viewport
+                rootMargin: '0px 0px -10% 0px', // start animation slightly before element enters viewport
+                threshold: 0.1 // trigger when at least 10% of element is visible
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    
+                    const element = entry.target;
+                    const delay = element.dataset.delay || 0;
+                    
+                    // Use setTimeout for staggered reveals
+                    setTimeout(() => {
+                        element.classList.add('is-revealed');
+                    }, delay);
+                    
+                    // Stop observing once revealed
+                    observer.unobserve(element);
+                });
+            }, observerOptions);
+            
+            // Start observing all elements
+            revealElements.forEach(element => {
+                observer.observe(element);
             });
         }
         
