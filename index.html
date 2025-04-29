@@ -17,22 +17,21 @@
     <style>
         :root {
             /* Core theme variables */
-            --primary: #4f46e5;
-            --primary-dark: #4338ca;
-            --primary-light: #818cf8;
+            --primary: #6366F1;
+            --primary-dark: #4F46E5;
+            --primary-light: #A5B4FC;
             --secondary: #0F172A;
-            --secondary-dark: #0c1322;
+            --secondary-dark: #030712;
             --purple-dark: #1E1B4B;
-            --purple-light: #6366f1;
-            --accent: #8b5cf6;
-            --accent-gradient: linear-gradient(135deg, #4f46e5, #8b5cf6);
-            --text-primary: #f8fafc;
-            --text-secondary: #d1d5db;
+            --purple-light: #7C3AED;
+            --accent: #8B5CF6;
+            --accent-gradient: linear-gradient(135deg, #4F46E5, #8B5CF6);
+            --text-primary: #F8FAFC;
+            --text-secondary: #E2E8F0;
             
             /* Spacing & Dimensions */
             --container-padding: clamp(1rem, 5vw, 3rem);
             --section-spacing: clamp(3rem, 10vh, 6rem);
-            --card-radius: 16px;
             
             /* Animations */
             --transition-fast: 0.2s ease;
@@ -52,8 +51,8 @@
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, var(--purple-dark), var(--secondary-dark));
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #131C31, #0F172A, #080D1A);
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
@@ -65,39 +64,6 @@
         
         body.loaded {
             opacity: 1;
-        }
-        
-        /* Loading screen */
-        .page-loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--purple-dark), var(--secondary-dark));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-        
-        .loader-hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            border-top-color: var(--primary);
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
         }
         
         /* 3D Scene Container initial styling */
@@ -113,17 +79,35 @@
     </style>
     
     <!-- Fonts and Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Main CSS -->
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/custom-cursor.css">
+    <link rel="stylesheet" href="assets/css/premium-loader.css">
 </head>
 <body class="preload">
-    <!-- Page loader -->
+    <!-- Premium page loader -->
     <div class="page-loader">
-        <div class="spinner"></div>
+        <div class="loader-logo">SR</div>
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Loading</div>
+            <div class="loader-particle"></div>
+            <div class="loader-particle"></div>
+            <div class="loader-particle"></div>
+            <div class="loader-particle"></div>
+        </div>
+        <div class="loader-counter">0%</div>
+    </div>
+
+    <!-- Custom cursor (desktop only) -->
+    <div class="cursor-container">
+        <div class="cursor"></div>
+        <div class="cursor-dot"></div>
     </div>
 
     <!-- Progress indicator -->
@@ -137,16 +121,16 @@
         <div class="container">
             <!-- Navigation -->
             <nav>
-                <a href="#" class="logo">SR</a>
+                <a href="#" class="logo" data-cursor="hover">SR</a>
                 
                 <div class="nav-links">
-                    <a href="#about">About</a>
-                    <a href="#projects">Projects</a>
-                    <a href="#startup">Startup</a>
-                    <a href="#skills">Skills</a>
-                    <a href="#formula">Formula</a>
-                    <a href="#leadership">Leadership</a>
-                    <a href="#contact">Contact</a>
+                    <a href="#about" data-cursor="hover">About</a>
+                    <a href="#projects" data-cursor="hover">Projects</a>
+                    <a href="#startup" data-cursor="hover">Startup</a>
+                    <a href="#skills" data-cursor="hover">Skills</a>
+                    <a href="#formula" data-cursor="hover">Formula</a>
+                    <a href="#leadership" data-cursor="hover">Leadership</a>
+                    <a href="#contact" data-cursor="hover">Contact</a>
                 </div>
                 
                 <button class="mobile-menu-toggle" aria-label="Toggle menu">
@@ -158,13 +142,29 @@
             
             <!-- Hero content -->
             <div class="hero">
-                <h1 class="animated-heading">Shaun Clarence Raj</h1>
-                <h2 class="animated-heading">Engineering Student & Founder</h2>
-                <p class="animated-text">Bridging cutting-edge AI research with practical business applications. Creating intelligent systems that are efficient, sustainable, and accessible to organizations of all sizes.</p>
-                <a href="#projects" class="cta-btn">
-                    <span class="cta-text">Explore My Work</span>
-                    <span class="cta-icon"><i class="fas fa-arrow-right"></i></span>
-                </a>
+                <div class="hero-content">
+                    <h1 class="animated-heading">Shaun Clarence Raj</h1>
+                    <h2 class="animated-heading">Engineering Student & Founder</h2>
+                    <p class="animated-text">Bridging cutting-edge AI research with practical business applications. Creating intelligent systems that are efficient, sustainable, and accessible to organizations of all sizes.</p>
+                    <a href="#projects" class="cta-btn" data-cursor="button-hover">
+                        <span class="cta-text">Explore My Work</span>
+                        <span class="cta-icon"><i class="fas fa-arrow-right"></i></span>
+                    </a>
+                </div>
+                
+                <!-- 3D animated hero shape -->
+                <div class="hero-shape">
+                    <div class="floating-shape"></div>
+                </div>
+                
+                <!-- Scroll down indicator -->
+                <div class="scroll-down-indicator">
+                    <div class="mouse"></div>
+                    <div class="arrow-down">
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -172,7 +172,7 @@
     <!-- About Section -->
     <section id="about" class="about">
         <div class="container">
-            <div class="section-title">
+            <div class="section-title section-intro-animation">
                 <h2>About Me</h2>
             </div>
             
@@ -184,23 +184,26 @@
                 </div>
                 
                 <div class="about-text">
-                    <h3>Innovating with Purpose</h3>
-                    <p>As an Engineering Student and Founder of SpicyNuggets, I blend technical expertise with entrepreneurial vision to create AI systems that are both powerful and sustainable. Currently pursuing Engineering at Technische Hochschule Ingolstadt, I focus on developing technologies that make intelligent systems accessible while minimizing resource consumption.</p>
-                    <p>My work sits at the intersection of AI innovation and real-world application, specializing in multilingual language models, energy-efficient implementation strategies, and systems that deliver business value across industries.</p>
-                    <p>I'm passionate about demonstrating that cutting-edge AI can be both performance-optimized and environmentally responsible — a philosophy that drives all my projects.</p>
-                    <a href="#contact" class="cta-btn">
+                    <h3 class="section-intro-animation">Innovating with Purpose</h3>
+                    <p class="section-intro-animation">As an Engineering Student and Founder of SpicyNuggets, I blend technical expertise with entrepreneurial vision to create AI systems that are both powerful and sustainable. Currently pursuing Engineering at Technische Hochschule Ingolstadt, I focus on developing technologies that make intelligent systems accessible while minimizing resource consumption.</p>
+                    <p class="section-intro-animation">My work sits at the intersection of AI innovation and real-world application, specializing in multilingual language models, energy-efficient implementation strategies, and systems that deliver business value across industries.</p>
+                    <p class="section-intro-animation">I'm passionate about demonstrating that cutting-edge AI can be both performance-optimized and environmentally responsible — a philosophy that drives all my projects.</p>
+                    <a href="#contact" class="cta-btn" data-cursor="button-hover">
                         <span class="cta-text">Connect With Me</span>
                         <span class="cta-icon"><i class="fas fa-arrow-right"></i></span>
                     </a>
                 </div>
             </div>
         </div>
+        
+        <!-- Background particles for section -->
+        <div class="section-particles"></div>
     </section>
     
     <!-- Projects Section -->
     <section id="projects" class="projects">
         <div class="container">
-            <div class="section-title">
+            <div class="section-title section-intro-animation">
                 <h2>Featured Projects</h2>
             </div>
             
@@ -208,7 +211,10 @@
                 <!-- Project 1 -->
                 <div class="project-card glass-card">
                     <div class="project-content">
-                        <h3 class="project-title"><i class="fas fa-robot"></i> OWL.AI</h3>
+                        <div class="project-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="project-title">OWL.AI</h3>
                         <p class="project-description">A revolutionary multi-LLM chatbot that classifies prompts by complexity using a custom machine learning model, achieving 96% accuracy in LLM selection. The intelligent model selection reduces energy consumption by 59.6% compared to traditional approaches while maintaining full response quality.</p>
                         
                         <div class="project-tech">
@@ -220,9 +226,9 @@
                             <span class="tech-tag">Machine Learning</span>
                         </div>
                         
-                        <a href="https://owl-ai.de" target="_blank" class="project-link">
-                            <i class="fas fa-external-link-alt"></i>
+                        <a href="https://owl-ai.de" target="_blank" class="project-link" data-cursor="hover">
                             <span>View Project</span>
+                            <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
@@ -230,7 +236,10 @@
                 <!-- Project 2 -->
                 <div class="project-card glass-card">
                     <div class="project-content">
-                        <h3 class="project-title"><i class="fas fa-calendar-alt"></i> HalloDoc</h3>
+                        <div class="project-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3 class="project-title">HalloDoc</h3>
                         <p class="project-description">A WhatsApp-based AI assistant that automates doctor appointment booking using natural language processing. The system integrates with Google Calendar and uses Twilio for seamless communication, eliminating scheduling friction and reducing administrative workload for medical practices.</p>
                         
                         <div class="project-tech">
@@ -241,9 +250,9 @@
                             <span class="tech-tag">Node.js</span>
                         </div>
                         
-                        <a href="https://hallodoc.spicynuggets.eu" target="_blank" class="project-link">
-                            <i class="fas fa-external-link-alt"></i>
+                        <a href="https://hallodoc.spicynuggets.eu" target="_blank" class="project-link" data-cursor="hover">
                             <span>View Project</span>
+                            <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
@@ -251,7 +260,10 @@
                 <!-- Project 3 -->
                 <div class="project-card glass-card">
                     <div class="project-content">
-                        <h3 class="project-title"><i class="fas fa-sort-amount-up"></i> Ranked</h3>
+                        <div class="project-icon">
+                            <i class="fas fa-sort-amount-up"></i>
+                        </div>
+                        <h3 class="project-title">Ranked</h3>
                         <p class="project-description">An AI-powered lead scoring tool that integrates directly into CRM workflows, prioritizing incoming leads using large language models. The system analyzes conversation context, purchase intent, and customer fit to automatically rank leads, enabling sales teams to focus on high-potential opportunities.</p>
                         
                         <div class="project-tech">
@@ -262,9 +274,9 @@
                             <span class="tech-tag">Python</span>
                         </div>
                         
-                        <a href="https://ranked.spicynuggets.eu" target="_blank" class="project-link">
-                            <i class="fas fa-external-link-alt"></i>
+                        <a href="https://ranked.spicynuggets.eu" target="_blank" class="project-link" data-cursor="hover">
                             <span>View Project</span>
+                            <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
@@ -275,15 +287,15 @@
     <!-- Startup Section -->
     <section id="startup" class="startup">
         <div class="container">
-            <div class="section-title">
+            <div class="section-title section-intro-animation">
                 <h2>SpicyNuggets</h2>
             </div>
             
             <div class="startup-content">
                 <div class="startup-text">
-                    <h3>Bridging Research and Application</h3>
-                    <p>Founded during the 5-Euro Business competition, SpicyNuggets has evolved into a platform for developing sustainable AI solutions that connect cutting-edge research with practical business applications.</p>
-                    <p>Our mission is to make intelligent systems accessible to organizations of all sizes while pioneering energy-efficient implementation methods that reduce the environmental impact of advanced AI.</p>
+                    <h3 class="section-intro-animation">Bridging Research and Application</h3>
+                    <p class="section-intro-animation">Founded during the 5-Euro Business competition, SpicyNuggets has evolved into a platform for developing sustainable AI solutions that connect cutting-edge research with practical business applications.</p>
+                    <p class="section-intro-animation">Our mission is to make intelligent systems accessible to organizations of all sizes while pioneering energy-efficient implementation methods that reduce the environmental impact of advanced AI.</p>
                     
                     <div class="achievement-list">
                         <div class="achievement-item glass-card">
@@ -327,7 +339,7 @@
     <!-- Skills Section -->
     <section id="skills" class="skills">
         <div class="container">
-            <div class="section-title">
+            <div class="section-title section-intro-animation">
                 <h2>Technical Skills</h2>
             </div>
             
@@ -398,7 +410,7 @@
     <!-- Formula Student Section -->
     <section id="formula" class="formula">
         <div class="container">
-            <div class="section-title">
+            <div class="section-title section-intro-animation">
                 <h2>Formula Student</h2>
             </div>
             
@@ -410,10 +422,10 @@
                 </div>
                 
                 <div class="formula-text">
-                    <h3>Schanzer Racing Driverless</h3>
-                    <p>As a member of the Driverless department at Schanzer Racing, I work on developing advanced telemetry systems and data visualization tools for autonomous racing vehicles. My focus is on creating real-time monitoring solutions that provide critical insights during testing and competition.</p>
-                    <p>Using Foxglove Studio and ROS2, I've implemented visualization dashboards that transform complex sensor data into actionable information, enabling rapid optimization of vehicle performance and autonomous driving algorithms.</p>
-                    <p>This experience combines my passion for autonomous systems with practical applications of data processing in high-performance environments, strengthening my ability to work with real-time, mission-critical systems.</p>
+                    <h3 class="section-intro-animation">Schanzer Racing Driverless</h3>
+                    <p class="section-intro-animation">As a member of the Driverless department at Schanzer Racing, I work on developing advanced telemetry systems and data visualization tools for autonomous racing vehicles. My focus is on creating real-time monitoring solutions that provide critical insights during testing and competition.</p>
+                    <p class="section-intro-animation">Using Foxglove Studio and ROS2, I've implemented visualization dashboards that transform complex sensor data into actionable information, enabling rapid optimization of vehicle performance and autonomous driving algorithms.</p>
+                    <p class="section-intro-animation">This experience combines my passion for autonomous systems with practical applications of data processing in high-performance environments, strengthening my ability to work with real-time, mission-critical systems.</p>
                 </div>
             </div>
         </div>
@@ -422,16 +434,16 @@
     <!-- Leadership Section -->
     <section id="leadership" class="leadership">
         <div class="container">
-            <div class="section-title">
+            <div class="section-title section-intro-animation">
                 <h2>Leadership</h2>
             </div>
             
             <div class="leadership-content">
                 <div class="leadership-text">
-                    <h3>Student Representative</h3>
-                    <p>Elected as the student representative (StuV) for Faculty E at Technische Hochschule Ingolstadt, I work to strengthen the connection between students and faculty administration. My role focuses on improving student inclusion in academic decisions and enhancing communication channels between all stakeholders.</p>
-                    <p>Through this position, I've developed initiatives to gather student feedback, organized events to build community within the engineering department, and advocated for curriculum improvements that better prepare students for industry challenges.</p>
-                    <p>This leadership experience has enhanced my ability to communicate effectively across diverse groups, manage stakeholder expectations, and implement processes that drive positive organizational change.</p>
+                    <h3 class="section-intro-animation">Student Representative</h3>
+                    <p class="section-intro-animation">Elected as the student representative (StuV) for Faculty E at Technische Hochschule Ingolstadt, I work to strengthen the connection between students and faculty administration. My role focuses on improving student inclusion in academic decisions and enhancing communication channels between all stakeholders.</p>
+                    <p class="section-intro-animation">Through this position, I've developed initiatives to gather student feedback, organized events to build community within the engineering department, and advocated for curriculum improvements that better prepare students for industry challenges.</p>
+                    <p class="section-intro-animation">This leadership experience has enhanced my ability to communicate effectively across diverse groups, manage stakeholder expectations, and implement processes that drive positive organizational change.</p>
                 </div>
                 
                 <div class="leadership-image">
@@ -447,25 +459,25 @@
     <section id="contact" class="contact">
         <div class="container">
             <div class="contact-content glass-card">
-                <h2 class="contact-title">Let's Connect</h2>
-                <p class="contact-subtitle">I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
+                <h2 class="contact-title section-intro-animation">Let's Connect</h2>
+                <p class="contact-subtitle section-intro-animation">I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
                 
                 <div class="contact-links">
-                    <a href="mailto:shaunraj46@gmail.com" class="contact-link">
+                    <a href="mailto:shaunraj46@gmail.com" class="contact-link" data-cursor="hover">
                         <div class="contact-icon">
                             <i class="fas fa-envelope"></i>
                         </div>
                         <div class="contact-label">Email</div>
                     </a>
                     
-                    <a href="https://www.linkedin.com/in/shaun-clarence-raj-631817205" class="contact-link">
+                    <a href="https://www.linkedin.com/in/shaun-clarence-raj-631817205" class="contact-link" data-cursor="hover">
                         <div class="contact-icon">
                             <i class="fab fa-linkedin-in"></i>
                         </div>
                         <div class="contact-label">LinkedIn</div>
                     </a>
                     
-                    <a href="https://github.com/shaunraj46" class="contact-link">
+                    <a href="https://github.com/shaunraj46" class="contact-link" data-cursor="hover">
                         <div class="contact-icon">
                             <i class="fab fa-github"></i>
                         </div>
@@ -473,7 +485,7 @@
                     </a>
                 </div>
                 
-                <a href="mailto:shaunraj46@gmail.com" class="cta-btn">
+                <a href="mailto:shaunraj46@gmail.com" class="cta-btn" data-cursor="button-hover">
                     <span class="cta-text">Start a Conversation</span>
                     <span class="cta-icon"><i class="fas fa-paper-plane"></i></span>
                 </a>
@@ -485,13 +497,13 @@
     <footer>
         <div class="container">
             <div class="social-links">
-                <a href="https://github.com/shaunraj46" class="social-link">
+                <a href="https://github.com/shaunraj46" class="social-link" data-cursor="hover">
                     <i class="fab fa-github"></i>
                 </a>
-                <a href="https://www.linkedin.com/in/shaun-clarence-raj-631817205" class="social-link">
+                <a href="https://www.linkedin.com/in/shaun-clarence-raj-631817205" class="social-link" data-cursor="hover">
                     <i class="fab fa-linkedin-in"></i>
                 </a>
-                <a href="mailto:shaunraj46@gmail.com" class="social-link">
+                <a href="mailto:shaunraj46@gmail.com" class="social-link" data-cursor="hover">
                     <i class="fas fa-envelope"></i>
                 </a>
             </div>

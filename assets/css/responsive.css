@@ -1,12 +1,12 @@
 /* 
- * Responsive CSS for Shaun Raj's Portfolio 2.0
- * Mobile-first approach with clean breakpoints
+ * Enhanced Responsive CSS for Shaun Raj's Portfolio 3.0
+ * Premium mobile-first approach with fluid breakpoints
  */
 
 /* Base mobile styles (default) */
 .mobile-menu-toggle {
   display: flex;
-  z-index: 1000;
+  z-index: var(--z-fixed);
   position: relative;
 }
 
@@ -18,7 +18,7 @@
 .hero {
   max-width: 100%;
   width: 100%;
-  padding: 2rem 1rem;
+  padding: var(--space-6) var(--space-4);
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -33,36 +33,36 @@
 .animated-heading {
   text-align: center;
   width: 100%;
-  font-size: 2.5rem !important;
+  font-size: var(--text-4xl) !important;
 }
 
 .hero h2.animated-heading {
-  font-size: 1.5rem !important;
+  font-size: var(--text-2xl) !important;
 }
 
 .animated-text {
   text-align: center;
   width: 100%;
-  font-size: 1.1rem;
+  font-size: var(--text-base);
 }
 
-/* Containers and spacing */
+/* Enhanced containers and spacing */
 .container {
-  padding: 0 1.5rem;
+  padding: 0 var(--space-4);
 }
 
 section {
-  padding: 4rem 1rem;
-  margin: 1.5rem 0;
+  padding: var(--space-8) var(--space-4);
+  margin: var(--space-6) 0;
 }
 
-/* Section titles */
+/* Section titles responsive */
 .section-title {
-  margin-bottom: 2.5rem;
+  margin-bottom: var(--space-8);
 }
 
 .section-title h2 {
-  font-size: 2rem;
+  font-size: var(--text-3xl);
 }
 
 /* Projects and skills layout */
@@ -70,121 +70,185 @@ section {
 .skills-container {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: var(--space-6);
 }
 
 .project-card,
 .skill-card {
   width: 100%;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-4);
 }
 
-/* Content sections */
+/* Enhanced content sections for mobile */
 .about-content,
 .startup-content,
 .formula-content,
 .leadership-content {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: var(--space-8);
 }
 
-/* Contact section */
+/* Enhanced image card sizing for mobile */
+.profile-img,
+.startup-img,
+.formula-img,
+.leadership-img {
+  max-height: 350px;
+  margin: 0 auto;
+}
+
+/* Contact section mobile optimization */
 .contact-content {
-  padding: 2rem 1rem;
+  padding: var(--space-6) var(--space-4);
 }
 
 .contact-links {
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: var(--space-6);
 }
 
 .contact-icon {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   font-size: 1.8rem;
 }
 
-/* Footer */
+/* Footer mobile optimization */
 footer {
-  padding: 2rem 1rem;
+  padding: var(--space-6) var(--space-4);
 }
 
 .social-links {
-  gap: 1rem;
+  gap: var(--space-4);
 }
 
 .social-link {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   font-size: 1.2rem;
 }
 
-/* CTA buttons */
+/* CTA buttons mobile optimization */
 .cta-btn {
   width: 100%;
   justify-content: center;
-  margin-top: 1rem;
+  margin-top: var(--space-4);
   font-size: 0.95rem;
-  padding: 0 0 0 1rem;
+  padding: 0 0 0 var(--space-4);
 }
 
 .cta-icon {
-  width: 3rem;
-  height: 3rem;
-  margin-left: 1rem;
+  width: 3.2rem;
+  height: 3.2rem;
+  margin-left: var(--space-4);
 }
 
-/* Glass card effect modification for mobile */
+/* Enhanced glass effect modification for mobile */
 .glass-card {
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
 }
 
+/* Better spacing for text elements on mobile */
+h3 {
+  font-size: var(--text-2xl);
+}
+
+p {
+  font-size: var(--text-base);
+  margin-bottom: var(--space-4);
+}
+
+/* Enhanced navigation for mobile */
+nav {
+  padding: var(--space-4) var(--space-4);
+}
+
+.logo {
+  font-size: 1.8rem;
+}
+
 /* Small mobile devices (up to 375px) */
 @media screen and (max-width: 375px) {
   .animated-heading {
-      font-size: 2rem !important;
+      font-size: var(--text-3xl) !important;
   }
   
   .hero h2.animated-heading {
-      font-size: 1.3rem !important;
+      font-size: var(--text-xl) !important;
   }
   
   .animated-text {
-      font-size: 1rem;
+      font-size: var(--text-sm);
   }
   
   .section-title h2 {
-      font-size: 1.8rem;
+      font-size: var(--text-2xl);
   }
   
   .contact-icon {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
+  }
+  
+  /* Tighter spacing on very small screens */
+  section {
+      padding: var(--space-6) var(--space-2);
+  }
+  
+  .container {
+      padding: 0 var(--space-2);
+  }
+  
+  /* Adjust card padding on small screens */
+  .glass-card {
+      padding: var(--space-4);
   }
 }
 
 /* Medium mobile devices (up to 576px) */
 @media screen and (max-width: 576px) {
   .section-title h2 {
-      font-size: 1.8rem;
+      font-size: var(--text-2xl);
   }
   
   .project-title, 
   .skill-title {
-      font-size: 1.5rem;
+      font-size: var(--text-xl);
   }
   
   .contact-title {
-      font-size: 2rem;
+      font-size: var(--text-3xl);
+  }
+  
+  .contact-subtitle {
+      font-size: var(--text-base);
+  }
+  
+  /* Reduce skill icon size on small screens */
+  .skill-icon {
+      width: 65px;
+      height: 65px;
+      font-size: 1.8rem;
+  }
+  
+  /* Better achievement item layout */
+  .achievement-item {
+      padding: var(--space-3);
+  }
+  
+  .achievement-icon {
+      width: 35px;
+      height: 35px;
+      font-size: 1rem;
   }
 }
 
 /* Small tablet and large mobile (768px and up) */
 @media screen and (min-width: 768px) {
-  /* Navigation */
+  /* Enhanced navigation */
   .mobile-menu-toggle {
       display: none;
   }
@@ -196,7 +260,7 @@ footer {
       height: auto;
       background: none;
       flex-direction: row;
-      gap: 2rem;
+      gap: var(--space-6);
       padding: 0;
   }
   
@@ -204,103 +268,153 @@ footer {
       padding: 0.5rem 0;
       width: auto;
       text-align: left;
-      font-size: 1rem;
+      font-size: var(--text-sm);
   }
   
-  /* Hero section */
+  /* Enhanced hero section */
   .hero {
-      max-width: 60%;
+      max-width: 65%;
       text-align: left;
       align-items: flex-start;
-      padding-left: 4rem;
+      padding-left: var(--space-6);
   }
   
   .animated-heading {
       text-align: left;
+      font-size: var(--text-5xl) !important;
   }
   
   .hero h2.animated-heading {
       text-align: left;
+      font-size: var(--text-3xl) !important;
   }
   
   .animated-text {
       text-align: left;
+      font-size: var(--text-lg);
   }
   
-  /* CTA buttons */
+  /* Enhanced CTA buttons */
   .cta-btn {
       width: auto;
   }
   
-  /* Grids for projects and skills */
+  /* Enhanced grids for projects and skills */
   .projects-grid {
       grid-template-columns: repeat(2, 1fr);
-      gap: 2rem;
+      gap: var(--space-6);
   }
   
-  /* Section content layouts */
+  /* Enhanced section content layouts */
   .about-content,
   .startup-content,
   .formula-content,
   .leadership-content {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 3rem;
+      gap: var(--space-8);
   }
 
   .skills-container {
       grid-template-columns: repeat(2, 1fr);
-      gap: 2rem;
+      gap: var(--space-6);
   }
   
-  /* Contact section */
+  /* Enhanced contact section */
   .contact-links {
       flex-direction: row;
       justify-content: center;
-      gap: 3rem;
+      gap: var(--space-8);
   }
   
-  /* Section spacing */
+  /* Enhanced section spacing */
   section {
-      padding: 5rem 0;
+      padding: var(--space-12) var(--space-4);
+  }
+  
+  /* Restore larger headings */
+  h3 {
+      font-size: var(--text-3xl);
+  }
+  
+  /* Enhance glass card effect */
+  .glass-card {
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+  }
+  
+  /* Contact content padding */
+  .contact-content {
+      padding: var(--space-8);
   }
 }
 
-/* Desktop devices (992px and up) */
+/* Medium tablets (992px and up) */
 @media screen and (min-width: 992px) {
   .animated-heading {
-      font-size: 3.5rem !important;
+      font-size: var(--text-5xl) !important;
   }
   
   .hero h2.animated-heading {
-      font-size: 1.8rem !important;
+      font-size: var(--text-3xl) !important;
   }
   
   .animated-text {
-      font-size: 1.2rem;
+      font-size: var(--text-xl);
   }
   
   .section-title h2 {
-      font-size: 2.5rem;
+      font-size: var(--text-4xl);
   }
   
+  /* Enhanced section layouts */
   .about-content, 
   .startup-content, 
   .formula-content, 
   .leadership-content {
-      gap: 4rem;
+      gap: var(--space-12);
   }
   
+  /* Enhanced grid layouts */
   .projects-grid {
       grid-template-columns: repeat(3, 1fr);
   }
   
   .skills-container {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
+  }
+  
+  /* Enhanced contact section */
+  .contact-links {
+      gap: var(--space-12);
+  }
+  
+  .contact-icon {
+      width: 85px;
+      height: 85px;
+  }
+  
+  /* Enhanced hero width */
+  .hero {
+      max-width: 60%;
+  }
+  
+  /* Enhanced navigation padding */
+  nav {
+      padding: var(--space-6) var(--space-6);
+  }
+  
+  /* Enhanced overall spacing */
+  section {
+      padding: var(--space-16) 0;
+  }
+  
+  .container {
+      padding: 0 var(--space-6);
   }
 }
 
-/* Large desktop devices (1200px and up) */
+/* Desktop devices (1200px and up) */
 @media screen and (min-width: 1200px) {
   .container {
       max-width: 1140px;
@@ -310,24 +424,62 @@ footer {
   .hero {
       max-width: 55%;
   }
+  
+  /* Premium grid layouts */
+  .skills-container {
+      grid-template-columns: repeat(4, 1fr);
+  }
+  
+  /* Enhanced 3D effects at desktop sizes */
+  .glass-card:hover {
+      transform: translateY(-15px) scale(1.03);
+  }
+  
+  /* Enhanced content width */
+  .contact-content {
+      max-width: 900px;
+  }
+  
+  /* Larger contact icons */
+  .contact-icon {
+      width: 90px;
+      height: 90px;
+      font-size: 2.5rem;
+  }
+  
+  /* Footer enhancement */
+  .social-link {
+      width: 54px;
+      height: 54px;
+  }
 }
 
-/* Extra large desktop devices (1400px and up) */
+/* Large desktop devices (1400px and up) */
 @media screen and (min-width: 1400px) {
   .container {
       max-width: 1320px;
   }
   
   .animated-heading {
-      font-size: 4rem !important;
+      font-size: var(--text-5xl) !important;
   }
   
   .hero h2.animated-heading {
-      font-size: 2rem !important;
+      font-size: var(--text-3xl) !important;
   }
   
   .animated-text {
-      font-size: 1.3rem;
+      font-size: var(--text-2xl);
+  }
+  
+  /* Maximum width content */
+  .hero {
+      max-width: 50%;
+  }
+  
+  /* Ultra-premium 3D effects */
+  .glass-card:hover {
+      transform: translateY(-15px) scale(1.05);
   }
 }
 
@@ -337,6 +489,11 @@ footer {
   .hero,
   .nav-links.active {
       height: -webkit-fill-available;
+  }
+  
+  /* Use CSS custom property for dynamic height */
+  .hero, .full-height {
+      height: calc(var(--vh, 1vh) * 100);
   }
 }
 
@@ -351,21 +508,33 @@ footer {
   
   /* Improve spacing between touch targets */
   .social-links {
-      gap: 1.5rem;
+      gap: var(--space-4);
   }
   
   /* Fix potential overlapping touch targets */
   .project-tech {
-      gap: 0.75rem;
+      gap: var(--space-2);
   }
   
   .tech-tag {
       padding: 0.5rem 1rem;
       margin-bottom: 0.5rem;
+      font-size: var(--text-xs);
+  }
+  
+  /* Enhanced mobile menu experience */
+  .nav-links.active a {
+      margin: var(--space-3) 0;
+      font-size: var(--text-xl);
+      letter-spacing: 1px;
+  }
+  
+  .nav-links.active {
+      animation: fadeIn 0.3s ease forwards;
   }
 }
 
-/* Print styles */
+/* Print styles - enhanced */
 @media print {
   body {
       background: white;
@@ -392,11 +561,11 @@ footer {
   }
   
   .section-title h2::after {
-      background: black;
+      background: #333;
   }
   
   p, li, .project-description, .achievement-text {
-      color: black;
+      color: #333;
   }
   
   .glass-card {
@@ -404,19 +573,32 @@ footer {
       border: 1px solid #ddd;
       background: white;
       page-break-inside: avoid;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
   }
   
+  /* Better image handling for print */
   img {
       max-width: 100% !important;
+      max-height: 400px !important;
   }
   
   a {
-      color: black;
+      color: #333;
       text-decoration: underline;
+  }
+  
+  /* Print formatting improvements */
+  h1, h2, h3, h4, h5, h6 {
+      color: #111;
+  }
+  
+  .cta-btn, .project-link {
+      display: none;
   }
 }
 
-/* Accessibility improvements */
+/* Premium accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
   .animated-heading,
   .animated-text,
@@ -428,9 +610,76 @@ footer {
   
   .glass-card:hover {
       transform: none !important;
+      transition: box-shadow var(--transition-normal) !important;
+  }
+  
+  .glass-card:hover::before {
+      transition: opacity var(--transition-normal) !important;
   }
   
   html {
       scroll-behavior: auto !important;
+  }
+  
+  /* Simplified transitions */
+  * {
+      transition-duration: 0.1s !important;
+  }
+}
+
+/* Enhanced dark mode preference - already using dark theme */
+@media (prefers-color-scheme: dark) {
+  /* No changes needed since we're already using a dark theme */
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  :root {
+      --primary: #5B67FF;
+      --primary-light: #A2ACFF;
+      --text-primary: #FFFFFF;
+      --text-secondary: #F0F0F0;
+  }
+  
+  .glass-card {
+      background: rgba(15, 23, 42, 0.9);
+      border: 2px solid var(--primary);
+  }
+  
+  .tech-tag {
+      background: rgba(99, 102, 241, 0.4);
+      border: 1px solid var(--primary-light);
+  }
+  
+  a:focus-visible, button:focus-visible {
+      outline: 3px solid var(--primary-light);
+  }
+}
+
+/* RTL language support */
+[dir="rtl"] {
+  .hero, .animated-heading, .animated-text {
+      text-align: right;
+  }
+  
+  .nav-links {
+      flex-direction: row-reverse;
+  }
+  
+  .skill-list li::before {
+      margin-right: 0;
+      margin-left: var(--space-3);
+  }
+  
+  .skill-list li:hover {
+      transform: translateX(-8px);
+  }
+  
+  .project-link:hover {
+      transform: translateX(-8px);
+  }
+  
+  .project-link i {
+      transform: rotate(180deg);
   }
 }
