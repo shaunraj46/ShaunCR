@@ -22,39 +22,61 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: ["class"],
             theme: {
+                container: {
+                    center: true,
+                    padding: "2rem",
+                    screens: {
+                        "2xl": "1400px",
+                    },
+                },
                 extend: {
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
+                        border: "hsl(var(--border))",
+                        input: "hsl(var(--input))",
+                        ring: "hsl(var(--ring))",
+                        background: "hsl(var(--background))",
+                        foreground: "hsl(var(--foreground))",
                         primary: {
-                            DEFAULT: '#6366F1',
-                            dark: '#4F46E5',
-                            light: '#A5B4FC',
+                            DEFAULT: "hsl(var(--primary))",
+                            foreground: "hsl(var(--primary-foreground))",
                         },
                         secondary: {
-                            DEFAULT: '#0F172A',
-                            dark: '#030712',
-                            light: '#1E293B',
+                            DEFAULT: "hsl(var(--secondary))",
+                            foreground: "hsl(var(--secondary-foreground))",
                         },
-                        violet: {
-                            DEFAULT: '#8B5CF6',
-                            dark: '#7C3AED',
+                        destructive: {
+                            DEFAULT: "hsl(var(--destructive))",
+                            foreground: "hsl(var(--destructive-foreground))",
                         },
-                        slate: {
-                            50: '#F8FAFC',
-                            200: '#E2E8F0',
-                            400: '#94A3B8',
-                            600: '#475569',
-                            800: '#1E293B',
+                        muted: {
+                            DEFAULT: "hsl(var(--muted))",
+                            foreground: "hsl(var(--muted-foreground))",
                         },
+                        accent: {
+                            DEFAULT: "hsl(var(--accent))",
+                            foreground: "hsl(var(--accent-foreground))",
+                        },
+                        card: {
+                            DEFAULT: "hsl(var(--card))",
+                            foreground: "hsl(var(--card-foreground))",
+                        },
+                    },
+                    borderRadius: {
+                        lg: "var(--radius)",
+                        md: "calc(var(--radius) - 2px)",
+                        sm: "calc(var(--radius) - 4px)",
                     },
                     boxShadow: {
                         'premium': '0 10px 25px rgba(0, 0, 0, 0.2)',
                         'highlight': '0 10px 30px rgba(99, 102, 241, 0.4)',
                         'glow': '0 0 15px rgba(99, 102, 241, 0.4)',
+                        'inner-glow': 'inset 0 0 15px rgba(99, 102, 241, 0.2)',
                     },
                     animation: {
                         'float': 'float 6s ease-in-out infinite',
@@ -63,11 +85,13 @@
                         'fade-in-up-delay': 'fadeInUp 1s 0.3s forwards',
                         'fade-in-up-delay-2': 'fadeInUp 1s 0.6s forwards',
                         'fade-in-up-delay-3': 'fadeInUp 1s 0.9s forwards',
-                        'particle-float': 'particleFloat 15s linear infinite',
+                        'gradient-xy': 'gradient-xy 15s ease infinite',
                         'scroll-down': 'scrollDown 2s infinite',
                         'arrow-bounce': 'arrowBounce 2s infinite',
                         'spin-slow': 'spin 8s linear infinite',
                         'morphShape': 'morphShape 12s ease-in-out infinite alternate',
+                        'background-shine': 'background-shine 3s linear infinite',
+                        'shimmer': 'shimmer 3s linear infinite',
                     },
                     keyframes: {
                         float: {
@@ -84,17 +108,15 @@
                                 transform: 'translateY(0)'
                             },
                         },
-                        particleFloat: {
-                            '0%': {
-                                transform: 'translateY(0) translateX(0)',
-                                opacity: '0'
+                        'gradient-xy': {
+                            '0%, 100%': {
+                                'background-size': '400% 400%',
+                                'background-position': 'left center'
                             },
-                            '10%': { opacity: '0.5' },
-                            '90%': { opacity: '0.5' },
-                            '100%': {
-                                transform: 'translateY(-100px) translateX(50px)',
-                                opacity: '0'
-                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
                         },
                         scrollDown: {
                             '0%': {
@@ -133,13 +155,24 @@
                             '100%': {
                                 borderRadius: '40% 60% 70% 30% / 40% 50% 60% 50%'
                             },
-                        }
+                        },
+                        'background-shine': {
+                            from: { backgroundPosition: '0 0' },
+                            to: { backgroundPosition: '-200% 0' }
+                        },
+                        'shimmer': {
+                            '0%': {
+                                backgroundPosition: '-1000px 0',
+                            },
+                            '100%': {
+                                backgroundPosition: '1000px 0',
+                            },
+                        },
                     },
                     backgroundImage: {
-                        'gradient-primary': 'linear-gradient(135deg, #4F46E5, #7C3AED, #8B5CF6)',
-                        'gradient-secondary': 'linear-gradient(135deg, #6366F1, #4F46E5)',
-                        'gradient-bg': 'linear-gradient(135deg, #131C31, #0F172A, #080D1A)',
-                        'gradient-card': 'linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.8))',
+                        'gradient-primary': 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%)',
+                        'gradient-secondary': 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)',
+                        'gradient-shimmer': 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0) 100%)',
                     },
                     backdropBlur: {
                         'premium': '12px',
@@ -152,168 +185,268 @@
     
     <!-- Custom CSS for Premium Effects -->
     <style>
+        /* ShadCN UI Theme Base */
+        :root {
+            --background: 222.2 84% 4.9%;
+            --foreground: 210 40% 98%;
+            
+            --card: 222.2 84% 4.9%;
+            --card-foreground: 210 40% 98%;
+            
+            --popover: 222.2 84% 4.9%;
+            --popover-foreground: 210 40% 98%;
+            
+            --primary: 247.7 69% 61%;
+            --primary-foreground: 222.2 47.4% 11.2%;
+            
+            --secondary: 217.2 32.6% 17.5%;
+            --secondary-foreground: 210 40% 98%;
+            
+            --muted: 217.2 32.6% 17.5%;
+            --muted-foreground: 215 20.2% 65.1%;
+            
+            --accent: 254 89% 68%;
+            --accent-foreground: 210 40% 98%;
+            
+            --destructive: 0 62.8% 30.6%;
+            --destructive-foreground: 210 40% 98%;
+            
+            --border: 217.2 32.6% 17.5%;
+            --input: 217.2 32.6% 17.5%;
+            --ring: 247.7 69% 61%;
+            
+            --radius: 0.75rem;
+        }
+        
         /* Progressive loading effect */
         body {
             opacity: 0;
             transition: opacity 0.5s ease;
+            background-color: hsl(222.2 84% 4.9%);
         }
         
         body.loaded {
             opacity: 1;
         }
         
+        /* Premium Background */
+        .premium-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: linear-gradient(to bottom, hsl(222.2 84% 4.9%), hsl(222.2 84% 2%));
+            z-index: -2;
+        }
+        
+        .premium-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(rgba(99, 102, 241, 0.06) 1px, transparent 1px),
+                radial-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px;
+            opacity: 0.4;
+        }
+        
+        .premium-gradient {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            filter: blur(140px);
+            opacity: 0.15;
+            mix-blend-mode: lighten;
+            animation: float 20s ease-in-out infinite alternate;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .premium-gradient-1 {
+            background: radial-gradient(circle at center, hsl(var(--primary)), transparent 70%);
+            top: 10%;
+            left: 15%;
+            animation-delay: 0s;
+        }
+        
+        .premium-gradient-2 {
+            background: radial-gradient(circle at center, hsl(var(--accent)), transparent 70%);
+            bottom: 20%;
+            right: 10%;
+            animation-delay: 5s;
+        }
+        
+        .premium-gradient-3 {
+            background: radial-gradient(circle at center, hsl(var(--secondary)), transparent 70%);
+            top: 50%;
+            left: 50%;
+            animation-delay: 10s;
+        }
+        
         /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 12px;
-            background-color: #030712;
+            background-color: hsl(var(--background));
         }
         
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, #6366F1, #8B5CF6);
+            background: linear-gradient(to bottom, hsl(var(--primary)), hsl(var(--accent)));
             border-radius: 6px;
-            border: 3px solid #030712;
+            border: 3px solid hsl(var(--background));
         }
         
         ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(to bottom, #8B5CF6, #6366F1);
+            background: linear-gradient(to bottom, hsl(var(--accent)), hsl(var(--primary)));
         }
         
         /* Premium glass effect */
         .glass-card {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
+            background: hsla(var(--card) / 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid hsla(var(--border) / 0.1);
+            box-shadow: 
+                0 10px 25px rgba(0, 0, 0, 0.1),
+                0 5px 10px rgba(0, 0, 0, 0.05),
+                0 2px 4px rgba(0, 0, 0, 0.1),
+                inset 0 1px 1px hsla(var(--foreground) / 0.05);
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom right,
+                hsla(var(--foreground) / 0.01),
+                hsla(var(--foreground) / 0.05),
+                hsla(var(--foreground) / 0.01)
+            );
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background-image: linear-gradient(
+                90deg, 
+                hsla(var(--foreground) / 0) 0%,
+                hsla(var(--foreground) / 0.05) 50%, 
+                hsla(var(--foreground) / 0) 100%
+            );
+            top: -50%;
+            left: -50%;
+            z-index: 0;
+            transform: rotate(25deg);
+            transition: transform 0.6s ease;
+            opacity: 0;
         }
         
         .glass-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
-            border-color: rgba(99, 102, 241, 0.2);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.2),
+                0 10px 15px rgba(0, 0, 0, 0.1),
+                0 4px 6px rgba(0, 0, 0, 0.1),
+                inset 0 1px 1px hsla(var(--foreground) / 0.1);
         }
         
-        /* Premium background effects */
-        .floating-shape {
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+        
+        .glass-card:hover::after {
+            opacity: 1;
+            transform: rotate(25deg) translateX(50%);
+            transition: transform 1.2s ease, opacity 0.8s ease;
+        }
+        
+        /* Premium shine effect */
+        .shine-effect {
             position: relative;
-            width: 400px;
-            height: 400px;
-            transform-style: preserve-3d;
-            perspective: 1000px;
-            animation: float 8s ease-in-out infinite;
-        }
-        
-        .floating-shape::before,
-        .floating-shape::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-            background: linear-gradient(45deg, #4F46E5 0%, #8B5CF6 100%);
-            opacity: 0.2;
-            filter: blur(15px);
-            animation: morphShape 12s ease-in-out infinite alternate;
-        }
-        
-        .floating-shape::after {
-            width: 90%;
-            height: 90%;
-            background: linear-gradient(-45deg, #8B5CF6 0%, #6366F1 100%);
-            opacity: 0.3;
-            filter: blur(20px);
-            animation-duration: 10s;
-            animation-delay: 1s;
-        }
-        
-        /* 3D Background Animation */
-        .animated-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
             overflow: hidden;
         }
         
-        .bg-particle {
+        .shine-effect::after {
+            content: '';
             position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(165, 180, 252, 0.6), rgba(79, 70, 229, 0.2));
-            box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
-            opacity: 0.4;
-            filter: blur(2px);
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                90deg, 
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.05) 50%, 
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(30deg);
+            animation: shimmer 7s linear infinite;
         }
         
-        /* Custom loader */
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #030712;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-            flex-direction: column;
-        }
-        
-        .loader.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-        
-        .loader-spinner {
-            width: 60px;
-            height: 60px;
+        /* Animated button */
+        .animated-button {
             position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
         
-        .loader-spinner::before,
-        .loader-spinner::after {
-            content: "";
+        .animated-button::before {
+            content: '';
             position: absolute;
-            top: 0;
-            left: 0;
+            z-index: -1;
+            background: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--primary)));
+            inset: 0;
+            opacity: 0;
+            transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .animated-button:hover::before {
+            opacity: 1;
+        }
+        
+        .animated-button::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                90deg, 
+                hsla(var(--foreground) / 0) 0%,
+                hsla(var(--foreground) / 0.1) 50%, 
+                hsla(var(--foreground) / 0) 100%
+            );
             width: 100%;
             height: 100%;
-            border-radius: 50%;
-            border: 4px solid transparent;
-            border-top-color: #6366F1;
+            transform: translateX(-100%);
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            z-index: -1;
         }
         
-        .loader-spinner::before {
-            animation: spin 1.5s cubic-bezier(0.65, 0.05, 0.36, 1) infinite;
-            z-index: 1;
-        }
-        
-        .loader-spinner::after {
-            border: 4px solid rgba(99, 102, 241, 0.15);
-            z-index: 0;
-        }
-        
-        /* Custom Scroll Progress Bar */
-        .scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(to right, #6366F1, #8B5CF6);
-            z-index: 999;
-            transition: width 0.1s ease;
-            box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+        .animated-button:hover::after {
+            transform: translateX(100%);
         }
         
         /* Mouse scroll indicator */
         .mouse {
             width: 30px;
             height: 50px;
-            border: 2px solid #E2E8F0;
+            border: 2px solid hsl(var(--foreground) / 0.7);
             border-radius: 25px;
             position: relative;
         }
@@ -324,7 +457,7 @@
             width: 6px;
             height: 6px;
             border-radius: 50%;
-            background-color: #E2E8F0;
+            background-color: hsl(var(--foreground) / 0.7);
             left: 50%;
             top: 10px;
             transform: translateX(-50%);
@@ -342,8 +475,8 @@
             display: block;
             width: 10px;
             height: 10px;
-            border-right: 2px solid #E2E8F0;
-            border-bottom: 2px solid #E2E8F0;
+            border-right: 2px solid hsl(var(--foreground) / 0.7);
+            border-bottom: 2px solid hsl(var(--foreground) / 0.7);
             transform: rotate(45deg);
             animation: arrowBounce 2s infinite;
         }
@@ -352,125 +485,218 @@
             animation-delay: 0.2s;
         }
         
+        /* Floating shapes */
+        .floating-shape {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .floating-shape::before,
+        .floating-shape::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            background: linear-gradient(45deg, hsl(var(--primary) / 0.4) 0%, hsl(var(--accent) / 0.4) 100%);
+            filter: blur(15px);
+            animation: morphShape 12s ease-in-out infinite alternate;
+        }
+        
+        .floating-shape::after {
+            width: 90%;
+            height: 90%;
+            background: linear-gradient(-45deg, hsl(var(--accent) / 0.4) 0%, hsl(var(--primary) / 0.4) 100%);
+            animation-duration: 10s;
+            animation-delay: 1s;
+        }
+        
         /* Preload - disable animations until everything is loaded */
         body.preload * {
             animation-duration: 0s !important;
             transition-duration: 0s !important;
         }
         
-        /* Hero particles */
-        .hero-particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background-color: rgba(165, 180, 252, 0.6);
-            opacity: 0.5;
-            animation: particleFloat 15s linear infinite;
+        /* Premium loader */
+        .premium-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: hsl(var(--background));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            flex-direction: column;
         }
         
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotateX(0) rotateY(0); }
-            25% { transform: translateY(-15px) rotateX(5deg) rotateY(5deg); }
-            50% { transform: translateY(0) rotateX(10deg) rotateY(10deg); }
-            75% { transform: translateY(15px) rotateX(5deg) rotateY(15deg); }
+        .premium-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: conic-gradient(transparent, hsl(var(--primary)));
+            -webkit-mask: radial-gradient(circle at center, transparent 25px, #000 25px);
+            mask: radial-gradient(circle at center, transparent 25px, #000 25px);
+            animation: spin 1s linear infinite;
+        }
+        
+        .premium-scanner-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                hsl(var(--accent)),
+                transparent
+            );
+            top: 50%;
+            transform: translateY(-50%);
+            animation: scan 2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+        }
+        
+        @keyframes scan {
+            0%, 100% {
+                transform: translateY(-50%) translateX(-100%);
+                opacity: 0;
+            }
+            25%, 75% {
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-50%) translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        /* Custom Scroll Progress Bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--accent)));
+            z-index: 999;
+            transition: width 0.1s ease;
+            box-shadow: 0 0 10px hsl(var(--primary) / 0.5);
+        }
+        
+        /* Text gradient effect */
+        .text-gradient {
+            background: linear-gradient(to right, hsl(var(--foreground)), hsl(var(--primary-foreground)));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
     </style>
 </head>
-<body class="bg-gradient-bg text-slate-50 font-sans min-h-screen preload overflow-x-hidden">
-    <!-- Loader -->
-    <div class="loader" id="pageLoader">
+<body class="font-sans min-h-screen preload overflow-x-hidden">
+    <!-- Premium Background -->
+    <div class="premium-background">
+        <div class="premium-grid"></div>
+        <div class="premium-gradient premium-gradient-1"></div>
+        <div class="premium-gradient premium-gradient-2"></div>
+        <div class="premium-gradient premium-gradient-3"></div>
+    </div>
+    
+    <!-- Premium Loader -->
+    <div class="premium-loader" id="pageLoader">
         <div class="mb-8 text-4xl font-bold bg-gradient-primary bg-clip-text text-transparent animate-pulse-slow">SR</div>
-        <div class="relative flex justify-center items-center">
+        <div class="relative flex justify-center items-center w-16 h-16">
             <div class="loader-spinner"></div>
-            <div class="absolute text-xs uppercase tracking-wider text-slate-400 animate-pulse">Loading</div>
+            <div class="premium-scanner-line"></div>
         </div>
-        <div class="mt-6 text-slate-400 font-mono font-semibold" id="loaderCounter">0%</div>
+        <div class="mt-6 text-muted-foreground font-mono font-medium text-sm" id="loaderCounter">0%</div>
     </div>
     
     <!-- Scroll Progress Bar -->
     <div class="scroll-progress" id="scrollProgress"></div>
     
-    <!-- Animated Background -->
-    <div class="animated-bg" aria-hidden="true"></div>
-    
     <!-- Header & Navigation -->
     <header class="min-h-screen relative flex items-center" id="home">
-        <nav class="fixed top-0 left-0 w-full z-50 transition-all duration-300" id="mainNav">
-            <div class="container mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
+        <nav class="fixed top-0 left-0 w-full z-50 transition-all duration-500" id="mainNav">
+            <div class="container max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
                 <a href="#" class="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent transition-transform duration-300 hover:scale-110">SR</a>
                 
                 <!-- Mobile Menu Toggle -->
-                <button class="md:hidden text-slate-50 focus:outline-none" id="menuToggle" aria-label="Toggle menu">
+                <button class="md:hidden text-foreground focus:outline-none" id="menuToggle" aria-label="Toggle menu">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                 </button>
                 
                 <!-- Desktop Navigation -->
-                <div class="hidden md:flex space-x-6 items-center">
-                    <a href="#about" class="text-slate-50 font-medium uppercase text-sm tracking-wide hover:text-primary-light transition-colors">About</a>
-                    <a href="#projects" class="text-slate-50 font-medium uppercase text-sm tracking-wide hover:text-primary-light transition-colors">Projects</a>
-                    <a href="#startup" class="text-slate-50 font-medium uppercase text-sm tracking-wide hover:text-primary-light transition-colors">Startup</a>
-                    <a href="#skills" class="text-slate-50 font-medium uppercase text-sm tracking-wide hover:text-primary-light transition-colors">Skills</a>
-                    <a href="#formula" class="text-slate-50 font-medium uppercase text-sm tracking-wide hover:text-primary-light transition-colors">Formula</a>
-                    <a href="#leadership" class="text-slate-50 font-medium uppercase text-sm tracking-wide hover:text-primary-light transition-colors">Leadership</a>
-                    <a href="#contact" class="text-slate-50 font-medium uppercase text-sm tracking-wide hover:text-primary-light transition-colors">Contact</a>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#about" class="text-muted-foreground hover:text-foreground font-medium uppercase text-sm tracking-wide transition-colors duration-300">About</a>
+                    <a href="#projects" class="text-muted-foreground hover:text-foreground font-medium uppercase text-sm tracking-wide transition-colors duration-300">Projects</a>
+                    <a href="#startup" class="text-muted-foreground hover:text-foreground font-medium uppercase text-sm tracking-wide transition-colors duration-300">Startup</a>
+                    <a href="#skills" class="text-muted-foreground hover:text-foreground font-medium uppercase text-sm tracking-wide transition-colors duration-300">Skills</a>
+                    <a href="#formula" class="text-muted-foreground hover:text-foreground font-medium uppercase text-sm tracking-wide transition-colors duration-300">Formula</a>
+                    <a href="#leadership" class="text-muted-foreground hover:text-foreground font-medium uppercase text-sm tracking-wide transition-colors duration-300">Leadership</a>
+                    <a href="#contact" class="text-muted-foreground hover:text-foreground font-medium uppercase text-sm tracking-wide transition-colors duration-300">Contact</a>
                 </div>
             </div>
             
             <!-- Mobile Navigation Menu (Hidden by default) -->
-            <div class="md:hidden fixed top-0 left-0 w-full h-0 bg-secondary-dark bg-opacity-95 backdrop-blur-premium overflow-hidden transition-all duration-300 flex flex-col items-center justify-center z-40" id="mobileMenu">
-                <a href="#about" class="text-slate-50 text-xl py-3 hover:text-primary-light transition-colors">About</a>
-                <a href="#projects" class="text-slate-50 text-xl py-3 hover:text-primary-light transition-colors">Projects</a>
-                <a href="#startup" class="text-slate-50 text-xl py-3 hover:text-primary-light transition-colors">Startup</a>
-                <a href="#skills" class="text-slate-50 text-xl py-3 hover:text-primary-light transition-colors">Skills</a>
-                <a href="#formula" class="text-slate-50 text-xl py-3 hover:text-primary-light transition-colors">Formula</a>
-                <a href="#leadership" class="text-slate-50 text-xl py-3 hover:text-primary-light transition-colors">Leadership</a>
-                <a href="#contact" class="text-slate-50 text-xl py-3 hover:text-primary-light transition-colors">Contact</a>
+            <div class="md:hidden fixed inset-0 bg-background/95 backdrop-blur-premium opacity-0 pointer-events-none transition-all duration-500 flex flex-col items-center justify-center z-40" id="mobileMenu">
+                <button class="absolute top-5 right-5 text-foreground" id="closeMenu">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                <div class="flex flex-col items-center space-y-6">
+                    <a href="#about" class="text-2xl font-medium text-foreground hover:text-primary transition-colors duration-300">About</a>
+                    <a href="#projects" class="text-2xl font-medium text-foreground hover:text-primary transition-colors duration-300">Projects</a>
+                    <a href="#startup" class="text-2xl font-medium text-foreground hover:text-primary transition-colors duration-300">Startup</a>
+                    <a href="#skills" class="text-2xl font-medium text-foreground hover:text-primary transition-colors duration-300">Skills</a>
+                    <a href="#formula" class="text-2xl font-medium text-foreground hover:text-primary transition-colors duration-300">Formula</a>
+                    <a href="#leadership" class="text-2xl font-medium text-foreground hover:text-primary transition-colors duration-300">Leadership</a>
+                    <a href="#contact" class="text-2xl font-medium text-foreground hover:text-primary transition-colors duration-300">Contact</a>
+                </div>
             </div>
         </nav>
         
-        <div class="container mx-auto px-4 md:px-6 relative z-10">
+        <div class="container max-w-7xl mx-auto px-4 relative z-10">
             <div class="flex flex-col-reverse lg:flex-row items-center">
                 <!-- Hero Content -->
-                <div class="w-full lg:w-3/5 text-center lg:text-left pt-12 lg:pt-0">
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-slate-50 to-primary-light bg-clip-text text-transparent opacity-0 animate-fade-in-up">
-                        Shaun Clarence Raj
+                <div class="w-full lg:w-3/5 text-center lg:text-left pt-16 lg:pt-0">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 opacity-0 animate-fade-in-up">
+                        <span class="bg-gradient-primary bg-clip-text text-transparent">Shaun Clarence Raj</span>
                     </h1>
-                    <h2 class="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-slate-200 to-slate-400 bg-clip-text text-transparent opacity-0 animate-fade-in-up-delay">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-6 text-foreground/80 opacity-0 animate-fade-in-up-delay">
                         Engineering Student & Founder
                     </h2>
-                    <p class="text-base md:text-lg text-slate-200 mb-8 max-w-xl mx-auto lg:mx-0 opacity-0 animate-fade-in-up-delay-2">
+                    <p class="text-base md:text-lg text-muted-foreground mb-8 max-w-xl mx-auto lg:mx-0 opacity-0 animate-fade-in-up-delay-2">
                         Bridging cutting-edge AI research with practical business applications. Creating intelligent systems that are efficient, sustainable, and accessible to organizations of all sizes.
                     </p>
-                    <a href="#projects" class="inline-flex items-center bg-gradient-primary hover:shadow-highlight transition-all px-8 py-3 rounded-full text-white font-semibold opacity-0 animate-fade-in-up-delay-3 group">
+                    <button class="animated-button rounded-full py-3 px-6 text-white font-semibold inline-flex items-center opacity-0 animate-fade-in-up-delay-3 group">
                         <span>Explore My Work</span>
-                        <span class="ml-4 w-10 h-10 flex items-center justify-center bg-white bg-opacity-20 rounded-full group-hover:translate-x-1 transition-transform">
+                        <span class="ml-4 w-10 h-10 flex items-center justify-center bg-white/10 rounded-full group-hover:translate-x-1 transition-transform duration-300">
                             <i class="fas fa-arrow-right text-white"></i>
                         </span>
-                    </a>
+                    </button>
                 </div>
                 
                 <!-- Hero 3D Shape -->
-                <div class="w-full lg:w-2/5 pointer-events-none relative">
-                    <div class="floating-shape mx-auto"></div>
-                    
-                    <!-- Hero Particles -->
-                    <div class="hero-particles absolute top-0 left-0 w-full h-full overflow-hidden">
-                        <div class="hero-particle" style="top: 20%; left: 10%; animation-duration: 20s;"></div>
-                        <div class="hero-particle" style="top: 40%; left: 25%; animation-duration: 25s; animation-delay: 1s;"></div>
-                        <div class="hero-particle" style="top: 70%; left: 35%; animation-duration: 18s; animation-delay: 2s;"></div>
-                        <div class="hero-particle" style="top: 30%; left: 60%; animation-duration: 22s; animation-delay: 0.5s;"></div>
-                        <div class="hero-particle" style="top: 80%; left: 70%; animation-duration: 23s; animation-delay: 1.5s;"></div>
-                        <div class="hero-particle" style="top: 10%; left: 80%; animation-duration: 21s; animation-delay: 3s;"></div>
-                        <div class="hero-particle" style="top: 50%; left: 90%; animation-duration: 19s; animation-delay: 2.5s;"></div>
-                    </div>
+                <div class="w-full lg:w-2/5 pointer-events-none relative flex justify-center lg:justify-end">
+                    <div class="floating-shape"></div>
                 </div>
             </div>
             
             <!-- Scroll Down Indicator -->
-            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-slate-400 opacity-70 hover:opacity-100 transition-opacity cursor-pointer" id="scrollDown">
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-foreground/50 hover:text-foreground/80 transition-colors duration-300 cursor-pointer" id="scrollDown">
                 <div class="mouse"></div>
                 <div class="arrow-down mt-2">
                     <span></span>
@@ -481,115 +707,115 @@
     </header>
     
     <!-- About Section -->
-    <section id="about" class="py-16 md:py-24 relative">
-        <div class="container mx-auto px-4 md:px-6">
-            <div class="text-center mb-12 md:mb-16 section-fade">
-                <h2 class="text-3xl md:text-4xl font-bold relative inline-block">
+    <section id="about" class="py-20 md:py-28 relative">
+        <div class="container max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16 section-fade">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-foreground">
                     About Me
-                    <span class="block h-1 w-24 bg-gradient-primary mt-4 mx-auto rounded-full"></span>
                 </h2>
+                <div class="h-1 w-24 bg-gradient-primary mx-auto rounded-full"></div>
             </div>
             
-            <div class="flex flex-col lg:flex-row gap-12 items-center">
+            <div class="flex flex-col lg:flex-row gap-16 items-center">
                 <div class="w-full lg:w-1/2 section-fade">
-                    <div class="glass-card overflow-hidden rounded-2xl transform perspective-1000 transition-all duration-500">
+                    <div class="glass-card rounded-3xl overflow-hidden transform transition-all duration-500 shine-effect">
                         <div class="overflow-hidden">
-                            <img src="assets/images/profile.png" alt="Shaun Raj - Engineering Student & Founder" class="w-full h-auto transform hover:scale-105 transition-transform duration-700">
+                            <img src="assets/images/profile.png" alt="Shaun Raj - Engineering Student & Founder" class="w-full h-auto transform transition-transform duration-700 hover:scale-105">
                         </div>
                     </div>
                 </div>
                 
                 <div class="w-full lg:w-1/2 section-fade">
-                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-white">Innovating with Purpose</h3>
-                    <p class="text-slate-200 mb-4">As an Engineering Student and Founder of SpicyNuggets, I blend technical expertise with entrepreneurial vision to create AI systems that are both powerful and sustainable. Currently pursuing Engineering at Technische Hochschule Ingolstadt, I focus on developing technologies that make intelligent systems accessible while minimizing resource consumption.</p>
-                    <p class="text-slate-200 mb-4">My work sits at the intersection of AI innovation and real-world application, specializing in multilingual language models, energy-efficient implementation strategies, and systems that deliver business value across industries.</p>
-                    <p class="text-slate-200 mb-6">I'm passionate about demonstrating that cutting-edge AI can be both performance-optimized and environmentally responsible — a philosophy that drives all my projects.</p>
-                    <a href="#contact" class="inline-flex items-center bg-gradient-primary hover:shadow-highlight transition-all px-8 py-3 rounded-full text-white font-semibold group">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-foreground">Innovating with Purpose</h3>
+                    <p class="text-muted-foreground mb-4">As an Engineering Student and Founder of SpicyNuggets, I blend technical expertise with entrepreneurial vision to create AI systems that are both powerful and sustainable. Currently pursuing Engineering at Technische Hochschule Ingolstadt, I focus on developing technologies that make intelligent systems accessible while minimizing resource consumption.</p>
+                    <p class="text-muted-foreground mb-4">My work sits at the intersection of AI innovation and real-world application, specializing in multilingual language models, energy-efficient implementation strategies, and systems that deliver business value across industries.</p>
+                    <p class="text-muted-foreground mb-8">I'm passionate about demonstrating that cutting-edge AI can be both performance-optimized and environmentally responsible — a philosophy that drives all my projects.</p>
+                    <button class="animated-button rounded-full py-3 px-6 text-white font-semibold inline-flex items-center group">
                         <span>Connect With Me</span>
-                        <span class="ml-4 w-10 h-10 flex items-center justify-center bg-white bg-opacity-20 rounded-full group-hover:translate-x-1 transition-transform">
+                        <span class="ml-4 w-10 h-10 flex items-center justify-center bg-white/10 rounded-full group-hover:translate-x-1 transition-transform duration-300">
                             <i class="fas fa-arrow-right text-white"></i>
                         </span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
     </section>
     
     <!-- Projects Section -->
-    <section id="projects" class="py-16 md:py-24 relative">
-        <div class="container mx-auto px-4 md:px-6">
-            <div class="text-center mb-12 md:mb-16 section-fade">
-                <h2 class="text-3xl md:text-4xl font-bold relative inline-block">
+    <section id="projects" class="py-20 md:py-28 relative">
+        <div class="container max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16 section-fade">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-foreground">
                     Featured Projects
-                    <span class="block h-1 w-24 bg-gradient-primary mt-4 mx-auto rounded-full"></span>
                 </h2>
+                <div class="h-1 w-24 bg-gradient-primary mx-auto rounded-full"></div>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Project 1 -->
-                <div class="glass-card rounded-2xl p-6 md:p-8 h-full flex flex-col section-fade">
-                    <div class="mb-6 w-16 h-16 rounded-xl bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT">
+                <div class="glass-card rounded-3xl p-8 h-full flex flex-col section-fade group">
+                    <div class="mb-6 w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center text-3xl text-primary group-hover:scale-110 transition-transform duration-500">
                         <i class="fas fa-robot"></i>
                     </div>
-                    <h3 class="text-xl md:text-2xl font-bold mb-4 text-white">OWL.AI</h3>
-                    <p class="text-slate-200 mb-6 flex-grow">A revolutionary multi-LLM chatbot that classifies prompts by complexity using a custom machine learning model, achieving 96% accuracy in LLM selection. The intelligent model selection reduces energy consumption by 59.6% compared to traditional approaches while maintaining full response quality.</p>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4 text-foreground">OWL.AI</h3>
+                    <p class="text-muted-foreground mb-6 flex-grow">A revolutionary multi-LLM chatbot that classifies prompts by complexity using a custom machine learning model, achieving 96% accuracy in LLM selection. The intelligent model selection reduces energy consumption by 59.6% compared to traditional approaches while maintaining full response quality.</p>
                     
                     <div class="mb-6 flex flex-wrap gap-2">
-                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">Node.js</span>
-                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">Express</span>
-                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">GPT-4</span>
-                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">Claude</span>
-                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">LLaMA</span>
-                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">ML</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">Node.js</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">Express</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">GPT-4</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">Claude</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">LLaMA</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">ML</span>
                     </div>
                     
-                    <a href="https://owl-ai.de" target="_blank" class="text-primary-light font-semibold inline-flex items-center group">
+                    <a href="https://owl-ai.de" target="_blank" class="text-primary font-semibold inline-flex items-center group">
                         <span>View Project</span>
-                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform duration-300"></i>
                     </a>
                 </div>
                 
                 <!-- Project 2 -->
-                <div class="glass-card rounded-2xl p-6 md:p-8 h-full flex flex-col section-fade">
-                    <div class="mb-6 w-16 h-16 rounded-xl bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT">
+                <div class="glass-card rounded-3xl p-8 h-full flex flex-col section-fade group">
+                    <div class="mb-6 w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center text-3xl text-primary group-hover:scale-110 transition-transform duration-500">
                         <i class="fas fa-calendar-alt"></i>
                     </div>
-                    <h3 class="text-xl md:text-2xl font-bold mb-4 text-white">HalloDoc</h3>
-                    <p class="text-slate-200 mb-6 flex-grow">A WhatsApp-based AI assistant that automates doctor appointment booking using natural language processing. The system integrates with Google Calendar and uses Twilio for seamless communication, eliminating scheduling friction and reducing administrative workload for medical practices.</p>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4 text-foreground">HalloDoc</h3>
+                    <p class="text-muted-foreground mb-6 flex-grow">A WhatsApp-based AI assistant that automates doctor appointment booking using natural language processing. The system integrates with Google Calendar and uses Twilio for seamless communication, eliminating scheduling friction and reducing administrative workload for medical practices.</p>
                     
                     <div class="mb-6 flex flex-wrap gap-2">
-                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">Twilio</span>
-                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">Google Calendar API</span>
-                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">NLP</span>
-                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">MongoDB</span>
-                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">Node.js</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">Twilio</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">Google Calendar API</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">NLP</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">MongoDB</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">Node.js</span>
                     </div>
                     
-                    <a href="https://hallodoc.spicynuggets.eu" target="_blank" class="text-primary-light font-semibold inline-flex items-center group">
+                    <a href="https://hallodoc.spicynuggets.eu" target="_blank" class="text-primary font-semibold inline-flex items-center group">
                         <span>View Project</span>
-                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform duration-300"></i>
                     </a>
                 </div>
                 
                 <!-- Project 3 -->
-                <div class="glass-card rounded-2xl p-6 md:p-8 h-full flex flex-col section-fade">
-                    <div class="mb-6 w-16 h-16 rounded-xl bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT">
+                <div class="glass-card rounded-3xl p-8 h-full flex flex-col section-fade group">
+                    <div class="mb-6 w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center text-3xl text-primary group-hover:scale-110 transition-transform duration-500">
                         <i class="fas fa-sort-amount-up"></i>
                     </div>
-                    <h3 class="text-xl md:text-2xl font-bold mb-4 text-white">Ranked</h3>
-                    <p class="text-slate-200 mb-6 flex-grow">An AI-powered lead scoring tool that integrates directly into CRM workflows, prioritizing incoming leads using large language models. The system analyzes conversation context, purchase intent, and customer fit to automatically rank leads, enabling sales teams to focus on high-potential opportunities.</p>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4 text-foreground">Ranked</h3>
+                    <p class="text-muted-foreground mb-6 flex-grow">An AI-powered lead scoring tool that integrates directly into CRM workflows, prioritizing incoming leads using large language models. The system analyzes conversation context, purchase intent, and customer fit to automatically rank leads, enabling sales teams to focus on high-potential opportunities.</p>
                     
                     <div class="mb-6 flex flex-wrap gap-2">
-                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">CRM Integration</span>
-                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">LLMs</span>
-                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">Lead Scoring</span>
-                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">API</span>
-                        <span class="bg-primary bg-opacity-15 text-primary-light px-3 py-1 rounded-full text-xs font-medium">Python</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">CRM Integration</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">LLMs</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">Lead Scoring</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">API</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">Python</span>
                     </div>
                     
-                    <a href="https://ranked.spicynuggets.eu" target="_blank" class="text-primary-light font-semibold inline-flex items-center group">
+                    <a href="https://ranked.spicynuggets.eu" target="_blank" class="text-primary font-semibold inline-flex items-center group">
                         <span>View Project</span>
-                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform duration-300"></i>
                     </a>
                 </div>
             </div>
@@ -597,56 +823,56 @@
     </section>
     
     <!-- Startup Section -->
-    <section id="startup" class="py-16 md:py-24 relative">
-        <div class="container mx-auto px-4 md:px-6">
-            <div class="text-center mb-12 md:mb-16 section-fade">
-                <h2 class="text-3xl md:text-4xl font-bold relative inline-block">
+    <section id="startup" class="py-20 md:py-28 relative">
+        <div class="container max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16 section-fade">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-foreground">
                     SpicyNuggets
-                    <span class="block h-1 w-24 bg-gradient-primary mt-4 mx-auto rounded-full"></span>
                 </h2>
+                <div class="h-1 w-24 bg-gradient-primary mx-auto rounded-full"></div>
             </div>
             
-            <div class="flex flex-col-reverse lg:flex-row gap-12 items-center">
+            <div class="flex flex-col-reverse lg:flex-row gap-16 items-center">
                 <div class="w-full lg:w-3/5 section-fade">
-                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-white">Bridging Research and Application</h3>
-                    <p class="text-slate-200 mb-4">Founded during the 5-Euro Business competition, SpicyNuggets has evolved into a platform for developing sustainable AI solutions that connect cutting-edge research with practical business applications.</p>
-                    <p class="text-slate-200 mb-6">Our mission is to make intelligent systems accessible to organizations of all sizes while pioneering energy-efficient implementation methods that reduce the environmental impact of advanced AI.</p>
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-foreground">Bridging Research and Application</h3>
+                    <p class="text-muted-foreground mb-4">Founded during the 5-Euro Business competition, SpicyNuggets has evolved into a platform for developing sustainable AI solutions that connect cutting-edge research with practical business applications.</p>
+                    <p class="text-muted-foreground mb-8">Our mission is to make intelligent systems accessible to organizations of all sizes while pioneering energy-efficient implementation methods that reduce the environmental impact of advanced AI.</p>
                     
-                    <div class="space-y-4">
-                        <div class="glass-card rounded-xl p-4 flex items-start gap-4 transition-transform hover:translate-x-2">
-                            <div class="bg-violet-dark bg-opacity-20 text-violet-DEFAULT w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                    <div class="space-y-6">
+                        <div class="glass-card rounded-2xl p-6 flex items-start gap-4 transition-all duration-500 hover:translate-x-2 group">
+                            <div class="bg-primary/10 text-primary w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform duration-300">
                                 <i class="fas fa-award"></i>
                             </div>
                             <div>
-                                <strong class="block text-white mb-1">Sustainability Award Winner</strong>
-                                <span class="text-slate-300">Recognized for energy-efficient AI systems that reduce carbon footprint without compromising performance.</span>
+                                <strong class="block text-foreground mb-2 text-lg">Sustainability Award Winner</strong>
+                                <span class="text-muted-foreground">Recognized for energy-efficient AI systems that reduce carbon footprint without compromising performance.</span>
                             </div>
                         </div>
                         
-                        <div class="glass-card rounded-xl p-4 flex items-start gap-4 transition-transform hover:translate-x-2">
-                            <div class="bg-violet-dark bg-opacity-20 text-violet-DEFAULT w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                        <div class="glass-card rounded-2xl p-6 flex items-start gap-4 transition-all duration-500 hover:translate-x-2 group">
+                            <div class="bg-primary/10 text-primary w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform duration-300">
                                 <i class="fas fa-lightbulb"></i>
                             </div>
                             <div>
-                                <strong class="block text-white mb-1">Innovation in AI Selection</strong>
-                                <span class="text-slate-300">Pioneered intelligent model selection algorithms that optimize for both accuracy and energy consumption.</span>
+                                <strong class="block text-foreground mb-2 text-lg">Innovation in AI Selection</strong>
+                                <span class="text-muted-foreground">Pioneered intelligent model selection algorithms that optimize for both accuracy and energy consumption.</span>
                             </div>
                         </div>
                         
-                        <div class="glass-card rounded-xl p-4 flex items-start gap-4 transition-transform hover:translate-x-2">
-                            <div class="bg-violet-dark bg-opacity-20 text-violet-DEFAULT w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                        <div class="glass-card rounded-2xl p-6 flex items-start gap-4 transition-all duration-500 hover:translate-x-2 group">
+                            <div class="bg-primary/10 text-primary w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform duration-300">
                                 <i class="fas fa-project-diagram"></i>
                             </div>
                             <div>
-                                <strong class="block text-white mb-1">Product Portfolio</strong>
-                                <span class="text-slate-300">Developed and deployed OWL.AI, HalloDoc, and Ranked under the SpicyNuggets brand, creating a diverse ecosystem of AI solutions.</span>
+                                <strong class="block text-foreground mb-2 text-lg">Product Portfolio</strong>
+                                <span class="text-muted-foreground">Developed and deployed OWL.AI, HalloDoc, and Ranked under the SpicyNuggets brand, creating a diverse ecosystem of AI solutions.</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="w-full lg:w-2/5 section-fade">
-                    <div class="glass-card overflow-hidden rounded-2xl transform perspective-1000 hover:rotate-y-5 transition-all duration-500">
+                    <div class="glass-card rounded-3xl overflow-hidden transform perspective-1000 hover:rotate-y-5 transition-all duration-700 shine-effect">
                         <img src="assets/images/startup.jpg" alt="SpicyNuggets Innovation" class="w-full h-auto transform hover:scale-105 transition-transform duration-700">
                     </div>
                 </div>
@@ -655,112 +881,112 @@
     </section>
     
     <!-- Skills Section -->
-    <section id="skills" class="py-16 md:py-24 relative">
-        <div class="container mx-auto px-4 md:px-6">
-            <div class="text-center mb-12 md:mb-16 section-fade">
-                <h2 class="text-3xl md:text-4xl font-bold relative inline-block">
+    <section id="skills" class="py-20 md:py-28 relative">
+        <div class="container max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16 section-fade">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-foreground">
                     Technical Skills
-                    <span class="block h-1 w-24 bg-gradient-primary mt-4 mx-auto rounded-full"></span>
                 </h2>
+                <div class="h-1 w-24 bg-gradient-primary mx-auto rounded-full"></div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <!-- AI & Machine Learning -->
-                <div class="glass-card rounded-2xl p-6 h-full section-fade">
-                    <div class="w-20 h-20 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT mb-6 animate-float">
+                <div class="glass-card rounded-3xl p-8 h-full section-fade group">
+                    <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-3xl text-primary mb-6 group-hover:scale-110 transition-transform duration-500">
                         <i class="fas fa-robot"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-4 text-white">AI & Machine Learning</h3>
-                    <ul class="space-y-2">
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> Large Language Models (LLMs)
+                    <h3 class="text-xl font-bold mb-6 text-foreground">AI & Machine Learning</h3>
+                    <ul class="space-y-3">
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> Large Language Models (LLMs)
                         </li>
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> Prompt Classification & Engineering
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> Prompt Classification & Engineering
                         </li>
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> Retrieval-Augmented Generation
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> Retrieval-Augmented Generation
                         </li>
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> Quantum SVM Implementation
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> Quantum SVM Implementation
                         </li>
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> Energy-Efficient AI Systems
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> Energy-Efficient AI Systems
                         </li>
                     </ul>
                 </div>
                 
                 <!-- Programming Languages -->
-                <div class="glass-card rounded-2xl p-6 h-full section-fade">
-                    <div class="w-20 h-20 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT mb-6 animate-float" style="animation-delay: 0.2s">
+                <div class="glass-card rounded-3xl p-8 h-full section-fade group">
+                    <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-3xl text-primary mb-6 group-hover:scale-110 transition-transform duration-500">
                         <i class="fas fa-code"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-4 text-white">Programming Languages</h3>
-                    <ul class="space-y-2">
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> Python
+                    <h3 class="text-xl font-bold mb-6 text-foreground">Programming Languages</h3>
+                    <ul class="space-y-3">
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> Python
                         </li>
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> JavaScript
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> JavaScript
                         </li>
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> C++
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> C++
                         </li>
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> SQL
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> SQL
                         </li>
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> HTML/CSS
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> HTML/CSS
                         </li>
                     </ul>
                 </div>
                 
                 <!-- Tools & Frameworks -->
-                <div class="glass-card rounded-2xl p-6 h-full section-fade">
-                    <div class="w-20 h-20 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT mb-6 animate-float" style="animation-delay: 0.4s">
+                <div class="glass-card rounded-3xl p-8 h-full section-fade group">
+                    <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-3xl text-primary mb-6 group-hover:scale-110 transition-transform duration-500">
                         <i class="fas fa-database"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-4 text-white">Tools & Frameworks</h3>
-                    <ul class="space-y-2">
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> Node.js & Express
+                    <h3 class="text-xl font-bold mb-6 text-foreground">Tools & Frameworks</h3>
+                    <ul class="space-y-3">
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> Node.js & Express
                         </li>
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> React
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> React
                         </li>
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> Flask
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> Flask
                         </li>
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> MongoDB
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> MongoDB
                         </li>
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> Docker
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> Docker
                         </li>
                     </ul>
                 </div>
                 
                 <!-- Autonomous Systems -->
-                <div class="glass-card rounded-2xl p-6 h-full section-fade">
-                    <div class="w-20 h-20 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT mb-6 animate-float" style="animation-delay: 0.6s">
+                <div class="glass-card rounded-3xl p-8 h-full section-fade group">
+                    <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-3xl text-primary mb-6 group-hover:scale-110 transition-transform duration-500">
                         <i class="fas fa-sitemap"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-4 text-white">Autonomous Systems</h3>
-                    <ul class="space-y-2">
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> ROS2
+                    <h3 class="text-xl font-bold mb-6 text-foreground">Autonomous Systems</h3>
+                    <ul class="space-y-3">
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> ROS2
                         </li>
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> Foxglove Visualization
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> Foxglove Visualization
                         </li>
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> Live Telemetry Systems
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> Live Telemetry Systems
                         </li>
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> Sensor Fusion
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> Sensor Fusion
                         </li>
-                        <li class="text-slate-200 flex items-center hover:translate-x-2 transition-transform">
-                            <span class="text-primary-light mr-2">⚡</span> Data Processing Pipelines
+                        <li class="text-muted-foreground flex items-center group-hover:translate-x-2 transition-transform duration-300">
+                            <span class="text-primary mr-3">⚡</span> Data Processing Pipelines
                         </li>
                     </ul>
                 </div>
@@ -769,52 +995,52 @@
     </section>
     
     <!-- Formula Student Section -->
-    <section id="formula" class="py-16 md:py-24 relative">
-        <div class="container mx-auto px-4 md:px-6">
-            <div class="text-center mb-12 md:mb-16 section-fade">
-                <h2 class="text-3xl md:text-4xl font-bold relative inline-block">
+    <section id="formula" class="py-20 md:py-28 relative">
+        <div class="container max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16 section-fade">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-foreground">
                     Formula Student
-                    <span class="block h-1 w-24 bg-gradient-primary mt-4 mx-auto rounded-full"></span>
                 </h2>
+                <div class="h-1 w-24 bg-gradient-primary mx-auto rounded-full"></div>
             </div>
             
-            <div class="flex flex-col lg:flex-row gap-12 items-center">
+            <div class="flex flex-col lg:flex-row gap-16 items-center">
                 <div class="w-full lg:w-2/5 section-fade">
-                    <div class="glass-card overflow-hidden rounded-2xl transform perspective-1000 hover:rotate-y-5 transition-all duration-500">
+                    <div class="glass-card rounded-3xl overflow-hidden transform perspective-1000 hover:rotate-y-5 transition-all duration-700 shine-effect">
                         <img src="assets/images/formula.jpg" alt="Formula Student Driverless" class="w-full h-auto transform hover:scale-105 transition-transform duration-700">
                     </div>
                 </div>
                 
                 <div class="w-full lg:w-3/5 section-fade">
-                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-white">Schanzer Racing Driverless</h3>
-                    <p class="text-slate-200 mb-4">As a member of the Driverless department at Schanzer Racing, I work on developing advanced telemetry systems and data visualization tools for autonomous racing vehicles. My focus is on creating real-time monitoring solutions that provide critical insights during testing and competition.</p>
-                    <p class="text-slate-200 mb-4">Using Foxglove Studio and ROS2, I've implemented visualization dashboards that transform complex sensor data into actionable information, enabling rapid optimization of vehicle performance and autonomous driving algorithms.</p>
-                    <p class="text-slate-200">This experience combines my passion for autonomous systems with practical applications of data processing in high-performance environments, strengthening my ability to work with real-time, mission-critical systems.</p>
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-foreground">Schanzer Racing Driverless</h3>
+                    <p class="text-muted-foreground mb-4">As a member of the Driverless department at Schanzer Racing, I work on developing advanced telemetry systems and data visualization tools for autonomous racing vehicles. My focus is on creating real-time monitoring solutions that provide critical insights during testing and competition.</p>
+                    <p class="text-muted-foreground mb-4">Using Foxglove Studio and ROS2, I've implemented visualization dashboards that transform complex sensor data into actionable information, enabling rapid optimization of vehicle performance and autonomous driving algorithms.</p>
+                    <p class="text-muted-foreground">This experience combines my passion for autonomous systems with practical applications of data processing in high-performance environments, strengthening my ability to work with real-time, mission-critical systems.</p>
                 </div>
             </div>
         </div>
     </section>
     
     <!-- Leadership Section -->
-    <section id="leadership" class="py-16 md:py-24 relative">
-        <div class="container mx-auto px-4 md:px-6">
-            <div class="text-center mb-12 md:mb-16 section-fade">
-                <h2 class="text-3xl md:text-4xl font-bold relative inline-block">
+    <section id="leadership" class="py-20 md:py-28 relative">
+        <div class="container max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16 section-fade">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-foreground">
                     Leadership
-                    <span class="block h-1 w-24 bg-gradient-primary mt-4 mx-auto rounded-full"></span>
                 </h2>
+                <div class="h-1 w-24 bg-gradient-primary mx-auto rounded-full"></div>
             </div>
             
-            <div class="flex flex-col-reverse lg:flex-row gap-12 items-center">
+            <div class="flex flex-col-reverse lg:flex-row gap-16 items-center">
                 <div class="w-full lg:w-3/5 section-fade">
-                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-white">Student Representative</h3>
-                    <p class="text-slate-200 mb-4">Elected as the student representative (StuV) for Faculty E at Technische Hochschule Ingolstadt, I work to strengthen the connection between students and faculty administration. My role focuses on improving student inclusion in academic decisions and enhancing communication channels between all stakeholders.</p>
-                    <p class="text-slate-200 mb-4">Through this position, I've developed initiatives to gather student feedback, organized events to build community within the engineering department, and advocated for curriculum improvements that better prepare students for industry challenges.</p>
-                    <p class="text-slate-200">This leadership experience has enhanced my ability to communicate effectively across diverse groups, manage stakeholder expectations, and implement processes that drive positive organizational change.</p>
+                    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-foreground">Student Representative</h3>
+                    <p class="text-muted-foreground mb-4">Elected as the student representative (StuV) for Faculty E at Technische Hochschule Ingolstadt, I work to strengthen the connection between students and faculty administration. My role focuses on improving student inclusion in academic decisions and enhancing communication channels between all stakeholders.</p>
+                    <p class="text-muted-foreground mb-4">Through this position, I've developed initiatives to gather student feedback, organized events to build community within the engineering department, and advocated for curriculum improvements that better prepare students for industry challenges.</p>
+                    <p class="text-muted-foreground">This leadership experience has enhanced my ability to communicate effectively across diverse groups, manage stakeholder expectations, and implement processes that drive positive organizational change.</p>
                 </div>
                 
                 <div class="w-full lg:w-2/5 section-fade">
-                    <div class="glass-card overflow-hidden rounded-2xl transform perspective-1000 hover:rotate-y-5 transition-all duration-500">
+                    <div class="glass-card rounded-3xl overflow-hidden transform perspective-1000 hover:rotate-y-5 transition-all duration-700 shine-effect">
                         <img src="assets/images/leadership.png" alt="Leadership Role" class="w-full h-auto transform hover:scale-105 transition-transform duration-700">
                     </div>
                 </div>
@@ -823,73 +1049,70 @@
     </section>
     
     <!-- Contact Section -->
-    <section id="contact" class="py-16 md:py-24 relative">
-        <div class="container mx-auto px-4 md:px-6">
+    <section id="contact" class="py-20 md:py-28 relative">
+        <div class="container max-w-7xl mx-auto px-4">
             <div class="max-w-3xl mx-auto section-fade">
-                <div class="glass-card rounded-2xl p-8 md:p-12 text-center">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white">Let's Connect</h2>
-                    <p class="text-slate-200 text-lg mb-10">I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
+                <div class="glass-card rounded-3xl p-10 md:p-16 text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-foreground">Let's Connect</h2>
+                    <p class="text-muted-foreground text-lg mb-12">I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
                         <a href="mailto:shaunraj46@gmail.com" class="flex flex-col items-center group">
-                            <div class="w-20 h-20 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT mb-4 group-hover:-translate-y-3 transition-transform">
+                            <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-3xl text-primary mb-4 transition-all duration-500 group-hover:bg-primary/20 group-hover:-translate-y-3 group-hover:scale-110">
                                 <i class="fas fa-envelope"></i>
                             </div>
-                            <span class="text-lg font-bold text-white">Email</span>
+                            <span class="text-lg font-bold text-foreground">Email</span>
                         </a>
                         
                         <a href="https://www.linkedin.com/in/shaun-clarence-raj-631817205" class="flex flex-col items-center group">
-                            <div class="w-20 h-20 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT mb-4 group-hover:-translate-y-3 transition-transform">
+                            <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-3xl text-primary mb-4 transition-all duration-500 group-hover:bg-primary/20 group-hover:-translate-y-3 group-hover:scale-110">
                                 <i class="fab fa-linkedin-in"></i>
                             </div>
-                            <span class="text-lg font-bold text-white">LinkedIn</span>
+                            <span class="text-lg font-bold text-foreground">LinkedIn</span>
                         </a>
                         
                         <a href="https://github.com/shaunraj46" class="flex flex-col items-center group">
-                            <div class="w-20 h-20 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-3xl text-violet-DEFAULT mb-4 group-hover:-translate-y-3 transition-transform">
+                            <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-3xl text-primary mb-4 transition-all duration-500 group-hover:bg-primary/20 group-hover:-translate-y-3 group-hover:scale-110">
                                 <i class="fab fa-github"></i>
                             </div>
-                            <span class="text-lg font-bold text-white">GitHub</span>
+                            <span class="text-lg font-bold text-foreground">GitHub</span>
                         </a>
                     </div>
                     
-                    <a href="mailto:shaunraj46@gmail.com" class="inline-flex items-center bg-gradient-primary hover:shadow-highlight transition-all px-8 py-3 rounded-full text-white font-semibold group">
+                    <button class="animated-button rounded-full py-3 px-8 text-white font-semibold inline-flex items-center group">
                         <span>Start a Conversation</span>
-                        <span class="ml-4 w-10 h-10 flex items-center justify-center bg-white bg-opacity-20 rounded-full group-hover:translate-x-1 transition-transform">
+                        <span class="ml-4 w-10 h-10 flex items-center justify-center bg-white/10 rounded-full group-hover:translate-x-1 transition-transform duration-300">
                             <i class="fas fa-paper-plane text-white"></i>
                         </span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
     </section>
     
     <!-- Footer -->
-    <footer class="py-12 border-t border-slate-800 bg-secondary-dark">
-        <div class="container mx-auto px-4 md:px-6 text-center">
+    <footer class="py-12 border-t border-border/20">
+        <div class="container max-w-7xl mx-auto px-4 text-center">
             <div class="flex justify-center space-x-6 mb-6">
-                <a href="https://github.com/shaunraj46" class="w-12 h-12 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-xl text-slate-50 hover:-translate-y-2 transition-transform">
+                <a href="https://github.com/shaunraj46" class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-xl text-foreground hover:-translate-y-2 transition-transform duration-300 hover:bg-primary/20">
                     <i class="fab fa-github"></i>
                 </a>
-                <a href="https://www.linkedin.com/in/shaun-clarence-raj-631817205" class="w-12 h-12 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-xl text-slate-50 hover:-translate-y-2 transition-transform">
+                <a href="https://www.linkedin.com/in/shaun-clarence-raj-631817205" class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-xl text-foreground hover:-translate-y-2 transition-transform duration-300 hover:bg-primary/20">
                     <i class="fab fa-linkedin-in"></i>
                 </a>
-                <a href="mailto:shaunraj46@gmail.com" class="w-12 h-12 rounded-full bg-violet-dark bg-opacity-20 flex items-center justify-center text-xl text-slate-50 hover:-translate-y-2 transition-transform">
+                <a href="mailto:shaunraj46@gmail.com" class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-xl text-foreground hover:-translate-y-2 transition-transform duration-300 hover:bg-primary/20">
                     <i class="fas fa-envelope"></i>
                 </a>
             </div>
-            <p class="text-slate-600 text-sm">&copy; 2025 Shaun Clarence Raj. All Rights Reserved.</p>
+            <p class="text-muted-foreground text-sm">&copy; 2025 Shaun Clarence Raj. All Rights Reserved.</p>
         </div>
     </footer>
     
-    <!-- Premium JavaScript -->
+    <!-- ShadCN-Inspired JS -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize Page
             initializePage();
-            
-            // Add animation background particles
-            createBackgroundParticles();
             
             // Add load event to handle post-loading initialization
             window.addEventListener('load', function() {
@@ -920,6 +1143,9 @@
             
             // Initialize section fade-in effects
             initSectionFadeEffects();
+            
+            // Initialize smooth scrolling for anchor links
+            initSmoothScrolling();
         }
         
         /**
@@ -927,41 +1153,37 @@
          */
         function initMobileMenu() {
             const menuToggle = document.getElementById('menuToggle');
+            const closeMenu = document.getElementById('closeMenu');
             const mobileMenu = document.getElementById('mobileMenu');
             
             if (!menuToggle || !mobileMenu) return;
             
+            // Open menu
             menuToggle.addEventListener('click', function() {
-                // Toggle menu open/closed state
-                if (mobileMenu.classList.contains('h-0')) {
-                    // Open menu
-                    mobileMenu.classList.remove('h-0');
-                    mobileMenu.classList.add('h-screen');
-                    menuToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>';
-                    document.body.style.overflow = 'hidden'; // Prevent scrolling
-                } else {
-                    // Close menu
-                    closeMenu();
-                }
-            });
-            
-            // Close menu when clicking a menu item
-            document.querySelectorAll('#mobileMenu a').forEach(link => {
-                link.addEventListener('click', closeMenu);
+                mobileMenu.style.opacity = '1';
+                mobileMenu.style.pointerEvents = 'auto';
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
             });
             
             // Close menu function
-            function closeMenu() {
-                mobileMenu.classList.add('h-0');
-                mobileMenu.classList.remove('h-screen');
-                menuToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>';
+            function closeMobileMenu() {
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.pointerEvents = 'none';
                 document.body.style.overflow = ''; // Re-enable scrolling
             }
             
+            // Close menu button
+            closeMenu.addEventListener('click', closeMobileMenu);
+            
+            // Close menu when clicking a menu item
+            document.querySelectorAll('#mobileMenu a').forEach(link => {
+                link.addEventListener('click', closeMobileMenu);
+            });
+            
             // Close menu on escape key
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && mobileMenu.classList.contains('h-screen')) {
-                    closeMenu();
+                if (e.key === 'Escape' && mobileMenu.style.opacity === '1') {
+                    closeMobileMenu();
                 }
             });
         }
@@ -975,23 +1197,41 @@
             
             if (!nav || !scrollProgress) return;
             
-            // Update on scroll
+            // Update on scroll with throttling
+            let lastScrollTime = 0;
+            const throttleTime = 10; // ms
+            
             window.addEventListener('scroll', function() {
-                // Update scroll progress bar
-                const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-                const scrolled = (window.scrollY / scrollHeight) * 100;
-                scrollProgress.style.width = scrolled + '%';
+                const now = Date.now();
                 
-                // Update navigation background
-                if (window.scrollY > 50) {
-                    nav.classList.add('bg-secondary-dark', 'bg-opacity-80', 'backdrop-blur-premium', 'shadow-md');
-                } else {
-                    nav.classList.remove('bg-secondary-dark', 'bg-opacity-80', 'backdrop-blur-premium', 'shadow-md');
+                if (now - lastScrollTime > throttleTime) {
+                    lastScrollTime = now;
+                    
+                    // Use requestAnimationFrame for performance
+                    requestAnimationFrame(function() {
+                        // Update scroll progress bar
+                        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+                        const scrolled = (window.scrollY / scrollHeight) * 100;
+                        scrollProgress.style.width = scrolled + '%';
+                        
+                        // Update navigation background with glass effect
+                        if (window.scrollY > 50) {
+                            nav.style.backgroundColor = 'hsla(var(--background) / 0.8)';
+                            nav.style.backdropFilter = 'blur(12px)';
+                            nav.style.borderBottom = '1px solid hsla(var(--border) / 0.1)';
+                            nav.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+                        } else {
+                            nav.style.backgroundColor = 'transparent';
+                            nav.style.backdropFilter = 'none';
+                            nav.style.borderBottom = 'none';
+                            nav.style.boxShadow = 'none';
+                        }
+                        
+                        // Update active nav link
+                        updateActiveNavLink();
+                    });
                 }
-                
-                // Update active nav link
-                updateActiveNavLink();
-            });
+            }, { passive: true });
         }
         
         /**
@@ -1014,11 +1254,47 @@
             });
             
             navLinks.forEach(link => {
-                link.classList.remove('text-primary-light');
+                link.classList.remove('text-foreground');
+                link.classList.add('text-muted-foreground');
+                
                 const href = link.getAttribute('href');
                 if (href && href === `#${currentSection}`) {
-                    link.classList.add('text-primary-light');
+                    link.classList.remove('text-muted-foreground');
+                    link.classList.add('text-foreground');
                 }
+            });
+        }
+        
+        /**
+         * Initialize smooth scrolling for anchor links
+         */
+        function initSmoothScrolling() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    // Skip if it's just "#"
+                    if (this.getAttribute('href') === '#') return;
+                    
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        // Calculate proper offset based on device and fixed navigation
+                        const navHeight = document.querySelector('nav').offsetHeight;
+                        const headerOffset = navHeight + 20;
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        
+                        // Smooth scroll to target
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Update URL without page reload
+                        history.pushState(null, null, targetId);
+                    }
+                });
             });
         }
         
@@ -1032,9 +1308,11 @@
             // Hide on scroll
             window.addEventListener('scroll', function() {
                 if (window.scrollY > window.innerHeight * 0.3) {
-                    scrollDown.classList.add('opacity-0');
+                    scrollDown.style.opacity = '0';
+                    scrollDown.style.pointerEvents = 'none';
                 } else {
-                    scrollDown.classList.remove('opacity-0');
+                    scrollDown.style.opacity = '1';
+                    scrollDown.style.pointerEvents = 'auto';
                 }
             });
             
@@ -1042,7 +1320,9 @@
             scrollDown.addEventListener('click', function() {
                 const aboutSection = document.getElementById('about');
                 if (aboutSection) {
-                    const offsetTop = aboutSection.offsetTop;
+                    const navHeight = document.querySelector('nav').offsetHeight;
+                    const offsetTop = aboutSection.offsetTop - navHeight - 20;
+                    
                     window.scrollTo({
                         top: offsetTop,
                         behavior: 'smooth'
@@ -1062,17 +1342,43 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('animate-fade-in-up');
+                        // Add a slight delay between element animations for a staggered effect
+                        entry.target.style.animationDelay = `${Math.random() * 0.3}s`;
                         observer.unobserve(entry.target);
                     }
                 });
             }, {
-                threshold: 0.1,
+                threshold: 0.15,
                 rootMargin: '0px 0px -10% 0px'
             });
             
             // Observe all fade elements
             fadeElements.forEach(element => {
                 observer.observe(element);
+            });
+            
+            // Add hover effect observation for cards that should react to nearby hover
+            const hoverGroups = document.querySelectorAll('.grid');
+            hoverGroups.forEach(group => {
+                const cards = group.querySelectorAll('.glass-card');
+                
+                cards.forEach(card => {
+                    card.addEventListener('mouseenter', () => {
+                        cards.forEach(otherCard => {
+                            if (otherCard !== card) {
+                                otherCard.style.opacity = '0.7';
+                                otherCard.style.transform = 'scale(0.98)';
+                            }
+                        });
+                    });
+                    
+                    card.addEventListener('mouseleave', () => {
+                        cards.forEach(otherCard => {
+                            otherCard.style.opacity = '';
+                            otherCard.style.transform = '';
+                        });
+                    });
+                });
             });
         }
         
@@ -1099,7 +1405,7 @@
                     // Add small delay before hiding
                     setTimeout(() => {
                         loader.classList.add('hidden');
-                    }, 300);
+                    }, 400);
                 }
             }, 40);
         }
@@ -1109,8 +1415,18 @@
          */
         function initializeAnimations() {
             // Add staggered animations to elements
-            animateElementsWithStagger('.glass-card', 100);
-            animateElementsWithStagger('[class*="animate-float"]', 200);
+            const staggerElements = [
+                { selector: '.glass-card', delay: 80 },
+                { selector: '.grid > *', delay: 100 },
+                { selector: '.flex > *', delay: 120 }
+            ];
+            
+            staggerElements.forEach(config => {
+                animateElementsWithStagger(config.selector, config.delay);
+            });
+            
+            // Add dynamic shine effect to cards
+            initDynamicShineEffect();
         }
         
         /**
@@ -1120,35 +1436,46 @@
             const elements = document.querySelectorAll(selector);
             
             elements.forEach((element, index) => {
-                const delay = index * staggerDelay / 1000;
-                element.style.transitionDelay = `${delay}s`;
+                if (!element.classList.contains('section-fade')) {
+                    const delay = index * staggerDelay / 1000;
+                    element.style.transitionDelay = `${delay}s`;
+                }
             });
         }
         
         /**
-         * Create background particles
+         * Initialize dynamic shine effect on cards
          */
-        function createBackgroundParticles() {
-            const container = document.querySelector('.animated-bg');
-            if (!container) return;
+        function initDynamicShineEffect() {
+            const shineElements = document.querySelectorAll('.shine-effect');
             
-            // Create particles
-            for (let i = 0; i < 20; i++) {
-                const size = Math.random() * 120 + 40;
-                const particle = document.createElement('div');
-                particle.className = 'bg-particle';
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.top = `${Math.random() * 100}%`;
-                particle.style.left = `${Math.random() * 100}%`;
+            shineElements.forEach(element => {
+                element.addEventListener('mousemove', (e) => {
+                    const rect = element.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    // Calculate angle based on mouse position
+                    const angleX = (y / rect.height) * 10 - 5;
+                    const angleY = (x / rect.width) * 10 - 5;
+                    
+                    // Apply dynamic transform
+                    element.style.transform = `perspective(1000px) rotateX(${-angleX}deg) rotateY(${angleY}deg)`;
+                    
+                    // Add dynamic highlight
+                    const shine = element.querySelector(':after');
+                    if (shine) {
+                        const percentX = (x / rect.width) * 100;
+                        const percentY = (y / rect.height) * 100;
+                        shine.style.backgroundPosition = `${percentX}% ${percentY}%`;
+                    }
+                });
                 
-                // Animation
-                const duration = Math.random() * 30 + 20;
-                particle.style.animation = `float ${duration}s ease-in-out infinite`;
-                particle.style.animationDelay = `${Math.random() * 20}s`;
-                
-                container.appendChild(particle);
-            }
+                // Reset on mouse leave
+                element.addEventListener('mouseleave', () => {
+                    element.style.transform = '';
+                });
+            });
         }
     </script>
 </body>
