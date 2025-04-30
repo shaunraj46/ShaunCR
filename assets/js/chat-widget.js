@@ -379,7 +379,8 @@
         // Minimize button
         minimizeBtn.addEventListener('click', function(e) {
             e.stopPropagation(); // Prevent header click handler from firing
-            widgetContainer.classList.add('minimized');
+            widgetContainer.classList.remove('active'); // Remove active class to hide the entire widget
+            isChatOpen = false; // Update the chat state
         });
         
         // Send message on button click
