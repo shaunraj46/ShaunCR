@@ -480,20 +480,20 @@
                 }),
             });
             
-            // Get response
-            const data = await response.text();
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
             
-            // Parse TwiML response
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(data, "text/xml");
-            const responseMessage = xmlDoc.querySelector("Message")?.textContent || "Sorry, I couldn't process your request.";
+            // Get response as plain text (no longer XML)
+            const responseText = await response.text();
             
             // Remove typing indicator
             typingIndicator.remove();
             
             // Add response to chat with slight delay for natural feel
             setTimeout(() => {
-                addMessage(responseMessage, 'assistant');
+                // Use the response text directly without XML parsing
+                addMessage(responseText || "I didn't catch that. Could you please try again?", 'assistant');
                 isTyping = false;
             }, 500);
             
