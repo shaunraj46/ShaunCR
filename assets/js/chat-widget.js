@@ -1,4 +1,4 @@
-// chat-widget.js - Premium chat widget for shaunraj.com
+// chat-widget.js - Premium chat widget for shaunraj.com with UI toggle fix
 (function() {
     // Configuration - matches your website's design language
     const config = {
@@ -232,6 +232,10 @@
             transition: all 0.3s ease;
         }
         
+        .sr-chat-widget-container.active ~ .sr-chat-widget-toggle {
+            display: none; /* Hide toggle button when chat is active */
+        }
+        
         .sr-chat-widget-toggle:hover {
             transform: translateY(-5px) scale(1.05);
             box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
@@ -366,13 +370,15 @@
         // Header click to toggle minimize
         chatHeader.addEventListener('click', function(e) {
             if (e.target.closest('.sr-chat-widget-control')) return;
-            if (!isChatOpen) return;
             
-            widgetContainer.classList.toggle('minimized');
+            if (widgetContainer.classList.contains('minimized')) {
+                widgetContainer.classList.remove('minimized');
+            }
         });
         
         // Minimize button
-        minimizeBtn.addEventListener('click', function() {
+        minimizeBtn.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent header click handler from firing
             widgetContainer.classList.add('minimized');
         });
         
@@ -404,7 +410,6 @@
         if (isChatOpen) {
             widgetContainer.classList.remove('minimized');
             widgetContainer.classList.add('active');
-            toggleBtn.classList.add('active');
             
             // Scroll to bottom of chat
             setTimeout(() => {
@@ -412,7 +417,6 @@
             }, 100);
         } else {
             widgetContainer.classList.remove('active');
-            toggleBtn.classList.remove('active');
         }
     }
 
