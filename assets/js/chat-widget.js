@@ -26,12 +26,14 @@
             transform: translateY(30px);
             opacity: 0;
             pointer-events: none;
+            display: none; /* Start hidden by default */
         }
         
         .sr-chat-widget-container.active {
             transform: translateY(0);
             opacity: 1;
             pointer-events: auto;
+            display: block; /* Show when active */
         }
         
         .sr-chat-widget-container.minimized .sr-chat-widget-body,
@@ -232,10 +234,6 @@
             transition: all 0.3s ease;
         }
         
-        .sr-chat-widget-container.active ~ .sr-chat-widget-toggle {
-            display: none; /* Hide toggle button when chat is active */
-        }
-        
         .sr-chat-widget-toggle:hover {
             transform: translateY(-5px) scale(1.05);
             box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
@@ -244,10 +242,6 @@
         .sr-chat-widget-toggle-icon {
             font-size: 24px;
             transition: transform 0.3s ease;
-        }
-        
-        .sr-chat-widget-toggle.active .sr-chat-widget-toggle-icon {
-            transform: rotate(45deg);
         }
         
         .sr-typing-indicator {
@@ -318,7 +312,7 @@
 
     // Create widget container
     const widgetContainer = document.createElement('div');
-    widgetContainer.className = 'sr-chat-widget-container minimized';
+    widgetContainer.className = 'sr-chat-widget-container';
     document.body.appendChild(widgetContainer);
 
     // Build widget HTML
@@ -367,20 +361,20 @@
         // Toggle chat widget
         toggleBtn.addEventListener('click', toggleChat);
         
-        // Header click to toggle minimize
+        // Header click to expand if minimized
         chatHeader.addEventListener('click', function(e) {
             if (e.target.closest('.sr-chat-widget-control')) return;
             
             if (widgetContainer.classList.contains('minimized')) {
+                // Expand the chat if it's minimized
                 widgetContainer.classList.remove('minimized');
             }
         });
         
-        // Minimize button
+        // Minimize button - completely hide chat and show toggle button
         minimizeBtn.addEventListener('click', function(e) {
             e.stopPropagation(); // Prevent header click handler from firing
-            widgetContainer.classList.remove('active'); // Remove active class to hide the entire widget
-            isChatOpen = false; // Update the chat state
+            hideChat();
         });
         
         // Send message on button click
@@ -404,20 +398,32 @@
         }, 500);
     }
 
+    // Show chat widget
+    function showChat() {
+        isChatOpen = true;
+        toggleBtn.style.display = 'none'; // Hide toggle button
+        widgetContainer.classList.remove('minimized');
+        widgetContainer.classList.add('active');
+        
+        // Scroll to bottom of chat
+        setTimeout(() => {
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }, 100);
+    }
+    
+    // Hide chat widget
+    function hideChat() {
+        isChatOpen = false;
+        widgetContainer.classList.remove('active');
+        toggleBtn.style.display = 'flex'; // Show toggle button
+    }
+
     // Toggle chat open/closed
     function toggleChat() {
-        isChatOpen = !isChatOpen;
-        
         if (isChatOpen) {
-            widgetContainer.classList.remove('minimized');
-            widgetContainer.classList.add('active');
-            
-            // Scroll to bottom of chat
-            setTimeout(() => {
-                chatBody.scrollTop = chatBody.scrollHeight;
-            }, 100);
+            hideChat();
         } else {
-            widgetContainer.classList.remove('active');
+            showChat();
         }
     }
 
