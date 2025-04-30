@@ -303,6 +303,20 @@
                 bottom: 20px;
             }
         }
+        
+        /* Debug Console */
+        .sr-debug-console {
+            background-color: rgba(0, 0, 0, 0.85);
+            color: #4ADE80;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 11px;
+            max-height: 150px;
+            overflow-y: auto;
+            margin-top: 10px;
+            border-radius: 4px;
+            display: none;
+        }
     `;
     document.head.appendChild(styleEl);
 
@@ -344,6 +358,7 @@
                 </svg>
             </button>
         </div>
+        <div class="sr-debug-console"></div>
     `;
 
     // Get elements
@@ -352,6 +367,28 @@
     const chatSendBtn = widgetContainer.querySelector('.sr-chat-widget-send');
     const minimizeBtn = widgetContainer.querySelector('.sr-chat-widget-minimize');
     const chatHeader = widgetContainer.querySelector('.sr-chat-widget-header');
+    const debugConsole = widgetContainer.querySelector('.sr-debug-console');
+
+    // For debugging
+    const DEBUG_MODE = true;
+    
+    function log(...args) {
+        if (DEBUG_MODE) {
+            console.log(...args);
+            if (debugConsole) {
+                const time = new Date().toTimeString().split(' ')[0];
+                const message = args.map(arg => 
+                    typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
+                ).join(' ');
+                
+                debugConsole.innerHTML += `[${time}] ${message}<br>`;
+                debugConsole.scrollTop = debugConsole.scrollHeight;
+                
+                // Show debug console
+                debugConsole.style.display = 'block';
+            }
+        }
+    }
 
     // Chat state
     let isChatOpen = false;
@@ -360,6 +397,8 @@
 
     // Initialize
     function init() {
+        log('Initializing chat widget');
+        
         // Toggle chat widget
         toggleBtn.addEventListener('click', toggleChat);
         
@@ -418,6 +457,8 @@
 
     // Add a message to the chat
     function addMessage(text, role) {
+        log(`Adding ${role} message: ${text.substring(0, 50)}${text.length > 50 ? '...' : ''}`);
+        
         const messageEl = document.createElement('div');
         messageEl.className = `sr-chat-message sr-chat-message-${role}`;
         
@@ -466,39 +507,56 @@
             // Generate unique conversation ID if not exists
             if (!conversationId) {
                 conversationId = 'web_user_' + Date.now();
+                log('Generated conversation ID:', conversationId);
             }
             
-            // Send to backend
-            const response = await fetch(`${config.herokuUrl}/webhook`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    Body: message,
-                    From: conversationId,
-                }),
-            });
+            log('Sending message to backend:', message);
             
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
+            // Send to backend using XMLHttpRequest for more control
+            const xhr = new XMLHttpRequest();
             
-            // Get response as plain text (no longer XML)
-            const responseText = await response.text();
+            xhr.open('POST', `${config.herokuUrl}/webhook`, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
             
-            // Remove typing indicator
-            typingIndicator.remove();
+            // Add debugging for response
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    log('Response Status:', xhr.status);
+                    log('Response Headers:', xhr.getAllResponseHeaders());
+                    
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        log('Raw Response:', xhr.responseText);
+                        
+                        // Remove typing indicator
+                        typingIndicator.remove();
+                        
+                        // Add response to chat with slight delay for natural feel
+                        setTimeout(() => {
+                            const responseText = xhr.responseText || "No response from the server.";
+                            addMessage(responseText, 'assistant');
+                            isTyping = false;
+                        }, 500);
+                    } else {
+                        log('Error:', xhr.status, xhr.statusText);
+                        
+                        // Remove typing indicator
+                        typingIndicator.remove();
+                        
+                        // Add error message
+                        addMessage("I'm having trouble connecting. Please try again later.", 'assistant');
+                        isTyping = false;
+                    }
+                }
+            };
             
-            // Add response to chat with slight delay for natural feel
-            setTimeout(() => {
-                // Use the response text directly without XML parsing
-                addMessage(responseText || "I didn't catch that. Could you please try again?", 'assistant');
-                isTyping = false;
-            }, 500);
+            // Send the request
+            xhr.send(JSON.stringify({
+                Body: message,
+                From: conversationId
+            }));
             
         } catch (error) {
-            console.error('Error sending message:', error);
+            log('Error sending message:', error);
             
             // Remove typing indicator
             typingIndicator.remove();
